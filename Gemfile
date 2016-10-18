@@ -10,9 +10,12 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
-gem 'rspec-rails', '~> 3.5'
 
 group :development, :test do
+  gem 'selenium-webdriver'
+  gem 'capybara'
+  gem 'rspec-rails', '~> 3.5'
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'byebug', platform: :mri
 end
 
