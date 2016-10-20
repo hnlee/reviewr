@@ -5,3 +5,4 @@
 <% @reviews.each do |review| %>
   <%= review.content %><br />
 <% end %>
+<%= link_to 'new review', new_project_review_path(@project) %>
