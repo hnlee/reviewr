@@ -26,6 +26,16 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response.body).to include(project.title)
       expect(response.body).to include(project.description)
     end
+
+    it 'includes reviews associated with the project' do
+      project = create(:project)
+      review1 = create(:review, content: "Looks good!", project_id: project.id)
+      review2 = create(:review, content: "Huh?", project_id: project.id)
+
+      get :show, params: { id: project.id }
+
+      expect(response.body).to include(review1.content)
+      expect(response.body).to include(review2.content)
+    end
   end
 end
-

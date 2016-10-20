@@ -34,3 +34,30 @@ projects = titles.zip(descriptions)
 projects.each do |title, description|
   Project.create(title: title, description: description)
 end
+
+content = [ 'This looks great', 
+            'This looks awful', 
+            'This looks really good', 
+            'This needs work',
+            'One thing I really liked was how you were able to capture the mood of the reader', 
+            'One thing I did not think was great was the way that your indentations are inconsistent',
+            'This shows a lot of potential', 
+            'This shows no potential', 
+            'This is not at all what I was expecting', 
+            'While it certainly clever, it is not obvious what you are trying to do, not very readable',
+            'I dont really understand the premise here. Maybe you should try to explain this out loud to someone and see if it makes sense.',
+            'Hey this looks great! I dont even know what to tell you to fix, it is perfect, just like you!',
+            'Did you plagerize this? This looks oddly familiar...', 
+            'Reading this is giving me a headache', 
+            'This work is really good, I can tell that you have made a lot of changes from the previous iteration and it shows. You addressed the spacing issue, but I am not sure that my feedback about the font was taken correctly. Maybe we can do an in person meeting and I can explain what I meant.', 
+            'Wow!', 
+            'You should move line 43 to a separate file, it is creating a clear violation of the Single Responsibility Principle', 
+            'By including line 112, you are creating a violation of the Dependency Inversion Principle', 
+            'I am really impressed by your use of the Open-Closed Principle',
+            'Great use of the Liskov Substitution Principle here', 
+            'The way that this is written, it violates the Interface Segregation Principle. I would fix this if I were you.',
+            'This looks really great. It is obvious that you are really considering your SOLID principles here']
+
+35.times do
+  Review.create(content: content.sample, project_id: rand(projects.length))
+end
