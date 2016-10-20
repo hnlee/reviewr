@@ -16,7 +16,14 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def show
+    @review = Review.find_by_id(params[:id]) 
+    @ratings = @review.ratings
+    @rating_checks = @ratings.group_by { |rating| rating.rating_checks }
+  end
+
   private
+
   def review_params
     params.require(:review).permit(:content, :project_id)
   end
