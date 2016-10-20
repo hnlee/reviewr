@@ -1,0 +1,9 @@
+<%= @review.content %>
+<br />
+
+<% @ratings.each do |rating| %>
+  <%= rating.id %>
+  <% rating.rating_checks.each do |rating_check| %>
+    <%= rating_check.category.capitalize %>? <%= rating_check.value ? "Y" : "N" %>
+  <% end %>
+<% end %>
