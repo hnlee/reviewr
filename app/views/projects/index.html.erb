@@ -1,4 +1,9 @@
 <% @projects.each do |project| %>
-  id: <%= project.id %> |
-  <%= link_to project.title, project %><br />
+  <div>
+    <div class='mini-box'>
+      <div class='squarebrackets'>
+        <%= link_to project.title, project, class: 'body-link' %><br />
+      </div>
+    </div>
+  </div>
 <% end %>

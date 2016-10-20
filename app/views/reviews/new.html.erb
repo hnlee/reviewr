@@ -1,7 +1,14 @@
-<%= form_for [@project, @review] do |f| %>
-  <%= f.label :content %>
-  <%= f.text_field :content %>
-  <%= f.hidden_field :project_id , value: params[:project_id] %>
+<h2>Create new review</h2>
 
-  <%= f.submit "Submit" %>
+<h3><%= @project.title %></h3>
+
+<%= form_for [@project, @review] do |f| %>
+  <div class='big-box'>
+    <div class='large-content-field'>
+      <%= text_area(:review, :content, cols: 90, rows: 16, placeholder: 'Review cannot be blank', style: 'padding: 10px; font-size: 1.25em;') %>
+    </div>
+    <%= f.hidden_field :project_id , value: params[:project_id] %>
+    <%= f.submit 'Submit', style: 'font-size: 1.25em;' %>
+    <%= link_to 'cancel', project_path(@project) %>
+  </div>
 <% end %>

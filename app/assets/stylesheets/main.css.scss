@@ -1,0 +1,99 @@
+@charset "utf-8";
+
+body {
+  margin: 0;
+  font-family: 'Verdana', sans-serif;
+  color: #222;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0;
+  font-family: 'Cutive', serif;
+}
+
+h2 {
+  font-size: 1.35em;
+  font-family: 'Cutive', serif;
+}
+
+p {
+  margin: 0;
+}
+
+.header {
+  background-color: #666;
+  margin-bottom: 60px;
+  border-bottom: 2px solid #888;
+}
+
+a {
+  text-decoration: none;
+}
+
+a.brand {
+  color: #000;
+}
+
+a.brand:hover {
+  color: #222;
+  text-shadow: 1px 1px #444;
+}
+
+a.body-link {
+  color: #666;
+  letter-spacing: 2px;
+}
+
+a.body-link:hover {
+  color: #999;
+}
+
+.carrot {
+  font-size: 1.35em;
+  font-weight: 700;
+}
+
+.big-box {
+  @include outer-container;
+  padding: 15px;
+}
+
+.mini-box {
+  @include span-columns(4);
+  height: 10em;
+  padding: 5px 5px 5px 25px;
+}
+
+.squarebrackets {
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  width: 300px;
+  padding: 10px;
+}
+
+.squarebrackets:before {
+  content: " ";
+  position: absolute;
+  border-left: 3px solid #666;
+  border-top: 3px solid #666;
+  border-bottom: 3px solid #666;
+  padding: 5px;
+  top: -10px;
+  bottom: -10px;
+  left: -5px;
+}
+
+.squarebrackets:after {
+  content: " ";
+  position: absolute;
+  border-right: 3px solid #666;
+  border-top: 3px solid #666;
+  border-bottom: 3px solid #666;
+  padding: 5px;
+  top: -10px;
+  bottom: -10px;
+  right: -5px;
+}
+

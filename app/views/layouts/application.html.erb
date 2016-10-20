@@ -3,12 +3,19 @@
   <head>
     <title>Reviewr</title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'https://fonts.googleapis.com/css?family=Cutive' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="header">
+      <section class="big-box">
+        <h1><a class="brand" href="/">Reviewr</a></h1>
+      </section>
+    </div>
+    <section class="big-box">
+      <%= yield %>      
+    </section>
   </body>
 </html>
