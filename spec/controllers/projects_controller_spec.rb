@@ -15,5 +15,17 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response.body).to include(project2.title)
     end
   end
+
+  describe 'GET /projects/:id' do
+    it 'renders the template for the project show page' do
+      project = create(:project)
+
+      get :show, params: { id: project.id }
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include(project.title)
+      expect(response.body).to include(project.description)
+    end
+  end
 end
 

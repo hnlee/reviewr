@@ -1,3 +1,4 @@
 <% @projects.each do |project| %>
-  <%= project.title %><br />
+  id: <%= project.id %> |
+  <%= link_to project.title, project %><br />
 <% end %>
