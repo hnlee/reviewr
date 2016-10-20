@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/NicoleCarpenter/reviewr.svg?branch=master)](https://travis-ci.org/NicoleCarpenter/reviewr)
 
-# Reviewr
+# [Reviewr](http://reviewr-app.herokuapp.com/)
 
 Reviewr is a platform where developers can share work, get feedback on that work, and improve the effectiveness of the feedback process through a simple rating system. Users can utilize the site to submit code samples, repositories, blog posts, or any other piece of work, and invite others to review. Reviewers will leave feedback and then that feedback is opened up to the Reviewr community where members can rate it based on three metrics: specific, actionable and kind.
 
