@@ -13,13 +13,14 @@ gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   gem 'selenium-webdriver'
-  gem 'capybara'
+  gem 'capybara', '~> 2.8'
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'byebug', platform: :mri
 end
 
 group :development do
+  gem 'pry'
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
   gem 'spring'

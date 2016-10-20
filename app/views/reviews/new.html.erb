@@ -1,0 +1,7 @@
+<%= form_for [@project, @review] do |f| %>
+  <%= f.label :content %>
+  <%= f.text_field :content %>
+  <%= f.hidden_field :project_id , value: params[:project_id] %>
+
+  <%= f.submit "Submit" %>
+<% end %>
