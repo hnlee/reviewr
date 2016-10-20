@@ -1,3 +1,7 @@
 <%= @project.title %>
 <br />
-<%= @project.description %>
+<%= @project.description %><br /><br />
+
+<% @reviews.each do |review| %>
+  <%= review.content %><br />
+<% end %>
