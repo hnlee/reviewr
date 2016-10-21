@@ -9,7 +9,7 @@ class ReviewsController < ApplicationController
   def create
     review = Review.new(content: review_params[:content])
     if review.save
-     project_review = ProjectReview.create(project_id: review_params[:project_id],
+      project_review = ProjectReview.create(project_id: review_params[:project_id],
                                             review_id: review.id)
       redirect_to project_path(review_params[:project_id])
     end

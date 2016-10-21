@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20161021153518) do
     t.datetime "updated_at",  null: false
   end
 
- create_table "ratings", force: :cascade do |t|
+  create_table "ratings", force: :cascade do |t|
     t.boolean  "kind"
     t.boolean  "specific"
     t.boolean  "actionable"
