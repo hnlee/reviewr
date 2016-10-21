@@ -5,4 +5,4 @@
 <% @reviews.each do |review| %>
   <p><span class='carrot'>></span> <%= review.content %></p><br />
 <% end %>
-<%= link_to 'new review', new_project_review_path(@project) %>
+<%= link_to 'new review', new_review_path(@project) %>

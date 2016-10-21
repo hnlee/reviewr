@@ -1,10 +1,12 @@
 require 'spec_helper'
 
-describe 'review' do
+describe 'review', :type => :feature do
   describe 'project show page with reviews' do
     it 'shows all reviews in a project' do
       project = create(:project, title: "Java Tic-Tac-Toe")
-      review = create(:review, content: "Looks good!", project_id: project.id)
+      review = create(:review, content: "Looks good!")
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
 
       visit '/projects/' + project.id.to_s
 
@@ -14,17 +16,24 @@ describe 'review' do
     end
   end
 
-  describe 'review can be created' do
+  describe 'can be created' do
     it 'creates a new review' do
       project = create(:project, title: "Java Tic-Tac-Toe")
       content = 'This looks really good!'
-      new_review_page = '/projects/' + project.id.to_s + '/reviews/new'
 
-      visit new_review_page
-      fill_in new_review_page[content], with: content, visible: false
+      visit new_review_path(project)
+      fill_in 'review_content', :with => content
       click_button('Submit')
 
       expect(page).to have_content(content)
+    end
+  end
+
+  describe 'if not from a project page' do
+    it 'redirects to project index' do
+      visit new_review_path
+
+      expect(current_path).to eq(projects_path)
     end
   end
 end

@@ -12,10 +12,16 @@ RSpec.describe Project do
   it 'has many reviews' do
     project = Project.create(title: "My Title",
                              description: "My Description")
-    review1 = create(:review, content: "Content1", project_id: project.id)
-    review2 = create(:review, content: "Content2", project_id: project.id)
-    review3 = create(:review, content: "Content3", project_id: project.id)
+    review1 = create(:review, content: "Content1")
+    review2 = create(:review, content: "Content2")
+    review3 = create(:review, content: "Content3")
+    create(:project_review, project_id: project.id,
+                            review_id: review1.id)
+    create(:project_review, project_id: project.id,
+                            review_id: review2.id)
+    create(:project_review, project_id: project.id,
+                            review_id: review3.id)
 
-    expect(project.reviews.length).to eq(3)
+    expect(project.project_reviews.length).to eq(3)
   end
 end

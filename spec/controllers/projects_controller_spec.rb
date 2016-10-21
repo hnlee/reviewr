@@ -29,8 +29,12 @@ RSpec.describe ProjectsController, :type => :controller do
 
     it 'includes reviews associated with the project' do
       project = create(:project)
-      review1 = create(:review, content: "Looks good!", project_id: project.id)
-      review2 = create(:review, content: "Huh?", project_id: project.id)
+      review1 = create(:review, content: "Looks good!")
+      review2 = create(:review, content: "Huh?")
+      create(:project_review, project_id: project.id,
+                              review_id: review1.id)
+      create(:project_review, project_id: project.id,
+                              review_id: review2.id)
 
       get :show, params: { id: project.id }
 

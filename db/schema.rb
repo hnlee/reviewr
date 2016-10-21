@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161020220402) do
+ActiveRecord::Schema.define(version: 20161021141318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "project_reviews", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "review_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_reviews_on_project_id", using: :btree
+    t.index ["review_id"], name: "index_project_reviews_on_review_id", using: :btree
+  end
 
   create_table "projects", force: :cascade do |t|
     t.string   "title"
@@ -36,13 +45,10 @@ ActiveRecord::Schema.define(version: 20161020220402) do
 
   create_table "reviews", force: :cascade do |t|
     t.string   "content"
-    t.integer  "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_reviews_on_project_id", using: :btree
   end
 
-  add_foreign_key "rating_checks", "ratings"
-  add_foreign_key "ratings", "reviews"
-  add_foreign_key "reviews", "projects"
+  add_foreign_key "project_reviews", "projects"
+  add_foreign_key "project_reviews", "reviews"
 end
