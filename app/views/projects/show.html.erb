@@ -3,6 +3,6 @@
 <%= @project.description %><br /><br />
 
 <% @reviews.each do |review| %>
-  <p><span class='carrot'>></span> <%= review.content %></p><br />
+  <p><span class='carrot'>></span> <%= link_to review.content, review %></p><br />
 <% end %>
 <%= link_to 'new review', new_review_path(@project) %>

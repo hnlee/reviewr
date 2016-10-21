@@ -12,7 +12,7 @@ describe 'review', :type => :feature do
 
       expect(page).to have_content(project.title)
       expect(page).to have_content(project.description)
-      expect(page).to have_content(review.content)
+      expect(page.find_link(review.content).visible?).to eq(true)
     end
   end
 

@@ -1,0 +1,24 @@
+<%= @review.content %>
+
+<%= form_tag("/ratings", method: "post") do %>
+  <%= fields_for :rating do |f| %>
+    <%= f.radio_button(:kind, true) %>
+    <%= f.label(:kind_true, "kind") %>
+    <%= f.radio_button(:kind, false) %>
+    <%= f.label(:kind_false, "unkind") %>
+
+    <%= f.radio_button(:specific, true) %>
+    <%= f.label(:specific_true, "specific") %>
+    <%= f.radio_button(:specific, false) %>
+    <%= f.label(:specific_false, "unspecific") %>
+
+    <%= f.radio_button(:actionable, true) %>
+    <%= f.label(:actionable_true, "actionable") %>
+    <%= f.radio_button(:actionable, false) %>
+    <%= f.label(:actionable_false, "unactionable") %>
+
+    <%= f.hidden_field :review_id, value: @review.id %>
+
+    <%= f.submit("Rate review") %>
+  <% end %>
+<% end %>

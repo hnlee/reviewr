@@ -16,9 +16,8 @@ class ReviewsController < ApplicationController
   end
 
   def show
-    @review = Review.find_by_id(params[:id]) 
+    @review = Review.find(params[:id])
     @ratings = @review.ratings
-    @rating_checks = @ratings.group_by { |rating| rating.rating_checks }
   end
 
   private

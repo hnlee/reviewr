@@ -2,8 +2,9 @@
 <br />
 
 <% @ratings.each do |rating| %>
-  <%= rating.id %>
-  <% rating.rating_checks.each do |rating_check| %>
-    <%= rating_check.category.capitalize %>? <%= rating_check.value ? "Y" : "N" %>
-  <% end %>
+  Kind: <%= rating.kind %><br />
+  Specific: <%= rating.specific %><br />
+  Actionable: <%= rating.actionable %><br />
 <% end %>
+
+<%= link_to "Rate review", new_rating_path(@review) %>
