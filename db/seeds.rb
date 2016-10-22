@@ -1,15 +1,20 @@
-coding_projects = ['HTTP Server', 'Hangman', 'TTT', 'Bowling Game Kata', 'Coin Changer Kata', 'Roman Numerals Kata', 
-          'Conways Game of Life Kata', 'Anagrams Kata', 'Prime Factors Kata', 'Mastermind']
+coding_projects = ['HTTP Server', 'Hangman', 'TTT', 'Bowling Game', 'Coin Changer', 'Roman Numerals', 
+          'Conways Game of Life', 'Anagrams', 'Prime Factors', 'Mastermind']
 
 languages = ['Java', 'Ruby', 'Clojure', 'Python', 'Haskell', 'Elixir', 'Elm', 'C#', 'Go', 'Rust', 'Javascript']
 
 greetings = ['Hey there! ', 'Well hello there. ', 'Hi. ', 'Youre here! ', 'Greetings. ', 'Welcome. ']
 
-schmooze =  ['I worked really hard on this project', 'I am really excited for you to check out my project', 
-            'I appreciate you checking out my work', 'I am super pumped to see what you have to say about it', 
-            'You are on my board so I am required to share this with you', 'This is the first iteration',
-            'This is the second iteration', 'I have been working on this since the beginning of the month', 
-            'I feel like it is missing something, but I cant put my finger on it', 'I am very proud of this', 
+schmooze =  ['I worked really hard on this project', 
+            'I am really excited for you to check out my project', 
+            'I appreciate you checking out my work', 
+            'I am super pumped to see what you have to say about it', 
+            'You are on my board so I am required to share this with you', 
+            'This is the first iteration',
+            'This is the second iteration', 
+            'I have been working on this since the beginning of the month', 
+            'I feel like it is missing something, but I cant put my finger on it', 
+            'I am very proud of this', 
             'The fact that you are taking time out of your busy, busy day means so very much to me', 
             'This is the first time I have had the opportunity to work with this technology']
 
@@ -47,9 +52,9 @@ content = [ 'This looks great',
             'While it certainly clever, it is not obvious what you are trying to do, not very readable',
             'I dont really understand the premise here. Maybe you should try to explain this out loud to someone and see if it makes sense.',
             'Hey this looks great! I dont even know what to tell you to fix, it is perfect, just like you!',
-            'Did you plagerize this? This looks oddly familiar...', 
+            'Did you plagiarize this? This looks oddly familiar...', 
             'Reading this is giving me a headache', 
-            'This work is really good, I can tell that you have made a lot of changes from the previous iteration and it shows. You addressed the spacing issue, but I am not sure that my feedback about the font was taken correctly. Maybe we can do an in person meeting and I can explain what I meant.', 
+            'This is really good, I can tell that you have made a lot of changes from the previous iteration and it shows. You addressed the spacing issue, but I am not sure that my feedback about the font was taken correctly. Maybe we can do an in person meeting and I can explain what I meant.', 
             'Wow!', 
             'You should move line 43 to a separate file, it is creating a clear violation of the Single Responsibility Principle', 
             'By including line 112, you are creating a violation of the Dependency Inversion Principle', 
@@ -58,6 +63,6 @@ content = [ 'This looks great',
             'The way that this is written, it violates the Interface Segregation Principle. I would fix this if I were you.',
             'This looks really great. It is obvious that you are really considering your SOLID principles here']
 
-35.times do
+45.times do
   Review.create(content: content.sample, project_id: rand(projects.length))
 end

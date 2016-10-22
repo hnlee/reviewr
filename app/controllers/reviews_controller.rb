@@ -12,7 +12,7 @@ class ReviewsController < ApplicationController
     if review.save
       redirect_to project
     else
-      render "new"
+      redirect_to new_project_review_path(:review => params[:review])
     end
   end
 

@@ -1,8 +1,8 @@
-<%= @project.title %>
+<h2><%= @project.title %></h2>
 <br />
 <%= @project.description %><br /><br />
 
 <% @reviews.each do |review| %>
-  <%= review.content %><br />
+  <p><span class='carrot'>></span> <%= review.content %></p><br />
 <% end %>
 <%= link_to 'new review', new_project_review_path(@project) %>
