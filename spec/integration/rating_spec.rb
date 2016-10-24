@@ -9,7 +9,16 @@ describe 'rating', :type => :feature do
       choose('rating_helpful_true')
       click_button('Rate review')
 
-      expect(page).to have_content("Kind, specific, actionable: true")
+      expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-up')
+    end
+
+    it 'displays error message if radio button not selected' do
+      review = create(:review, content: 'This looks really good!')
+
+      visit new_rating_path(review)
+      click_button('Rate review')
+
+      expect(page).to have_content("Please select a button")
     end
   end
 

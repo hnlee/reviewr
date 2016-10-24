@@ -11,7 +11,7 @@ describe 'review', :type => :feature do
       visit '/reviews/' + review.id.to_s
 
       expect(page).to have_content(review.content)
-      expect(page).to have_content('Kind, specific, actionable: true')
+      expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-up')
     end
   end
 

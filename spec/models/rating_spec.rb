@@ -6,8 +6,9 @@ RSpec.describe Rating do
 
     expect(rating.helpful).to eq(true)
   end
+
   it' does not save if helpful field is not set' do
-    rating = Rating.new()
+    rating = Rating.new(helpful: nil)
 
     expect(rating.id).to eq(nil)
   end

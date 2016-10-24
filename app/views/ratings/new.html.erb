@@ -1,11 +1,25 @@
-<%= @review.content %>
+<h2>Rate review</h2>
+
+<p><span class='carrot'>></span> <%= @review.content %></p><br />
+
+<p>Is this review kind, specific, and actionable?</p><br />
+
+<% if flash[:error] %>
+  <div class = "alert-error"><%= flash[:error] %><br /><br /></div>
+<% end %>
 
 <%= form_tag("/ratings", method: "post") do %>
   <%= fields_for :rating do |f| %>
     <%= f.radio_button(:helpful, true) %>
-    <%= f.label(:helpful_true, "helpful") %><br />
+    <%= f.label :helpful_true do %>
+      <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+    <% end %>
+
     <%= f.radio_button(:helpful, false) %>
-    <%= f.label(:kind_false, "unhelpful") %><br /><br />
+    <%= f.label :helpful_false do %>
+      <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+    <% end %>
+    <br /><br />
 
     <%= f.hidden_field :review_id, value: @review.id %>
 
