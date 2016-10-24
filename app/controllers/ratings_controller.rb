@@ -12,6 +12,8 @@ class RatingsController < ApplicationController
       review_rating = ReviewRating.create(review_id: rating_params[:review_id],
                                           rating_id: rating.id)
       redirect_to review_path(rating_params[:review_id])
+    else
+      redirect_to new_rating_path(rating_params[:review_id]), { flash: { error: "Please select a button" } }
     end
   end
 

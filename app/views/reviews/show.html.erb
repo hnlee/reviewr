@@ -1,8 +1,20 @@
-<%= @review.content %>
-<br />
+<h2>Review</h2>
 
-<% @ratings.each do |rating| %>
-  Kind, specific, actionable: <%= rating.helpful %><br />
-<% end %>
+<p><span class="carrot">></span> <%= @review.content %></p><br />
 
 <%= link_to "Rate review", new_rating_path(@review) %>
+<br /><br />
+
+<hr>
+
+<h3>Previous ratings</h3>
+
+<p>Was this review kind, specific, and actionable?</p><br />
+<% @ratings.each do |rating| %>
+  <% if rating.helpful %>
+    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+  <% else %>
+    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+  <% end %>
+  <br />
+<% end %>
