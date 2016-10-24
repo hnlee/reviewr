@@ -17,7 +17,7 @@ RSpec.describe ReviewsController, :type => :controller do
   describe 'GET /reviews/:id' do
     it 'shows a review and ratings associated with the review' do
       review = create(:review, content: "Java code retreat")
-      rating = create(:rating, kind: true, actionable: true, specific: true)
+      rating = create(:rating, helpful: true)
       create(:review_rating, review_id: review.id,
                              rating_id: rating.id)
 

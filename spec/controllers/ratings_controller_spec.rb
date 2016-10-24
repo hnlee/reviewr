@@ -17,7 +17,7 @@ RSpec.describe RatingsController, :type => :controller do
     it 'creates a new rating and redirects to the review show page' do
       review = create(:review, content: "Java Server")
 
-      post :create, params: { rating: { kind: true, actionable: true, specific: true, review_id: review.id } }
+      post :create, params: { rating: { helpful: true, review_id: review.id } }
 
       expect(response).to redirect_to(review)
       expect(response).to have_http_status(:redirect)

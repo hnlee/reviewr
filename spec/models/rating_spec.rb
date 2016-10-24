@@ -1,13 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Rating do
-  it 'has 3 booleans set' do
-    rating = Rating.new(kind: true,
-                        specific: true,
-                        actionable: true)
+  it 'has helpful boolean set' do
+    rating = Rating.new(helpful: true)
 
-    expect(rating.kind).to eq(true)
-    expect(rating.specific).to eq(true)
-    expect(rating.actionable).to eq(true)
+    expect(rating.helpful).to eq(true)
+  end
+  it' does not save if helpful field is not set' do
+    rating = Rating.new()
+
+    expect(rating.id).to eq(nil)
   end
 end

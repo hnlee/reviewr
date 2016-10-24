@@ -44,7 +44,7 @@ content = [ 'This looks great',
             'The way that this is written, it violates the Interface Segregation Principle. I would fix this if I were you.',
             'This looks really great. It is obvious that you are really considering your SOLID principles here']
 
-rand_bool = [true, true, false].sample
+rand_bool = [true, false].sample
 
 titles = []
 
@@ -70,7 +70,7 @@ content.each do |content|
 end
 
 20.times do
-  Rating.create(kind: rand_bool, specific: rand_bool, actionable: rand_bool)
+  Rating.create(helpful: rand_bool)
 end
 
 45.times do
