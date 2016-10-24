@@ -1,4 +1,4 @@
 class Rating < ApplicationRecord
-  has_many :rating_checks
-  belongs_to :review
+  has_one :review_rating
+  has_one :review, through: :review_rating
 end

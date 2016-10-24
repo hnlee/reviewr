@@ -1,7 +1,9 @@
 class Review < ApplicationRecord
   validates :content, presence: true
 
-  belongs_to :project
-  has_many :ratings
+  has_one :project_review
+  has_one :project, through: :project_review
 
+  has_many :review_ratings
+  has_many :ratings, through: :review_ratings
 end

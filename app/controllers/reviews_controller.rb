@@ -1,30 +1,32 @@
 class ReviewsController < ApplicationController
+  before_action :require_project, only: [:new]
 
   def new
-    @project = Project.find(params[:project_id])
+    @project = Project.find(params[:format])
     @review = Review.new
   end
 
   def create
-    project = Project.find(review_params[:project_id])
-    review = Review.new(review_params)
-    review.project = project
+    review = Review.new(content: review_params[:content])
     if review.save
-      redirect_to project
-    else
-      redirect_to new_project_review_path(:review => params[:review])
+      project_review = ProjectReview.create(project_id: review_params[:project_id],
+                                            review_id: review.id)
+      redirect_to project_path(review_params[:project_id])
     end
   end
 
   def show
-    @review = Review.find_by_id(params[:id]) 
+    @review = Review.find(params[:id])
     @ratings = @review.ratings
-    @rating_checks = @ratings.group_by { |rating| rating.rating_checks }
   end
 
   private
 
   def review_params
     params.require(:review).permit(:content, :project_id)
+  end
+
+  def require_project
+    redirect_to projects_path unless params[:format]
   end
 end

@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :rating do
-    review 
+    kind false
+    specific false
+    actionable false
   end
-
 end
