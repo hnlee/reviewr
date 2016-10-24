@@ -21,25 +21,6 @@ schmooze =  ['I worked really hard on this project',
 userNames = ['barakobama', 'hillaryclinton', 'donaldtrump', 'berniesanders', 'tedcruz', 'jebbush', 'marcorubio', 'lincolnchafee',
              'martinomalley', 'jimwebb', 'ricksantorum', 'scottwalker', 'chrischristie', 'bencarson']
 
-titles = []
-
-20.times do
-  titles << languages.sample + ' ' + coding_projects.sample
-end
-
-descriptions = []
-
-20.times do |i|
-  description = (greetings.sample + "I want to invite you to check out my " + titles[i] + ". " + schmooze.sample + ". You can check out my repo here: www.github.com/" + userNames.sample + "/" + titles[i].gsub(/\s+/, "-") + ". Thanks in advance for your feedback!")
-  descriptions << description
-end
-
-projects = titles.zip(descriptions)
-
-projects.each do |title, description|
-  Project.create(title: title, description: description)
-end
-
 content = [ 'This looks great', 
             'This looks awful', 
             'This looks really good', 
@@ -63,6 +44,39 @@ content = [ 'This looks great',
             'The way that this is written, it violates the Interface Segregation Principle. I would fix this if I were you.',
             'This looks really great. It is obvious that you are really considering your SOLID principles here']
 
+rand_bool = [true, true, false].sample
+
+titles = []
+
+descriptions = []
+
+20.times do
+  titles << languages.sample + ' ' + coding_projects.sample
+end
+
+20.times do |i|
+  description = (greetings.sample + "I want to invite you to check out my " + titles[i] + ". " + schmooze.sample + ". You can check out my repo here: www.github.com/" + userNames.sample + "/" + titles[i].gsub(/\s+/, "-") + ". Thanks in advance for your feedback!")
+  descriptions << description
+end
+
+projects = titles.zip(descriptions)
+
+projects.each do |title, description|
+  Project.create(title: title, description: description)
+end
+
+content.each do |content|
+  Review.create(content: content)
+end
+
+20.times do
+  Rating.create(kind: rand_bool, specific: rand_bool, actionable: rand_bool)
+end
+
 45.times do
-  Review.create(content: content.sample, project_id: rand(projects.length))
+  ProjectReview.create(project_id: rand(projects.length) + 1, review_id: rand(content.length) + 1)
+end
+
+60.times do
+  ReviewRating.create(review_id: rand(content.length) + 1, rating_id: rand(20) + 1)
 end
