@@ -47,6 +47,18 @@ Reviewr uses Rspec for unit testing and Capybara for acceptance testing. To load
 rake spec
 ```
 
+Javascript is tested using Jasmine. Jasmine tests are run using the Jasmine server.
+
+```
+rake jasmine
+```
+
+With the server running, the test output can be seen in the browser.
+
+```
+http://localhost:8888/
+```
+
 ### Collaborators
 
 * [Hana Lee](https://github.com/hnlee)
