@@ -12,6 +12,15 @@ RSpec.describe ReviewsController, :type => :controller do
       expect(response).to redirect_to(project)
       expect(response).to have_http_status(:redirect)
     end
+
+    it 'displays a flash warning when the content is left blank' do
+      project = create(:project, title: "Java Tic-Tac-Toe", description: "TTT, you'll love it")
+
+      post :create, params: { review: { content: "", project_id: project.id }, project_id: project.id }
+
+      expect(response).to redirect_to('/reviews/new.' + project.id.to_s)
+      expect(response).to have_http_status(:redirect)
+    end
   end
 
   describe 'GET /reviews/:id' do

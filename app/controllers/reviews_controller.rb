@@ -12,6 +12,8 @@ class ReviewsController < ApplicationController
       project_review = ProjectReview.create(project_id: review_params[:project_id],
                                             review_id: review.id)
       redirect_to project_path(review_params[:project_id])
+    else
+      redirect_to new_review_path(review_params[:project_id]), {:flash => { :error => "Review cannot be blank" }}
     end
   end
 
