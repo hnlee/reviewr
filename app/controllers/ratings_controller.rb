@@ -7,9 +7,7 @@ class RatingsController < ApplicationController
   end
 
   def create
-    rating = Rating.new(kind: rating_params[:kind],
-                        specific: rating_params[:specific],
-                        actionable: rating_params[:actionable])
+    rating = Rating.new(helpful: rating_params[:helpful])
     if rating.save
       review_rating = ReviewRating.create(review_id: rating_params[:review_id],
                                           rating_id: rating.id)
@@ -20,7 +18,7 @@ class RatingsController < ApplicationController
   private
 
   def rating_params
-    params.require(:rating).permit(:kind, :specific, :actionable, :review_id)
+    params.require(:rating).permit(:helpful, :review_id)
   end
 
   def require_review
