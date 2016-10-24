@@ -18,6 +18,7 @@ group :development, :test do
   gem 'capybara', '~> 2.8'
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails', '~> 4.0'
+  gem 'jasmine'
   gem 'byebug', platform: :mri
 end
 
