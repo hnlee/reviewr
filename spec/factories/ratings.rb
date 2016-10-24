@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :rating do
-    helpful false
+    helpful true
   end
 end
