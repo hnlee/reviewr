@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+
   def index
     @projects = Project.all
   end
@@ -6,6 +7,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find_by_id(params[:id])
     @reviews = @project.reviews
+    @review = Review.new
   end
 
   def new

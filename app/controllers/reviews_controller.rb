@@ -1,17 +1,23 @@
 class ReviewsController < ApplicationController
-  before_action :require_project, only: [:new]
 
   def new
-    @project = Project.find(params[:format])
+    @project = Project.find(params[:project_id])
     @review = Review.new
+    if request.xhr?
+      render partial: "reviews/new" 
+    end
   end
 
   def create
     review = Review.new(content: review_params[:content])
     if review.save
-      project_review = ProjectReview.create(project_id: review_params[:project_id],
-                                            review_id: review.id)
-      redirect_to project_path(review_params[:project_id])
+      if request.xhr?
+        project_review = ProjectReview.create(project_id: review_params[:project_id],
+                                              review_id: review.id)
+        render :js => "window.location = '#{project_path(review_params[:project_id])}'"
+      else
+        redirect_to new_review_path(review_params[:project_id]), {:flash => { :error => "Review cannot be blank" }}
+      end
     else
       redirect_to new_review_path(review_params[:project_id]), {:flash => { :error => "Review cannot be blank" }}
     end
@@ -28,7 +34,4 @@ class ReviewsController < ApplicationController
     params.require(:review).permit(:content, :project_id)
   end
 
-  def require_project
-    redirect_to projects_path unless params[:format]
-  end
 end

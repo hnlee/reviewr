@@ -19,6 +19,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'jasmine'
+  gem 'jasmine-rails'
   gem 'byebug', platform: :mri
 end
 

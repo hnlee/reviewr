@@ -47,7 +47,7 @@ describe 'project' do
       expect(page).to have_content(review2.content)
     end
 
-    it 'navigates to new review page when link is clicked' do
+    it 'loads new review partial when link is clicked' do
       project = create(:project, title: "my title", description: "my desc")
 
       visit "/projects/" + project.id.to_s

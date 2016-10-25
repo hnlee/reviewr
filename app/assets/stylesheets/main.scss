@@ -59,6 +59,10 @@ a.body-link:hover {
   color: #999;
 }
 
+.new-form-link {
+  font-weight: bold;
+}
+
 .carrot {
   font-size: 1.0em;
   font-weight: 700;
@@ -114,4 +118,8 @@ a.body-link:hover {
 
 .alert-error {
   color: red;
+}
+
+.load-form {
+  @include span-columns(12);
 }
