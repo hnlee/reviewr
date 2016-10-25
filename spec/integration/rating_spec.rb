@@ -20,6 +20,29 @@ describe 'rating', :type => :feature do
 
       expect(page).to have_content("Please select a button")
     end
+
+    it 'displays error message if rated not helpful without any explanation' do
+      review = create(:review, content: 'This looks really good!')
+
+      visit new_rating_path(review)
+      choose('rating_helpful_false')
+      click_button('Rate review')
+
+      expect(page).to have_content("Please provide an explanation")
+    end
+
+    it 'creates new rating if rated not helpful and explanation provided' do
+      review = create(:review, content: 'This looks really good!')
+      explanation = 'Need to be more specific'
+
+      visit new_rating_path(review)
+      choose('rating_helpful_false')
+      fill_in('rating_explanation', :with => explanation)
+      click_button('Rate review')
+
+      expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-down')
+      expect(page).to have_content(explanation)
+    end
   end
 
   describe 'if not from a review page' do

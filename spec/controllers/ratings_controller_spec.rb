@@ -32,5 +32,16 @@ RSpec.describe RatingsController, :type => :controller do
       expect(response).to redirect_to(new_rating_path(review))
       expect(flash[:error]). to match("Please select a button")
     end
+
+    it 'displays flash message if helpful is set to false and explanation is blank' do
+      review = create(:review, content: "Java Server")
+
+      post :create, params: { rating: { helpful: false,
+                                        explanation: '',
+                                        review_id: review.id } }
+
+      expect(response).to redirect_to(new_rating_path(review))
+      expect(flash[:error]). to match("Please provide an explanation")
+    end
   end
 end

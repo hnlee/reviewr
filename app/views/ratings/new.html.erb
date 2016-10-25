@@ -2,27 +2,34 @@
 
 <p><span class='carrot'>></span> <%= @review.content %></p><br />
 
-<p>Is this review kind, specific, and actionable?</p><br />
+<p>Is this review kind, specific, and actionable? If your answer is no, then explain why.</p><br />
 
 <% if flash[:error] %>
-  <div class = "alert-error"><%= flash[:error] %><br /><br /></div>
+  <div class = "alert-error"><%= flash[:error] %><br /></div>
 <% end %>
 
 <%= form_tag("/ratings", method: "post") do %>
   <%= fields_for :rating do |f| %>
-    <%= f.radio_button(:helpful, true) %>
-    <%= f.label :helpful_true do %>
-      <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-    <% end %>
+    <div class='big-box'>
+      <%= f.radio_button(:helpful, true) %>
+      <%= f.label :helpful_true do %>
+        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+      <% end %>
 
-    <%= f.radio_button(:helpful, false) %>
-    <%= f.label :helpful_false do %>
-      <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-    <% end %>
-    <br /><br />
+      <%= f.radio_button(:helpful, false) %>
+      <%= f.label :helpful_false do %>
+        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+      <% end %>
+      <br /><br />
 
-    <%= f.hidden_field :review_id, value: @review.id %>
+      <div class='large-content-field'>
+        <%= f.label :explanation, "Explanation:" %><br /><br />
+        <%= f.text_area(:explanation, cols: 90, rows: 16, style: 'padding: 10px; font-size 1.25em;') %>
+      </div>
 
-    <%= f.submit("Rate review") %>
+      <%= f.hidden_field :review_id, value: @review.id %>
+
+      <%= f.submit("Rate review") %>
+    </div>
   <% end %>
 <% end %>

@@ -18,7 +18,7 @@ schmooze =  ['I worked really hard on this project',
             'The fact that you are taking time out of your busy, busy day means so very much to me', 
             'This is the first time I have had the opportunity to work with this technology']
 
-userNames = ['barakobama', 'hillaryclinton', 'donaldtrump', 'berniesanders', 'tedcruz', 'jebbush', 'marcorubio', 'lincolnchafee',
+userNames = ['barackobama', 'hillaryclinton', 'donaldtrump', 'berniesanders', 'tedcruz', 'jebbush', 'marcorubio', 'lincolnchafee',
              'martinomalley', 'jimwebb', 'ricksantorum', 'scottwalker', 'chrischristie', 'bencarson']
 
 content = [ 'This looks great', 
@@ -44,7 +44,17 @@ content = [ 'This looks great',
             'The way that this is written, it violates the Interface Segregation Principle. I would fix this if I were you.',
             'This looks really great. It is obvious that you are really considering your SOLID principles here']
 
-rand_bool = [true, false].sample
+thumbs_up = [ '',
+              'This is a good review',
+              'This is a great review']
+
+thumbs_down = [ 'This is not kind',
+                'This is not specific',
+                'This is not actionable',
+                'This is neither kind nor specific',
+                'This is neither specific nor actionable',
+                'This is neither kind nor actionable',
+                'This is neither kind, specific, or actionable' ]
 
 titles = []
 
@@ -70,7 +80,12 @@ content.each do |content|
 end
 
 20.times do
-  Rating.create(helpful: rand_bool)
+  rand_bool = rand(2)
+  if rand_bool == 1
+    Rating.create(helpful: true, explanation: thumbs_up.sample)
+  else
+    Rating.create(helpful: false, explanation: thumbs_down.sample) 
+  end
 end
 
 45.times do
