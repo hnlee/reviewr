@@ -14,7 +14,7 @@ RSpec.describe RatingsController, :type => :controller do
     end
   end
 
-  describe 'POST /ratings' do
+  describe 'POST /ratings/new' do
     it 'creates a new rating and redirects to the review show page' do
       review = create(:review, content: "Java Server")
 
@@ -30,7 +30,7 @@ RSpec.describe RatingsController, :type => :controller do
       post :create, params: { rating: { helpful: nil, review_id: review.id } }
 
       expect(response).to redirect_to(new_rating_path(review))
-      expect(flash[:error]). to match("Please select a button")
+      expect(flash[:error]).to match("Please select a button")
     end
 
     it 'displays flash message if helpful is set to false and explanation is blank' do

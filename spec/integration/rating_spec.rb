@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'rating', :type => :feature do
-  describe 'link to new rating page' do
+  describe 'new page' do
     it 'creates a new rating' do
       review = create(:review, content: 'This looks really good!')
 
@@ -43,10 +43,8 @@ describe 'rating', :type => :feature do
       expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-down')
       expect(page).to have_content(explanation)
     end
-  end
 
-  describe 'if not from a review page' do
-    it 'redirects to projects show' do
+    it 'redirects to projects show if not from a review page' do
       visit new_rating_path
 
       expect(current_path).to eq(projects_path)

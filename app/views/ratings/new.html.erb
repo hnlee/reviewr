@@ -5,7 +5,7 @@
 <p>Is this review kind, specific, and actionable? If your answer is no, then explain why.</p><br />
 
 <% if flash[:error] %>
-  <div class = "alert-error"><%= flash[:error] %><br /></div>
+  <div class="alert-error"><%= flash[:error] %><br /></div>
 <% end %>
 
 <%= form_tag("/ratings", method: "post") do %>
