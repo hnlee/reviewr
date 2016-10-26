@@ -1,21 +1,40 @@
 <h2>Review</h2>
 
-<p><span class="carrot">></span> <%= @review.content %></p><br />
+<p><span class="carrot">&gt;</span> <%= @review.content %></p><br />
 
-<%= link_to "Rate review", new_rating_path(@review) %>
-<br /><br />
 
 <hr>
 
-<h3>Previous ratings</h3>
+<h3>Ratings</h3>
 
 <p>Was this review kind, specific, and actionable?</p><br />
+
+<div>
+  <div class='mini-box'>
+    <div class='squarebrackets'>
+      <center><%= link_to "+ rate review", new_rating_path(@review), class: 'body-link' %></center>
+    </div>
+  </div>
+</div>
+
 <% @ratings.each do |rating| %>
-  <% if rating.helpful %>
-    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-  <% else %>
-    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-  <% end %>
-  <%= rating.explanation %>
-  <br />
+  <div>
+    <div class='mini-box'>
+      <div class='squarebrackets'>
+        <span class='body-link'>
+        <center><% if rating.helpful %>
+          <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+        <% else %>
+          <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+        <% end %>
+        <% if !rating.explanation.blank? %>
+          <br /><br />
+          <span class='card-small-text'>
+            <%= rating.explanation %>
+          </span>
+        <% end %></center>
+        </span>
+      </div>
+    </div>
+  </div>
 <% end %>
