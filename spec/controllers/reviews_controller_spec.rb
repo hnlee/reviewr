@@ -3,6 +3,11 @@ require 'spec_helper'
 RSpec.describe ReviewsController, :type => :controller do
   render_views
 
+  describe 'GET /reviews/new' do
+    it 'renders the template for the review new page' do
+    end
+  end
+
   describe 'POST /reviews/new' do
     it 'creates a new review and redirects to the project show page' do
       project = create(:project, title: "Java Tic-Tac-Toe", description: "TTT, you'll love it")

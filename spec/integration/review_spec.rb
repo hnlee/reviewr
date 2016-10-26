@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'review', :type => :feature do
-  describe 'show page with ratings' do
+  describe 'shows page with ratings' do
     it 'shows all ratings in a review' do
       review = create(:review, content: 'Looks good!')
       rating = create(:rating, helpful: true)
@@ -15,7 +15,7 @@ describe 'review', :type => :feature do
     end
   end
 
-  describe 'new review page' do
+  describe 'new page' do
     it 'displays a form for a new review' do
       project = create(:project, title: 'my title', description: 'my desc')
 
@@ -25,7 +25,7 @@ describe 'review', :type => :feature do
       expect(page).to have_css('form')
     end
 
-    it 'redirects to the project show page when a review is submitted without content' do
+    it 'redirects to the project show page when a review is submitted' do
       project = create(:project, title: 'my title', description: 'my desc')
 
       visit '/reviews/new.' + project.id.to_s
