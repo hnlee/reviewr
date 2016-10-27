@@ -4,7 +4,7 @@ RSpec.describe RatingsController, :type => :controller do
   render_views
 
   describe 'GET /ratings/new' do
-    it 'renders the new rating form' do
+    xit 'renders the new rating form' do
       review = create(:review, content: "Java Server")
 
       get :new, params: { format: review.id }
@@ -15,7 +15,7 @@ RSpec.describe RatingsController, :type => :controller do
   end
 
   describe 'POST /ratings/new' do
-    it 'creates a new rating and redirects to the review show page' do
+    xit 'creates a new rating and redirects to the review show page' do
       review = create(:review, content: "Java Server")
 
       post :create, params: { rating: { helpful: true, review_id: review.id } }
@@ -24,7 +24,7 @@ RSpec.describe RatingsController, :type => :controller do
       expect(response).to have_http_status(:redirect)
     end
 
-    it 'displays flash message if radio button not selected' do
+    xit 'displays flash message if radio button not selected' do
       review = create(:review, content: "Java Server")
 
       post :create, params: { rating: { helpful: nil, review_id: review.id } }
@@ -33,7 +33,7 @@ RSpec.describe RatingsController, :type => :controller do
       expect(flash[:error]).to match("Please select a button")
     end
 
-    it 'displays flash message if helpful is set to false and explanation is blank' do
+    xit 'displays flash message if helpful is set to false and explanation is blank' do
       review = create(:review, content: "Java Server")
 
       post :create, params: { rating: { helpful: false,

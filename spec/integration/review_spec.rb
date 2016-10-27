@@ -13,6 +13,15 @@ describe 'review', :type => :feature do
       expect(page).to have_content(review.content)
       expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-up')
     end
+
+    it 'loads new rating partial when link is clicked' do
+      review = create(:review, content: 'Looks good!')
+
+      visit "/reviews/" + review.id.to_s
+      click_link('+ rate review')
+
+      expect(page).to have_css('form')
+    end
   end
 
   describe 'new page' do

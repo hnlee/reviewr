@@ -2,7 +2,6 @@
 
 <p><span class="carrot">&gt;</span> <%= @review.content %></p><br />
 
-
 <hr>
 
 <h3>Ratings</h3>
@@ -10,9 +9,9 @@
 <p>Was this review kind, specific, and actionable?</p><br />
 
 <div>
-  <div class='mini-box'>
+  <div class='mini-box' id='new-rating-box'>
     <div class='squarebrackets'>
-      <center><%= link_to "+ rate review", new_rating_path(@review), class: 'body-link new-form-link' %></center>
+      <center><%= link_to "+ rate review", new_rating_path(@review), class: 'body-link new-form-link', remote: true, id: 'new-rating-link' %></center>
     </div>
   </div>
 </div>
@@ -38,3 +37,5 @@
     </div>
   </div>
 <% end %>
+
+<div id='new-rating' class='load-form'></div>

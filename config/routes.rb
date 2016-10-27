@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :projects, only: [:index, :show, :new, :create]
   resources :reviews, only: [:show, :create]
+  resources :ratings, only: [:create]
   get '/reviews/new/:project_id', to: 'reviews#new', as: 'new_review'
-  resources :ratings, only: [:new, :create]
+  get '/ratings/new/:review_id', to: 'ratings#new', as: 'new_rating'
 end
