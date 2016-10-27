@@ -22,21 +22,36 @@ describe 'project' do
   end
 
   describe 'show page' do
-    it 'shows the project title and description' do
+    it 'shows the project title and description and link to new review' do
       project = create(:project, title: "my title", description: "my desc")
 
       visit "/projects/" + project.id.to_s
 
       expect(page).to have_content(project.title)
       expect(page).to have_content(project.description)
-      expect(page).to have_content('new review')
+      expect(page).to have_content('+ review project')
+    end
+
+    it 'shows the reviews attached to the project' do
+      project = create(:project, title: "my title", description: "my desc")
+      review1 = create(:review, content: "great")
+      review2 = create(:review, content: "terrible")
+      project_review1 = create(:project_review, project_id: project.id,
+                                                review_id: review1.id)
+      project_review2 = create(:project_review, project_id: project.id,
+                                                review_id: review2.id)
+
+      visit "/projects/" + project.id.to_s
+
+      expect(page).to have_content(review1.content)
+      expect(page).to have_content(review2.content)
     end
 
     it 'navigates to new review page when link is clicked' do
       project = create(:project, title: "my title", description: "my desc")
 
       visit "/projects/" + project.id.to_s
-      click_link('new review')
+      click_link('+ review project')
 
       expect(page).to have_css('form')
     end

@@ -1,8 +1,28 @@
 <h2><%= @project.title %></h2>
-<br />
-<%= @project.description %><br /><br />
+
+<p><%= @project.description %></p><br />
+
+<h3>Reviews</h3>
+
+<div>
+  <div class='mini-box'>
+    <div class='squarebrackets'>
+      <center><%= link_to '+ review project', new_review_path(@project), class: 'body-link' %></center>
+    </div>
+  </div>
+</div>
 
 <% @reviews.each do |review| %>
-  <p><span class='carrot'>></span> <%= link_to review.content, review %></p><br />
+  <div>
+    <div class='mini-box'>
+      <div class='squarebrackets'>
+        <%= link_to(review, class: 'body-link') do %>
+          <span class='carrot'>&gt;</span> 
+          <span class='card-small-text'>
+            <%= truncate(review.content, length: 100) %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
 <% end %>
-<%= link_to 'new review', new_review_path(@project) %>
