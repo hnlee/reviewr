@@ -2,12 +2,11 @@
 
 <h3><%= @project.title %></h3>
 
+<div class = "alert-error">
 <% if flash[:error] %>
-  <div class = "alert-error">
-    <%= flash[:error] %>
-  </div>
+  <p><%= flash[:error] %></p><br />
 <% end %>
-
+</div>
 
 <%= form_tag("/reviews", method: "post", remote: true) do %>
   <%= fields_for :review do |f| %>

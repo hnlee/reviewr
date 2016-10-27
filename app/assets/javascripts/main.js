@@ -5,22 +5,36 @@ $(document).ready(function () {
     event.preventDefault();
 
     var client = new Client();
-    client.showNewReviewForm(getProjectIdFromURI(window.location.pathname));
+    client.showNewReviewForm(getIdFromURI(window.location.pathname));
 
   });
-
-  getProjectIdFromURI = function(uri) {
-    var pageURI = decodeURI(uri);
-    var splitURI = pageURI.split("/");
-    var projectId = splitURI[splitURI.length - 1];
-    return parseInt(projectId);
-  }
-
 
   $("#submit-review-button").on("click", function(event) {
 
     var client = new Client();
-    client.submitReview(getProjectIdFromURI(window.location.pathname))
+    client.submitReview(getIdFromURI(window.location.pathname));
 
   });
+
+  $("#new-rating-link").on("click", function(event) {
+    event.preventDefault();
+
+    var client = new Client();
+    client.showNewRatingForm(getIdFromURI(window.location.pathname));
+
+  });
+
+  $('#submit-rating-button').on("click", function(event) {
+    
+    var client = new Client();
+    client.submitRating(getIdFromURI(window.location.pathname));
+
+  });
+
+  getIdFromURI = function(uri) {
+    var pageURI = decodeURI(uri);
+    var splitURI = pageURI.split("/");
+    var id = splitURI[splitURI.length - 1];
+    return parseInt(id);
+  };
 });

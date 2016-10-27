@@ -1,6 +1,4 @@
-<h2>Rate review</h2>
-
-<p><span class='carrot'>&gt;</span> <%= @review.content %></p><br />
+<h3>Rate review</h3>
 
 <p>Is this review kind, specific, and actionable? If your answer is no, then explain why.</p><br />
 
@@ -10,7 +8,7 @@
 <% end %>
 </div>
 
-<%= form_tag("/ratings", method: "post", remote:true) do %>
+<%= form_tag("/ratings", method: "post", remote: true) do %>
   <%= fields_for :rating do |f| %>
     <div class='big-box'>
       <%= f.radio_button(:helpful, true) %>
