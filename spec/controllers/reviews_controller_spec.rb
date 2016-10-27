@@ -14,7 +14,6 @@ RSpec.describe ReviewsController, :type => :controller do
 
       post :create, params: { review: { content: "This looks good", project_id: project.id }, project_id: project.id }
 
-      expect(response).to redirect_to(project)
       expect(response).to have_http_status(:redirect)
     end
 
@@ -23,7 +22,7 @@ RSpec.describe ReviewsController, :type => :controller do
 
       post :create, params: { review: { content: "", project_id: project.id }, project_id: project.id }
 
-      expect(response).to redirect_to('/reviews/new.' + project.id.to_s)
+      expect(response).to redirect_to('/reviews/new/' + project.id.to_s)
       expect(response).to have_http_status(:redirect)
     end
   end

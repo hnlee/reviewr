@@ -5,9 +5,9 @@
 <h3>Reviews</h3>
 
 <div>
-  <div class='mini-box'>
+  <div class='mini-box' id='new-review-box'>
     <div class='squarebrackets'>
-      <center><%= link_to '+ review project', new_review_path(@project), class: 'body-link' %></center>
+      <center><%= link_to '+ review project', new_review_path(@project), class: 'body-link new-form-link', remote: true, id: 'new-review-link' %></center>
     </div>
   </div>
 </div>
@@ -26,3 +26,5 @@
     </div>
   </div>
 <% end %>
+
+<div id='new-review' class='load-form'></div>
