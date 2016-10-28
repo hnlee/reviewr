@@ -13,23 +13,21 @@
     <div class='big-box'>
       <%= f.radio_button(:helpful, true) %>
       <%= f.label :helpful_true do %>
-        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+        <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
       <% end %>
 
       <%= f.radio_button(:helpful, false) %>
       <%= f.label :helpful_false do %>
-        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+        <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
       <% end %>
       <br /><br />
 
-      <div class='large-content-field'>
-        <%= f.label :explanation, "Explanation:" %><br /><br />
-        <%= f.text_area(:explanation, cols: 90, rows: 16, style: 'padding: 10px; font-size 1.25em;') %>
-      </div>
+      <%= f.label :explanation, "Explanation:" %><br /><br />
+      <%= f.text_area(:explanation, cols: 90, rows: 16, class: 'form-input') %>
 
       <%= f.hidden_field :review_id, value: @review.id %>
-      <%= f.submit "Rate review", style: 'font-size: 1.25em;', id: 'submit-rating-button' %>
-      <%= link_to 'cancel', review_path(@review) %>
+      <%= f.submit "Rate review", style: 'font-size: 1.25em;', id: 'submit-rating-button', class: 'button' %>
+      <%= link_to 'cancel', review_path(@review), class: 'cancel-link' %>
     </div>
   <% end %>
 <% end %>

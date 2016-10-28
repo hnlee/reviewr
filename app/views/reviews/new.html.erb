@@ -11,12 +11,10 @@
 <%= form_tag("/reviews", method: "post", remote: true) do %>
   <%= fields_for :review do |f| %>
     <div class='big-box'>
-      <div class='large-content-field'>
-        <%= f.text_area(:content, cols: 90, rows: 16, style: 'padding: 10px; font-size: 1.25em;') %>
-      </div>
+      <%= f.text_area(:content, cols: 90, rows: 16, class: 'form-input') %>
       <%= f.hidden_field :project_id , value: @project.id %>
-      <%= f.submit 'Submit', style: 'font-size: 1.25em;', id: 'submit-review-button' %>
-      <%= link_to 'cancel', project_path(@project) %>
+      <%= f.submit 'Submit', style: 'font-size: 1.25em;', id: 'submit-review-button', class: 'button' %>
+      <%= link_to 'cancel', project_path(@project), class: 'cancel-link' %>
     </div>
   <% end %>
 <% end %>

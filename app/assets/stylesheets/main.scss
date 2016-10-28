@@ -59,6 +59,38 @@ a.body-link:hover {
   color: #999;
 }
 
+.button {
+  background-color: #2F3847;
+  letter-spacing: 2px;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+a.cancel-link {
+  color: #666;
+  letter-spacing: 2px;
+}
+
+a.cancel-link:hover {
+  color: #999;
+}
+
+.button:hover {
+  background-color: #464e5b;
+}
+
+.form-input {
+  padding: 10px;
+  font-size: 1.15em;
+}
+
 .new-form-link {
   font-weight: bold;
 }
