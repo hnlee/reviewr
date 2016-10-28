@@ -20,13 +20,13 @@ class RatingsController < ApplicationController
     else
       if rating.helpful == false and rating.explanation.blank?
         if request.xhr?
-          render :js => "$('.alert-error').append('<p>Please provide an explanation</p><br />');"
+          render :js => "$('.alert-error').empty().append('<p>Please provide an explanation</p><br />');"
         else
           redirect_to new_rating_path(rating_params[:review_id]), { flash: { error: "Please provide an explanation" } }
         end
       else
         if request.xhr?
-          render :js => "$('.alert-error').append('<p>Please select a button</p><br />');"
+          render :js => "$('.alert-error').empty().append('<p>Please select a button</p><br />');"
         else
           redirect_to new_rating_path(rating_params[:review_id]), { flash: { error: "Please select a button" } }
         end
