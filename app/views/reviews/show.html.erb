@@ -2,7 +2,7 @@
 
 <p><span class="carrot">&gt;</span> <%= @review.content %></p><br />
 
-<hr>
+<br />
 
 <h3>Ratings</h3>
 
@@ -22,9 +22,9 @@
       <div class='squarebrackets'>
         <span class='body-link'>
         <center><% if rating.helpful %>
-          <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+          <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
         <% else %>
-          <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+          <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
         <% end %>
         <% if !rating.explanation.blank? %>
           <br /><br />
