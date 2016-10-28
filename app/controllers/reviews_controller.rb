@@ -18,7 +18,7 @@ class ReviewsController < ApplicationController
       end
     else
       if request.xhr?
-        render :js => "$('.alert-error').append('<p>Review cannot be blank</p><br />');"
+        render :js => "$('.alert-error').empty().append('<p>Review cannot be blank</p><br />');"
       else
         redirect_to new_review_path(review_params[:project_id]), {:flash => { :error => "Review cannot be blank" }}
       end
