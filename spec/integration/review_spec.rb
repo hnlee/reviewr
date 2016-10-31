@@ -38,7 +38,7 @@ describe 'review', :type => :feature do
     end
   end
 
-  describe 'new page' do
+  describe 'new review' do
     it 'displays a form for a new review' do
       project = create(:project, title: 'my title', description: 'my desc')
 
@@ -69,6 +69,49 @@ describe 'review', :type => :feature do
 
       expect(page).to have_content('Create new review')
       expect(page).to have_content('Review cannot be blank')
+    end
+  end
+
+  describe 'edit review' do
+    it 'displays a form to edit the review populated with the review content' do
+      project = create(:project, title: 'my title', description: 'my desc')
+      review = create(:review, content: 'Looks good!')
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
+
+      visit '/reviews/' + review.id.to_s
+      click_link('edit-review-link')
+
+      expect(page).to have_content('Edit review')
+    end
+
+    it 'reloads the review show page when a review is edited' do
+      project = create(:project, title: 'my title', description: 'my desc')
+      review = create(:review, content: 'Looks good!')
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
+
+      visit '/reviews/' + review.id.to_s
+      click_link('edit-review-link')
+      click_button('Submit')
+
+      expect(current_path).to eq('/reviews/' + review.id.to_s)
+      expect(page).to have_content('Review has been updated')
+    end
+
+    it 'reloads the page and displays a warning if content is left blank when creating a new review' do
+      project = create(:project, title: 'my title', description: 'my desc')
+      review = create(:review, content: 'Looks good!')
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
+
+      visit '/reviews/' + review.id.to_s
+      click_link('edit-review-link')
+      fill_in('review[content]', with: '')
+      click_button('Submit')
+
+      expect(page).to have_content('Review cannot be blank')
+      expect(current_path).to eq('/reviews/' + review.id.to_s + '/edit')
     end
   end
 end

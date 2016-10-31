@@ -46,3 +46,26 @@ Client.prototype.submitRating = function(review_id) {
     $("#new-rating").append(response);
   });
 };
+
+Client.prototype.showEditReviewForm = function(review_id) {
+  $.ajax({
+    url: "/reviews/" + review_id + "/edit",
+    type: "GET",
+  })
+  .done(function(response) {
+    $("#edit-review").html(response);
+    $("#edit-review-link").css("display", "none");
+    $("#review-content").css("display", "none");
+  });
+};
+
+Client.prototype.updateReview = function(review_id) {
+  var form_data = $(this).serialize;
+  $.ajax({
+    type: "POST",
+    data: form_data,
+  })
+  .done(function(response) {
+    $("#edit-review").append(response);
+  });
+};
