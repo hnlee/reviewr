@@ -1,4 +1,15 @@
-<h2><%= @project.title %></h2>
+<div class='alert-notice'>
+<% if flash[:notice] %>
+  <%= flash[:notice] %>
+<% end %>
+</div>
+
+<h2>
+  <%= @project.title %>&nbsp;
+  <%= link_to(edit_project_path(@project), class: 'edit-link', id: 'edit-project-link') do %>
+    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+  <% end %>
+</h2>
 
 <p><%= @project.description %></p><br />
 

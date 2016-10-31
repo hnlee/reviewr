@@ -30,6 +30,25 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def edit
+    @project = Project.find_by_id(params[:id])
+  end
+
+  def update
+    @project = Project.find_by_id(params[:id])
+    if @project.update_attributes(project_params)
+      redirect_to project_path(params[:id]), { flash: { notice: "Project has been updated" } }
+    else
+      if @project.title.blank? and @project.description.blank?
+        redirect_to edit_project_path(params[:id]), { flash: { error: "Please provide a title and description" } }
+      elsif @project.description.blank?
+        redirect_to edit_project_path(params[:id]), { flash: { error: "Please provide a description" } }
+      else
+        redirect_to edit_project_path(params[:id]), { flash: { error: "Please provide a title" } }
+      end
+    end
+  end
+
   private
 
   def project_params

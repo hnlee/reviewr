@@ -55,6 +55,15 @@ describe 'project' do
 
       expect(page).to have_css('form')
     end
+
+    it 'navigates to edit project page when link is clicked' do
+      project = create(:project, title: "my title", description: "my desc")
+
+      visit "/projects/" + project.id.to_s
+      click_link('edit-project-link')
+
+      expect(page).to have_css('form')
+    end
   end
 
   describe 'new page' do
@@ -97,5 +106,58 @@ describe 'project' do
       expect(page).to have_content('Create new project')
       expect(page).to have_content('Please provide a description')
     end
+  end
+
+  describe 'edit page' do
+    it 'displays a form for editing a project' do
+      project = create(:project, title: "my title", description: "my desc")
+      
+      visit '/projects/' + project.id.to_s + '/edit'
+
+      expect(page).to have_css('form')
+      expect(page).to have_content('Update project')
+      expect(page).to have_field('Title', with: "my title")
+      expect(page).to have_field('Description')
+      expect(page).to have_content("my desc")
+      expect(page).to have_button('Update project')
+    end
+
+    it 'redirects to the project show page after a project is edited and shows a flash notice' do
+      project = create(:project, title: "my title", description: "my desc")
+      
+      visit '/projects/' + project.id.to_s + '/edit'
+      fill_in('project[title]', with: 'new title')
+      fill_in('project[description]', with: 'new description')
+      click_button('Update project')
+
+      expect(current_path).to eq('/projects/' + project.id.to_s)
+      expect(page).to have_content('new title')
+      expect(page).to have_content('new description')
+      expect(page).to have_content('Project has been updated')
+    end 
+
+    it 'displays a warning if project title is left blank' do
+      project = create(:project, title: "my title", description: "my desc")
+      
+      visit '/projects/' + project.id.to_s + '/edit'
+      fill_in('project[title]', with: '')
+      fill_in('project[description]', with: 'new description')
+      click_button('Update project')
+
+      expect(current_path).to eq('/projects/' + project.id.to_s + '/edit')
+      expect(page).to have_content('Please provide a title')
+    end
+
+    it 'displays a warning if project description is left blank' do
+      project = create(:project, title: "my title", description: "my desc")
+      
+      visit '/projects/' + project.id.to_s + '/edit'
+      fill_in('project[title]', with: 'new title')
+      fill_in('project[description]', with: '')
+      click_button('Update project')
+
+      expect(current_path).to eq('/projects/' + project.id.to_s + '/edit')
+      expect(page).to have_content('Please provide a description')
+    end 
   end
 end
