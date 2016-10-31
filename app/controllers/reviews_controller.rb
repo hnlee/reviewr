@@ -27,6 +27,31 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def edit
+    @review = Review.find(params[:id])
+    if request.xhr?
+      render partial: "reviews/edit"
+    end
+  end
+
+  def update
+    @review = Review.find(params[:id])
+    if @review.update_attributes(review_params)
+      if request.xhr?
+        render :js => "window.location = '#{review_path(params[:id])}';
+                       $('.alert-notice').empty().append('<p>Review has been updated</p><br />');"
+      else
+        redirect_to @review, { :flash => { :notice => "Review has been updated" } }
+      end
+    else
+      if request.xhr?
+        render :js => "$('.alert-error').empty().append('<p>Review cannot be blank</p><br />');"
+      else
+        redirect_to edit_review_path, {:flash => { :error => "Review cannot be blank" }}
+      end
+    end
+  end
+
   def show
     @review = Review.find(params[:id])
     @ratings = @review.ratings.order(updated_at: :desc)

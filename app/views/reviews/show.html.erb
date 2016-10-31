@@ -1,8 +1,21 @@
-<h2>Review</h2>
+<div class='alert-notice'>
+  <% if flash[:notice] %>
+    <%= flash[:notice] %>
+    <br />
+  <% end %>
+</div>
 
-<p><span class="carrot">&gt;</span> <%= @review.content %></p><br />
+<h2>
+  Review
+  <%= link_to edit_review_path(@review), class: 'edit-link', id: 'edit-review-link', remote: true do %>
+    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+  <% end %>
+</h2>
 
+<p id='review-content'><span class="carrot">&gt;</span> <%= @review.content %></p>
 <br />
+
+<div id='edit-review' class='load-form'></div>
 
 <h3>Ratings</h3>
 

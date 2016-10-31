@@ -1,9 +1,9 @@
 <h2>Update project</h2>
 
 <div class='alert-error'>
-<% if flash[:error] %>
+  <% if flash[:error] %>
     <%= flash[:error] %><br />
-<% end %>
+  <% end %>
 </div>
 
 <%= form_for @project do |f| %>

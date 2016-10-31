@@ -1,0 +1,12 @@
+<div class="alert-error">
+  <% if flash[:error] %>
+    <p><%= flash[:error] %></p><br />
+  <% end %>
+</div>
+
+<h2>Edit review</h2><br />
+
+<%= form_for @review, url: review_path, remote: true do |f| %>
+  <%= f.text_area :content, cols: 90, rows: 16, class: 'form-input', placeholder: 'content' %><br />
+  <%= f.submit 'Submit', style: 'font-size: 1.25em;', id: 'edit-review-button', class: 'button' %>
+<% end %>

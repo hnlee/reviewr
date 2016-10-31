@@ -46,4 +46,38 @@ RSpec.describe ReviewsController, :type => :controller do
       expect(response.status).to eq(200)
     end
   end
+
+  describe 'GET /reviews/:id/edit' do
+    it 'renders a form populated with the current review content' do
+      review = create(:review, content: "This is really great")
+
+      get :edit, params: { id: review.id }
+
+      expect(response.body).to include(review.content)
+      expect(response.status).to eq(200)
+    end
+  end
+
+  describe 'POST /reviews/:id/edit' do
+    it 'edits the review and redirects to the show page' do
+      review = create(:review)
+
+      post :update, params: { id: review.id, review: { content: 'review content'} }
+      
+      updated_review = Review.find_by_id(review.id)
+      expect(response).to redirect_to(review_path(review.id))
+      expect(response).to have_http_status(:redirect)
+      expect(updated_review.content).to eq('review content')
+      expect(flash[:notice]).to match("Review has been updated")
+    end
+
+    it 'displays flash error message if content is blank' do
+      review = create(:review)
+
+      post :update, params: { id: review.id, review: { content: '' } }
+      
+      expect(response).to redirect_to(edit_review_path(review.id))
+      expect(flash[:error]).to match("Review cannot be blank")
+    end
+  end
 end
