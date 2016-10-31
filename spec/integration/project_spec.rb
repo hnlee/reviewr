@@ -19,6 +19,15 @@ describe 'project' do
       expect(page).to have_css('form')
       expect(current_path).to eq('/projects/new')
     end
+
+    it 'shows projects in reverse chronological order' do
+      project1 = create(:project)
+      project2 = create(:project, title: "Java Tic-Tac-Toe")
+
+      visit "/"
+
+      expect(page.body.index(project1.title)).to be > page.body.index(project2.title)
+    end
   end
 
   describe 'show page' do
@@ -63,6 +72,20 @@ describe 'project' do
       click_link('edit-project-link')
 
       expect(page).to have_css('form')
+    end
+
+    it 'shows the reviews in reverse chronological order' do
+      project = create(:project, title: "my title", description: "my desc")
+      review1 = create(:review, content: "great")
+      review2 = create(:review, content: "terrible")
+      project_review1 = create(:project_review, project_id: project.id,
+                                                review_id: review1.id)
+      project_review2 = create(:project_review, project_id: project.id,
+                                                review_id: review2.id)
+
+      visit "/projects/" + project.id.to_s
+
+      expect(page.body.index(review1.content)).to be > page.body.index(review2.content)
     end
   end
 

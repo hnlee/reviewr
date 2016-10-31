@@ -22,6 +22,20 @@ describe 'review', :type => :feature do
 
       expect(page).to have_css('form')
     end
+
+    it 'shows all ratings in reverse chronological order' do
+      review = create(:review, content: 'Looks good!')
+      rating1 = create(:rating, helpful: true)
+      rating2 = create(:rating, helpful: false, explanation: 'Not specific')
+      create(:review_rating, review_id: review.id,
+                             rating_id: rating1.id)
+      create(:review_rating, review_id: review.id,
+                             rating_id: rating2.id)
+
+      visit '/reviews/' + review.id.to_s
+      
+      expect(page.body.index('fa-thumbs-up')).to be > page.body.index('fa-thumbs-down')
+    end
   end
 
   describe 'new page' do

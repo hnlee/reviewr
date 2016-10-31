@@ -29,7 +29,7 @@ class ReviewsController < ApplicationController
 
   def show
     @review = Review.find(params[:id])
-    @ratings = @review.ratings
+    @ratings = @review.ratings.order(updated_at: :desc)
     @rating = Rating.new
   end
 
