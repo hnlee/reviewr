@@ -73,6 +73,14 @@ a.body-link:hover {
   cursor: pointer;
 }
 
+.edit-link {
+  color: #666;
+}
+
+a.edit-link:hover {
+  color: #999;
+}
+
 a.cancel-link {
   color: #666;
   letter-spacing: 2px;
@@ -150,6 +158,10 @@ a.cancel-link:hover {
 
 .alert-error {
   color: red;
+}
+
+.alert-notice {
+  color: green;
 }
 
 .load-form {

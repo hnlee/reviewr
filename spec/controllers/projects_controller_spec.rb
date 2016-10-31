@@ -79,5 +79,61 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response.body).to include(review1.content)
       expect(response.body).to include(review2.content)
     end
+
+    it 'includes a link to edit the project' do
+      project = create(:project)
+
+      get :show, params: { id: project.id }
+
+      expect(response.body).to include("edit")
+    end
   end
+
+  describe 'GET /projects/:id/edit' do
+    it 'renders the template for the project edit page' do
+      project = create(:project)
+
+      get :edit, params: { id: project.id }
+
+      expect(response).to have_http_status(200)
+      expect(response.body).to include("Title")
+      expect(response.body).to include(project.title)
+      expect(response.body).to include("Description")
+      expect(response.body).to include(project.description)
+    end
+  end
+
+  describe 'POST /projects/:id/edit' do
+    it 'edits the project and redirects to the index page with flash notice of changes' do
+      project = create(:project)
+
+      post :update, params: { id: project.id, project: { title: 'best title', description: 'best description' } }
+      
+      updated_project = Project.find_by_id(project.id)
+      expect(response).to redirect_to(project_path(project.id))
+      expect(response).to have_http_status(:redirect)
+      expect(updated_project.title).to eq('best title')
+      expect(updated_project.description).to eq('best description')
+      expect(flash[:notice]).to match('Project has been updated')
+    end
+
+    it 'displays flash error message if description is blank' do
+      project = create(:project)
+
+      post :update, params: { id: project.id, project: { title: 'best title', description: '' } }
+      
+      expect(response).to redirect_to(edit_project_path(project.id))
+      expect(flash[:error]).to match("Please provide a description")
+    end
+
+    it 'displays flash error message if title is blank' do
+      project = create(:project)
+
+      post :update, params: { id: project.id, project: { title: '', description: 'best description' } }
+      
+      expect(response).to redirect_to(edit_project_path(project.id))
+      expect(flash[:error]).to match("Please provide a title")
+    end
+  end
+
 end
