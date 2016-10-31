@@ -1,7 +1,6 @@
 <div class='alert-notice'>
   <% if flash[:notice] %>
     <%= flash[:notice] %>
-    <br />
   <% end %>
 </div>
 
@@ -12,7 +11,9 @@
   <% end %>
 </h2>
 
-<p id='review-content'><span class="carrot">&gt;</span> <%= @review.content %></p>
+<div id='review-content' class='markdown-content'>
+  <p> <%= markdown(@review.content) %></p>
+</div>
 <br />
 
 <div id='edit-review' class='load-form'></div>

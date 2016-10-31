@@ -47,6 +47,7 @@ describe 'review', :type => :feature do
 
       expect(page).to have_content('Create new review')
       expect(page).to have_css('form')
+      expect(page).to have_content('This form supports markdown')
     end
 
     it 'redirects to the project show page when a review is submitted' do
@@ -83,6 +84,7 @@ describe 'review', :type => :feature do
       click_link('edit-review-link')
 
       expect(page).to have_content('Edit review')
+      expect(page).to have_content('This form supports markdown')
     end
 
     it 'reloads the review show page when a review is edited' do

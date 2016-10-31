@@ -103,6 +103,21 @@ a.cancel-link:hover {
   font-weight: bold;
 }
 
+.markdown-content {
+  background-color: #EEE;
+  border: 2px solid #DDD;
+  padding: 10px;
+}
+
+.markdown-key {
+  background-color: #EEE;
+  border: 2px solid #DDD;
+  padding: 10px;
+  color: #AAA;
+  font-style: italic;
+  font-size: .75em;
+}
+
 .carrot {
   font-size: 1.0em;
   font-weight: 700;

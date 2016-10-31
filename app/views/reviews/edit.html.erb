@@ -9,4 +9,10 @@
 <%= form_for @review, url: review_path, remote: true do |f| %>
   <%= f.text_area :content, cols: 90, rows: 16, class: 'form-input', placeholder: 'content' %><br />
   <%= f.submit 'Submit', style: 'font-size: 1.25em;', id: 'edit-review-button', class: 'button' %>
+  <%= link_to 'cancel', review_path, class: 'cancel-link' %>
 <% end %>
+
+
+<div class='markdown-key'>
+  <p> This form supports markdown: **bold**, *italics*, _underline_  ~~strikethrough~~, ^(superscript), ==highlight== ```code``` (syntax highlighting supported)</p>
+</div>
