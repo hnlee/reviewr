@@ -101,6 +101,11 @@ a.cancel-link:hover {
 
 .new-form-link {
   font-weight: bold;
+  color: #666;
+}
+
+a.new-form-link:hover {
+  color: #999;
 }
 
 .markdown-content {
@@ -181,4 +186,28 @@ a.cancel-link:hover {
 
 .load-form {
   @include span-columns(12);
+}
+
+input[type="radio"] {
+  visibility: hidden;
+}
+
+input[type="radio"] + label {
+  color: #666;
+}
+
+input[type="radio"]:hover + label {
+  color: #999;
+}
+
+input[type="radio"]:checked + label {
+  color: #000;
+}
+
+#new-rating-up {
+  padding-right: 10%;
+}
+
+#new-rating-down {
+  padding-left: 10%;
 }

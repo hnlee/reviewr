@@ -11,12 +11,22 @@
 <%= form_tag("/ratings", method: "post", remote: true) do %>
   <%= fields_for :rating do |f| %>
     <div class='big-box'>
-      <%= f.radio_button(:helpful, true) %>
+      <% if @thumb == "up" %>
+        <%= f.radio_button(:helpful, true, checked: "checked") %>
+      <% else %>
+        <%= f.radio_button(:helpful, true) %>
+      <% end %>
+      
       <%= f.label :helpful_true do %>
         <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
       <% end %>
 
-      <%= f.radio_button(:helpful, false) %>
+      <% if @thumb == "down" %>
+        <%= f.radio_button(:helpful, false, checked: "checked") %>
+      <% else %>
+        <%= f.radio_button(:helpful, false) %>
+      <% end %>
+
       <%= f.label :helpful_false do %>
         <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
       <% end %>

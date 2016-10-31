@@ -18,7 +18,19 @@ $(document).ready(function () {
     client.showNewRatingForm(getIdFromURI(window.location.pathname));
   });
 
-  $('#submit-rating-button').on("click", function(event) {
+  $("#new-rating-up").on("click", function(event) {
+    event.preventDefault();
+    var client = new Client();
+    client.showNewRatingForm(getIdFromURI(window.location.pathname), true);
+  });
+ 
+  $("#new-rating-down").on("click", function(event) {
+    event.preventDefault();
+    var client = new Client();
+    client.showNewRatingForm(getIdFromURI(window.location.pathname), false);
+  });
+
+   $('#submit-rating-button').on("click", function(event) {
     var client = new Client();
     client.submitRating(getIdFromURI(window.location.pathname));
   });
