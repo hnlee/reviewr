@@ -16,6 +16,8 @@ class RatingsController < ApplicationController
                                           rating_id: rating.id)
       if request.xhr?
         render :js => "window.location = '#{review_path(rating_params[:review_id])}'"
+      else
+        redirect_to review_path(rating_params[:review_id])
       end
     else
       if rating.helpful == false and rating.explanation.blank?

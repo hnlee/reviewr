@@ -15,6 +15,8 @@ class ReviewsController < ApplicationController
                                             review_id: review.id)
       if request.xhr?
         render :js => "window.location = '#{project_path(review_params[:project_id])}'"
+      else
+        redirect_to project_path(review_params[:project_id])
       end
     else
       if request.xhr?

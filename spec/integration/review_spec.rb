@@ -35,25 +35,26 @@ describe 'review', :type => :feature do
       expect(page).to have_css('form')
     end
 
-    xit 'redirects to the project show page when a review is submitted' do
+    it 'redirects to the project show page when a review is submitted' do
       project = create(:project, title: 'my title', description: 'my desc')
 
       visit '/projects/' + project.id.to_s
+      click_link('+ review project')
       fill_in('review[content]', with: 'my review')
       click_button('Submit')
 
       expect(current_path).to eq('/projects/' + project.id.to_s)
     end
 
-    xit 'reloads the page and displays a warning if content is left blank when creating a new review' do
+    it 'displays a warning if content is left blank when creating a new review' do
       project = create(:project, title: 'my title', description: 'my desc')
 
       visit '/projects/' + project.id.to_s
+      click_link('+ review project')
       click_button('Submit')
 
       expect(page).to have_content('Create new review')
       expect(page).to have_content('Review cannot be blank')
-      expect(current_path).to eq('/projects/' + project.id.to_s)
     end
   end
 end
