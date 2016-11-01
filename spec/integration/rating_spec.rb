@@ -4,12 +4,16 @@ describe 'rating', :type => :feature do
   describe 'new page' do
     it 'creates a new rating' do
       review = create(:review, content: 'This looks really good!')
+      project = create(:project, title: "Foo", description: "Bar")
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
 
       visit new_rating_path(review.id)
       choose('rating_helpful_true')
       click_button('Rate review')
 
       expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-up')
+      expect(page).to have_link('back to project')
     end
 
     it 'displays error message if radio button not selected' do
@@ -33,6 +37,9 @@ describe 'rating', :type => :feature do
 
     it 'creates new rating if rated not helpful and explanation provided' do
       review = create(:review, content: 'This looks really good!')
+      project = create(:project, title: "Foo", description: "Bar")
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
       explanation = 'Need to be more specific'
 
       visit new_rating_path(review.id)

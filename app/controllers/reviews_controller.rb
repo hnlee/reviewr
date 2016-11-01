@@ -55,6 +55,7 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
     @ratings = @review.ratings.order(updated_at: :desc)
     @rating = Rating.new
+    @project = @review.project
     @update = params[:update]
     if @update == "success"
       flash[:notice] = "Review has been updated"
