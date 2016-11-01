@@ -98,6 +98,7 @@ describe 'project' do
       expect(page).to have_field('Title')
       expect(page).to have_field('Description')
       expect(page).to have_button('Create new project')
+      expect(page).to have_content('This form supports markdown')
     end
 
     it 'redirects to the projects index page when a new project is submitted' do
@@ -143,6 +144,7 @@ describe 'project' do
       expect(page).to have_field('Description')
       expect(page).to have_content("my desc")
       expect(page).to have_button('Update project')
+      expect(page).to have_content('This form supports markdown')
     end
 
     it 'redirects to the project show page after a project is edited and shows a flash notice' do
