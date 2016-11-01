@@ -1,55 +1,43 @@
 $(document).ready(function () {
-  console.log(window.location.pathname);
+  url = new Url();
+  client = new Client();
+  dom = new Dom();
 
+  var path_id = url.getIdFromURI(window.location.pathname);
+  
   $("#new-review-link").on("click", function(event) {
     event.preventDefault();
-    var client = new Client();
-    client.showNewReviewForm(getIdFromURI(window.location.pathname));
+    showNewReviewForm(path_id);
   });
 
   $("#submit-review-button").on("click", function(event) {
-    var client = new Client();
-    client.submitReview(getIdFromURI(window.location.pathname));
-  });
-
-  $("#new-rating-link").on("click", function(event) {
     event.preventDefault();
-    var client = new Client();
-    client.showNewRatingForm(getIdFromURI(window.location.pathname));
+    submitNewReviewForm(path_id);
   });
 
   $("#new-rating-up").on("click", function(event) {
     event.preventDefault();
-    var client = new Client();
-    client.showNewRatingForm(getIdFromURI(window.location.pathname), true);
+    showNewRatingForm(path_id, true);
   });
  
   $("#new-rating-down").on("click", function(event) {
     event.preventDefault();
-    var client = new Client();
-    client.showNewRatingForm(getIdFromURI(window.location.pathname), false);
+    showNewRatingForm(path_id, false);
   });
 
    $('#submit-rating-button').on("click", function(event) {
-    var client = new Client();
-    client.submitRating(getIdFromURI(window.location.pathname));
+     event.preventDefault();
+     submitNewRatingForm(path_id);
   });
 
   $('#edit-review-link').on("click", function(event) {
     event.preventDefault();
-    var client = new Client();
-    client.showEditReviewForm(getIdFromURI(window.location.pathname));
+    showEditReviewForm(path_id);
   });
 
   $('#edit-review-button').on("click", function(event) {
-    var client = new Client();
-    client.updateReview(getIdFromURI(window.location.pathname));
+    event.preventDefault();
+    submitEditReviewForm(path_id);
   });
 
-  getIdFromURI = function(uri) {
-    var pageURI = decodeURI(uri);
-    var splitURI = pageURI.split("/");
-    var id = splitURI[splitURI.length - 1];
-    return parseInt(id);
-  };
 });

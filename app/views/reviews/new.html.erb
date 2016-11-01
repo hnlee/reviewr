@@ -13,7 +13,7 @@
     <div class='big-box'>
       <%= f.text_area(:content, cols: 90, rows: 16, class: 'form-input') %>
       <%= f.hidden_field :project_id , value: @project.id %>
-      <%= f.submit 'Submit', style: 'font-size: 1.25em;', id: 'submit-review-button', class: 'button' %>
+      <%= f.submit 'Create new review', style: 'font-size: 1.25em;', id: 'submit-review-button', class: 'button' %>
       <%= link_to 'cancel', project_path(@project), class: 'cancel-link' %>
     </div>
   <% end %>
