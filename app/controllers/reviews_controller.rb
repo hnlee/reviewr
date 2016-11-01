@@ -38,8 +38,7 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
     if @review.update_attributes(review_params)
       if request.xhr?
-        render :js => "window.location = '#{review_path(params[:id])}';
-                       $('.alert-notice').empty().append('<p>Review has been updated</p><br />');"
+        render :js => "window.location = ('#{review_path(params[:id], update: "success")}');"
       else
         redirect_to @review, { :flash => { :notice => "Review has been updated" } }
       end
@@ -56,6 +55,10 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
     @ratings = @review.ratings.order(updated_at: :desc)
     @rating = Rating.new
+    @update = params[:update]
+    if @update == "success"
+      flash[:notice] = "Review has been updated"
+    end
   end
 
   private
