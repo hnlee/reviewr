@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry'
 
 describe 'review', :type => :feature do
   describe 'shows page with ratings' do
@@ -14,18 +15,35 @@ describe 'review', :type => :feature do
       expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-up')
     end
 
-    it 'loads new rating partial when link is clicked' do
+    it 'loads new rating partial when link is clicked', :js => true do
+      Capybara.ignore_hidden_elements = false
       review = create(:review, content: 'Looks good!')
 
       visit "/reviews/" + review.id.to_s
-      click_link('+ rate review')
+      find_link('new-rating-up').trigger('click')
 
       expect(page).to have_css('form')
+      expect(page).to have_content('Rate review')
+      expect(page).to have_checked_field('rating_helpful_true')
+      expect(page).to have_button('Rate review')
     end
 
+    it 'loads new rating partial when link is clicked', :js => true do
+      Capybara.ignore_hidden_elements = false
+      review = create(:review, content: 'Looks good!')
+
+      visit "/reviews/" + review.id.to_s
+      find_link('new-rating-down').trigger('click')
+
+      expect(page).to have_css('form')
+      expect(page).to have_content('Rate review')
+      expect(page).to have_checked_field('rating_helpful_false')
+      expect(page).to have_button('Rate review')
+    end
+    
     it 'shows all ratings in reverse chronological order' do
       review = create(:review, content: 'Looks good!')
-      rating1 = create(:rating, helpful: true)
+      rating1 = create(:rating, helpful: true, explanation: 'Nice')
       rating2 = create(:rating, helpful: false, explanation: 'Not specific')
       create(:review_rating, review_id: review.id,
                              rating_id: rating1.id)
@@ -34,7 +52,7 @@ describe 'review', :type => :feature do
 
       visit '/reviews/' + review.id.to_s
       
-      expect(page.body.index('fa-thumbs-up')).to be > page.body.index('fa-thumbs-down')
+      expect(page.body.index('Nice')).to be > page.body.index('Not specific')
     end
   end
 

@@ -16,11 +16,10 @@ gem 'redcarpet', '~> 3.0.0'
 gem 'coderay'
 
 group :development, :test do
-  gem 'selenium-webdriver'
   gem 'capybara', '~> 2.8'
+  gem 'poltergeist'
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails', '~> 4.0'
-  gem 'jasmine'
   gem 'jasmine-rails'
   gem 'byebug', platform: :mri
 end

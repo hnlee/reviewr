@@ -3,6 +3,7 @@ class RatingsController < ApplicationController
   def new
     @review = Review.find(params[:review_id])
     @rating = Rating.new
+    @thumb = params[:thumb] 
     if request.xhr?
       render partial: "ratings/new"
     end

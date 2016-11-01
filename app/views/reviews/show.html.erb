@@ -20,12 +20,25 @@
 
 <h3>Ratings</h3>
 
-<p>Was this review kind, specific, and actionable?</p><br />
+<p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
+
+<div id='new-rating' class='load-form'></div>
 
 <div>
   <div class='mini-box' id='new-rating-box'>
     <div class='squarebrackets'>
-      <center><%= link_to "+ rate review", new_rating_path(@review), class: 'body-link new-form-link', remote: true, id: 'new-rating-link' %></center>
+      <center>
+        <div class='body-link'>
+          <%# <%= link_to "+ rate review", new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-link' %>
+          <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-up'  do %>
+            <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+          <% end %>
+          <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-down'  do %>
+            <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+          <% end %>
+          <br /><br />+ rate review
+        </div>
+      </center>
     </div>
   </div>
 </div>
@@ -52,4 +65,3 @@
   </div>
 <% end %>
 
-<div id='new-rating' class='load-form'></div>

@@ -24,14 +24,22 @@ Client.prototype.submitReview = function(project_id) {
   });
 };
 
-Client.prototype.showNewRatingForm = function(review_id) {
+Client.prototype.showNewRatingForm = function(review_id, thumb) {
+  if (thumb == true) {
+    thumb_param = "?thumb=up"
+  } else if (thumb == false) {
+    thumb_param = "?thumb=down"
+  } else {
+    thumb_param = "" 
+  }
   $.ajax({
-    url: "/ratings/new/" + review_id,
+    url: "/ratings/new/" + review_id + thumb_param,
     type: "GET",
   })
   .done(function(response) {
     $("#new-rating").html(response);
     $("#new-rating-box").css("display", "none");
+    $("#rating-criteria").css("display", "none");
   });
 };
 
