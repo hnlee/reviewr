@@ -6,6 +6,9 @@ describe 'review', :type => :feature do
     it 'shows all ratings in a review' do
       review = create(:review, content: 'Looks good!')
       rating = create(:rating, helpful: true)
+      project = create(:project, title: "Foo", description: "Bar")
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
       create(:review_rating, review_id: review.id,
                              rating_id: rating.id)
 
@@ -13,11 +16,15 @@ describe 'review', :type => :feature do
 
       expect(page).to have_content(review.content)
       expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-up')
+      expect(page).to have_link('back to project')
     end
 
     it 'loads new rating partial when link is clicked', :js => true do
       Capybara.ignore_hidden_elements = false
       review = create(:review, content: 'Looks good!')
+      project = create(:project, title: "Foo", description: "Bar")
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
 
       visit "/reviews/" + review.id.to_s
       find_link('new-rating-up').trigger('click')
@@ -31,6 +38,9 @@ describe 'review', :type => :feature do
     it 'loads new rating partial when link is clicked', :js => true do
       Capybara.ignore_hidden_elements = false
       review = create(:review, content: 'Looks good!')
+      project = create(:project, title: "Foo", description: "Bar")
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
 
       visit "/reviews/" + review.id.to_s
       find_link('new-rating-down').trigger('click')
@@ -45,6 +55,9 @@ describe 'review', :type => :feature do
       review = create(:review, content: 'Looks good!')
       rating1 = create(:rating, helpful: true, explanation: 'Nice')
       rating2 = create(:rating, helpful: false, explanation: 'Not specific')
+      project = create(:project, title: "Foo", description: "Bar")
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
       create(:review_rating, review_id: review.id,
                              rating_id: rating1.id)
       create(:review_rating, review_id: review.id,
@@ -65,7 +78,6 @@ describe 'review', :type => :feature do
 
       expect(page).to have_content('Create new review')
       expect(page).to have_css('form')
-      expect(page).to have_content('This form supports markdown')
     end
 
     it 'redirects to the project show page when a review is submitted' do
@@ -102,7 +114,6 @@ describe 'review', :type => :feature do
       click_link('edit-review-link')
 
       expect(page).to have_content('Edit review')
-      expect(page).to have_content('This form supports markdown')
     end
 
     it 'reloads the review show page when a review is edited' do

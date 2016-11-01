@@ -35,8 +35,11 @@ RSpec.describe ReviewsController, :type => :controller do
 
   describe 'GET /reviews/:id' do
     it 'shows a review and ratings associated with the review' do
+      project = create(:project, title: "Foo", description: "Bar")
       review = create(:review, content: "Java code retreat")
       rating = create(:rating, helpful: true)
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
       create(:review_rating, review_id: review.id,
                              rating_id: rating.id)
 

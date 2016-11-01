@@ -11,6 +11,7 @@ Review ratings are visible to the reviewer only when a rater has affirmed the ra
 * [ruby (version 2.3.1)](https://www.ruby-lang.org/en/downloads/)
 * [rails5](http://guides.rubyonrails.org/getting_started.html)
 * [PostgreSQL](https://www.postgresql.org/download/)
+* [PhantomJS](http://phantomjs.org/)
 
 ## Running the Application
 
@@ -41,7 +42,7 @@ rails s
 
 ## Running the Tests
 
-Reviewr uses Rspec for unit testing and Capybara for acceptance testing. To load and run the local unit tests use this command
+Reviewr uses Rspec for unit testing and Capybara for acceptance testing. Capybara tests that interact with Javascript require [PhantomJS](http://phantomjs.org/) to be installed. To load and run the local tests, use this command
 
 ```
 rake spec

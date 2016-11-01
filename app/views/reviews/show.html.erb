@@ -9,10 +9,11 @@
   <%= link_to edit_review_path(@review), class: 'edit-link', id: 'edit-review-link', remote: true do %>
     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
   <% end %>
+  <span class='back-link'><%= link_to '&#8592; back to project'.html_safe, project_path(id: @project.id), class: 'cancel-link' %></span>
 </h2>
 
 <div id='review-content' class='markdown-content'>
-  <p> <%= markdown(@review.content) %></p>
+  <p> <%= @review.content %></p>
 </div>
 <br />
 
