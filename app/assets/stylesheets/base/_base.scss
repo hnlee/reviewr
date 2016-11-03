@@ -1,0 +1,97 @@
+p {
+  margin: 0;
+}
+
+.header {
+  background-color: $dark-navy;
+  margin-bottom: 60px;
+  border-bottom: 2px solid $med-grey;
+}
+
+.indent {
+  margin-left: 40px;
+}
+
+.big-box {
+  @include outer-container;
+  padding: 15px 40px 15px 40px;
+}
+
+.mini-box {
+  @include span-columns(4);
+  height: 12em;
+  padding: 25px;
+}
+
+.squarebrackets {
+  font-size: 1.2em;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  vertical-align: middle;
+}
+
+.squarebrackets:before {
+  content: " ";
+  position: absolute;
+  border-left: 3px solid $dark-grey;
+  border-top: 3px solid $dark-grey;
+  border-bottom: 3px solid $dark-grey;
+  padding: 5px;
+  top: 0px;
+  bottom: 0px;
+  left: -5px;
+}
+
+.squarebrackets:after {
+  content: " ";
+  position: absolute;
+  border-right: 3px solid $dark-grey;
+  border-top: 3px solid $dark-grey;
+  border-bottom: 3px solid $dark-grey;
+  padding: 5px;
+  top: 0px;
+  bottom: 0px;
+  right: -5px;
+}
+
+.load-form {
+  @include span-columns(12);
+}
+
+.random-review {
+  background-color: $light-navy;
+  border: 2px solid $grey-white;
+  padding: 10px 15px 25px 15px;
+  margin: 0 60px 40px 10px;
+  border-radius: 10px;
+}
+
+.form-input {
+  padding: 10px;
+  font-size: 1.15em;
+}
+
+.markdown-content {
+  background-color: $platinum;
+  border: 2px solid $grey-white;
+  padding: 10px;
+}
+
+.markdown-key {
+  background-color: $platinum;
+  border: 2px solid $grey-white;
+  padding: 10px;
+  color: $light-grey;
+  font-style: italic;
+  font-size: .75em;
+}
+
+#new-rating-up {
+  padding-right: 10%;
+}
+
+#new-rating-down {
+  padding-left: 10%;
+}

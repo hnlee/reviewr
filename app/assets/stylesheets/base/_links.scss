@@ -1,0 +1,59 @@
+a {
+  text-decoration: none;
+}
+
+a.brand {
+  color: $med-grey;
+}
+
+a.brand:hover {
+  color: $light-grey;
+  text-shadow: 1px 1px $light-black;
+}
+
+.body-link {
+  color: $dark-grey;
+  letter-spacing: 2px;
+  width: 75%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+a.body-link:hover {
+  color: $med-grey;
+}
+
+.edit-link {
+  color: $dark-grey;
+}
+
+a.edit-link:hover {
+  color: $med-grey;
+}
+
+.back-link {
+  float: right;
+  font-family: $verdana;
+  font-size: .75em;
+  font-weight: normal;
+}
+
+a.cancel-link {
+  color: $dark-grey;
+  letter-spacing: 2px;
+}
+
+a.cancel-link:hover {
+  color: $med-grey;
+}
+
+.new-form-link {
+  font-weight: bold;
+  color: $dark-grey;
+}
+
+a.new-form-link:hover {
+  color: $med-grey;
+}
