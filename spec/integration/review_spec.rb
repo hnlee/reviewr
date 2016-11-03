@@ -118,6 +118,17 @@ describe 'review', :type => :feature do
       expect(page).to have_content('Review cannot be blank')
       expect(current_path).to eq('/projects/' + project.id.to_s)
     end
+
+    it 'redirects back to the project show page when cancel link is clicked', :js => true do
+      project = create(:project, title: 'my title', description: 'my desc')
+
+      visit '/projects/' + project.id.to_s
+      click_link('+ review project')
+      click_link('cancel')
+
+      expect(current_path).to eq('/projects/' + project.id.to_s)
+      expect(page).to have_no_css('form')
+    end
    end
 
   describe 'edit page' do
@@ -148,6 +159,21 @@ describe 'review', :type => :feature do
 
       expect(page).to have_content('Review cannot be blank')
       expect(current_path).to eq('/reviews/' + review.id.to_s)
+    end
+
+    it 'redirects back to review show page when cancel link is clicked', :js => true do
+      project = create(:project, title: 'my title', description: 'my desc')
+      review = create(:review, content: 'Looks good!')
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
+
+      visit '/reviews/' + review.id.to_s
+      find_by_id('edit-review-link').trigger('click')
+      click_link('cancel')
+
+      expect(current_path).to eq('/reviews/' + review.id.to_s)
+      expect(page).to have_no_css('form')
+      expect(page).to have_content('Looks good!')
     end
   end
 end

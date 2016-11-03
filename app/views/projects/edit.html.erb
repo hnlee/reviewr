@@ -14,7 +14,7 @@
     <%= f.text_area(:description, value: @project.description, cols: 90, rows: 16, class: 'form-input' ) %><br />
 
     <%= f.submit "Update project" , class: 'button' %>
-    <%= link_to 'cancel', root_path, class: 'cancel-link' %>
+    <%= link_to 'cancel', project_path(@project), class: 'cancel-link' %>
   </div>
 <% end %>
 
