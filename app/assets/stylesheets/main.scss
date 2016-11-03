@@ -45,6 +45,18 @@ a.brand:hover {
   text-shadow: 1px 1px #444;
 }
 
+.indent {
+  margin-left: 40px;
+}
+
+.random-review {
+  background-color: #d5d7da;
+  border: 2px double #D5D5D5;
+  padding: 10px 15px 25px 15px;
+  margin: 0 60px 40px 10px;
+  border-radius: 10px;
+}
+
 .body-link {
   color: #666;
   letter-spacing: 2px;
@@ -217,7 +229,7 @@ input[type="radio"]:hover + label {
 }
 
 input[type="radio"]:checked + label {
-  color: #000;
+  color: #2f3847;
 }
 
 #new-rating-up {

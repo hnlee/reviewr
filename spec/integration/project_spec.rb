@@ -12,7 +12,7 @@ describe 'project' do
       expect(page).to have_content(project2.title)
     end
 
-    it 'navigates to new project page when link is clicked' do
+    it 'navigates to new project page when project link is clicked' do
       visit "/"
       click_link('+ create new project')
 
@@ -27,6 +27,65 @@ describe 'project' do
       visit "/"
 
       expect(page.body.index(project1.title)).to be > page.body.index(project2.title)
+    end
+
+    it 'shows a random review to be rated' do
+      visit "/"
+
+      expect(page).to have_content("Rate This Review")
+    end
+
+    it 'shows new rating form when thumbs up is clicked', :js => true do
+      Capybara.ignore_hidden_elements = false
+
+      visit "/"
+      find_by_id('random-rating-up').trigger('click')
+
+      expect(page).to have_css('form')
+      expect(page).to have_checked_field('rating_helpful_true')
+      expect(page).to have_button('Rate review')
+    end
+
+    it 'shows new rating form when thumbs down is clicked', :js => true do
+      Capybara.ignore_hidden_elements = false
+
+      visit "/"
+      find_by_id('random-rating-down').trigger('click')
+
+      expect(page).to have_css('form')
+      expect(page).to have_checked_field('rating_helpful_false')
+      expect(page).to have_button('Rate review')
+    end
+
+    it 'redirects to the index from the new rating form is cancel is hit', :js => true do
+      Capybara.ignore_hidden_elements = false
+
+      visit "/"
+      find_by_id('random-rating-up').trigger('click')
+      click_link('cancel')
+
+      expect(current_path).to eq('/')
+    end
+
+    it 'redirects to the index from the new rating form when a new rating is submitted', :js => true do
+      Capybara.ignore_hidden_elements = false
+
+      visit "/"
+      find_by_id('random-rating-up').trigger('click')
+      find_by_id('submit-rating-button').trigger('click')
+
+      expect(current_path).to eq('/')
+    end
+
+     it 'displays error message from index rating form if rated not helpful without any explanation', :js => true do
+      Capybara.ignore_hidden_elements = false
+
+      visit "/"
+      find_by_id('random-rating-down').trigger('click')
+      find_by_id('submit-rating-button').trigger('click')
+
+      expect(current_path).to eq('/')
+      expect(page).to have_content("Please provide an explanation")
     end
   end
 

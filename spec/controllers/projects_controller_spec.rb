@@ -7,6 +7,7 @@ RSpec.describe ProjectsController, :type => :controller do
     it 'renders template for index' do
       project1 = create(:project)
       project2 = create(:project, title: "Java Tic-Tac-Toe")
+      review = create(:review, content: "Looks good!")
 
       get :index
 
@@ -16,9 +17,19 @@ RSpec.describe ProjectsController, :type => :controller do
     end
 
     it 'includes a link to new project' do
+      review = create(:review, content: "Looks good!")
+
       get :index
 
       expect(response.body).to include('create new project')
+    end
+
+    it 'displays a random review to rate' do
+      review = create(:review, content: "Looks good!")
+      
+      get :index
+
+      expect(response.body).to render_template('reviews/_show')
     end
   end
 

@@ -21,7 +21,9 @@
 
 <div id='new-rating' class='load-form'></div>
 
-<h3>Ratings</h3>
+<% if @ratings.length > 0 %>
+  <h3>Ratings</h3>
+<% end %>
 
 <p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
 

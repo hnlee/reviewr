@@ -1,0 +1,32 @@
+<div class='random-review'>
+  <div class='alert-notice'>
+    <% if flash[:notice] %>
+      <%= flash[:notice] %>
+    <% end %>
+  </div>
+
+  <h2>
+    <span id='page-title'>Rate This Review</span>
+  </h2>
+
+  <div id='review-content' class='markdown-content'>
+    <p> <%= @review.content %></p>
+  </div>
+  <br />
+
+  <div id='edit-review' class='load-form'></div>
+
+  <div id='new-rating' class='load-form'></div>
+
+  <div id='rating-criteria'>
+    <div id='new-rating-box' data-id='<%= @review.id %>'>
+      <span>Was this review kind, specific, and actionable?</span>
+      <%= link_to new_rating_path(@review), class: 'new-form-link indent', remote: true, id: 'random-rating-up'  do %>
+        <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+      <% end %>
+      <%= link_to new_rating_path(@review), class: 'new-form-link indent', remote: true, id: 'random-rating-down'  do %>
+        <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+      <% end %>
+    </div>
+  </div>
+</div>

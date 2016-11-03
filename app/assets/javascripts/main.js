@@ -15,6 +15,18 @@ $(document).ready(function () {
     submitNewReviewForm(path_id);
   });
 
+  $("#random-rating-up").on("click", function(event) {
+    event.preventDefault();
+    var id = $(this).parent().attr('data-id');
+    showRandomRatingForm(id, true);
+  });
+
+  $("#random-rating-down").on("click", function(event) {
+    event.preventDefault();
+    var id = $(this).parent().attr('data-id');
+    showRandomRatingForm(id, false);
+  });
+
   $("#new-rating-up").on("click", function(event) {
     event.preventDefault();
     showNewRatingForm(path_id, true);

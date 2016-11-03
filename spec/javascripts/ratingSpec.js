@@ -5,7 +5,7 @@ describe("Ratings", function() {
     server = sinon.fakeServer.create();
   });
 
-  describe("showNewRatingForm()", function() {
+  describe("showRatingForm()", function() {
     it("loads new rating form and hides container for link to new rating and text about rating criteria", function() {
       affix("#new-rating");
       affix("#new-rating-box"); 
@@ -13,15 +13,33 @@ describe("Ratings", function() {
       server.respondWith("GET",
                          "/ratings/new/1",
                          "form html");
-      showNewRatingForm(1);
+      showRatingForm(1, '');
       server.respond();
 
       expect($("#new-rating").html()).toEqual("form html");
       expect($("#new-rating-box").css("display")).toEqual("none");
       expect($("#rating-criteria").css("display")).toEqual("none");
     });
-    
-    it("takes a thumb=true boolean and adds it to the URL parameter", function() {
+  });
+
+  describe("addThumbParam()", function() {
+    it("returns empty string if no thumb boolean", function() {
+      expect(addThumbParam()).toEqual("");
+    });
+    it("takes a thumb=true boolean and creates URL parameter", function() {
+      var thumb = true;
+
+      expect(addThumbParam(thumb)).toEqual("?thumb=up");
+    });
+    it("takes a thumb=false boolean and creates URL parameter", function() {
+      var thumb = false;
+
+      expect(addThumbParam(thumb)).toEqual("?thumb=down");
+    });
+  });
+
+  describe("showNewRatingForm()", function() {  
+    it("loads new rating form with thumb parameter", function() {
       affix("#new-rating");
       affix("#new-rating-box"); 
       affix("#rating-criteria");
@@ -32,19 +50,6 @@ describe("Ratings", function() {
       server.respond();
 
       expect($("#new-rating").html()).toEqual("thumb up form");
-    });
-    
-    it("takes a thumb=false boolean and adds it to the URL parameter", function() {
-      affix("#new-rating");
-      affix("#new-rating-box"); 
-      affix("#rating-criteria");
-      server.respondWith("GET",
-                         "/ratings/new/1?thumb=down",
-                         "thumb down form");
-      showNewRatingForm(1, false);
-      server.respond();
-
-      expect($("#new-rating").html()).toEqual("thumb down form");
     });
   });
 
@@ -59,5 +64,26 @@ describe("Ratings", function() {
 
       expect(callback.called).toEqual(true);
     });
+  });
+
+  describe("showRandomRatingForm()", function() {
+    it("loads random rating form and adds random=true boolean to the URL parameter", function() {
+      affix("#new-rating");
+      affix("#new-rating-box"); 
+      affix("#rating-criteria");
+      server.respondWith("GET",
+                         "/ratings/new/1?thumb=up&random=true",
+                         "form html");
+      showRandomRatingForm(1, true);
+      server.respond();
+
+      expect($("#new-rating").html()).toEqual("form html");
+      expect($("#new-rating-box").css("display")).toEqual("none");
+      expect($("#rating-criteria").css("display")).toEqual("none");
+    });
+  })
+
+  afterEach(function() {
+    server.restore();
   });
 });
