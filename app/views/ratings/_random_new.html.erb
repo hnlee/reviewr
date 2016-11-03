@@ -1,0 +1,45 @@
+<p>Is this review kind, specific, and actionable? If your answer is no, then explain why.</p><br />
+
+<div class="alert-error">
+<% if flash[:error] %>
+  <p><%= flash[:error] %></p><br />
+<% end %>
+</div>
+
+<%= form_tag("/ratings", method: "post", remote: true) do %>
+  <%= fields_for :rating do |f| %>
+    <div class='big-box'>
+      <% if @thumb == "up" %>
+        <%= f.radio_button(:helpful, true, checked: "checked") %>
+      <% else %>
+        <%= f.radio_button(:helpful, true) %>
+      <% end %>
+      
+      <%= f.label :helpful_true do %>
+        <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+      <% end %>
+
+      <% if @thumb == "down" %>
+        <%= f.radio_button(:helpful, false, checked: "checked") %>
+      <% else %>
+        <%= f.radio_button(:helpful, false) %>
+      <% end %>
+
+      <%= f.label :helpful_false do %>
+        <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+      <% end %>
+      <br /><br />
+
+      <%= f.label :explanation, "Explanation:" %><br /><br />
+      <%= f.text_area(:explanation, cols: 90, rows: 8, class: 'form-input') %>
+
+      <%= f.hidden_field :review_id, value: @review.id %>
+      <%= f.submit "Rate review", style: 'font-size: 1.25em;', id: 'submit-rating-button', class: 'button' %>
+      <%= link_to 'cancel', root_path, class: 'cancel-link' %>
+    </div>
+  <% end %>
+<% end %>
+
+<br />
+<br />
+

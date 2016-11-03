@@ -4,8 +4,13 @@ class RatingsController < ApplicationController
     @review = Review.find(params[:review_id])
     @rating = Rating.new
     @thumb = params[:thumb] 
+    @random = params[:random]
     if request.xhr?
-      render partial: "ratings/new"
+      if @random
+        render partial: "ratings/random_new"
+      else
+        render partial: "ratings/new"
+      end
     end
   end
 
@@ -16,7 +21,11 @@ class RatingsController < ApplicationController
       review_rating = ReviewRating.create(review_id: rating_params[:review_id],
                                           rating_id: rating.id)
       if request.xhr?
-        render :js => "url.redirectToURI('#{review_path(rating_params[:review_id])}')"
+        render :js => "if (window.location.pathname == '#{root_path}') {
+                         url.redirectToURI('#{root_path}');
+                       } else {
+                         url.redirectToURI('#{review_path(rating_params[:review_id])}');
+                       };"
       else
         redirect_to review_path(rating_params[:review_id])
       end

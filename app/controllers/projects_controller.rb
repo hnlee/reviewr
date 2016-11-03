@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = Project.order(updated_at: :desc).all
+    @review = Review.offset(rand(Review.count)).first
   end
 
   def show

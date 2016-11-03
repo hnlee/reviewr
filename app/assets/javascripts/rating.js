@@ -2,13 +2,37 @@ var client = new Client();
 var dom = new Dom();
 
 showNewRatingForm = function(review_id, thumb) {
-  if (thumb == true) {
-    param = "?thumb=up"
-  } else if (thumb == false) {
-    param = "?thumb=down"
+  var param = addThumbParam(thumb);
+  showRatingForm(review_id, param);
+};
+
+submitNewRatingForm = function(review_id, callback) {
+  client.ajaxPost("/ratings/new/" + review_id,
+                  callback);
+};
+
+showRandomRatingForm = function(review_id, thumb) {
+  var param = addThumbParam(thumb);
+  if (param == '') {
+    param = "?random=true";
   } else {
-    param = ""
+    param = param + "&random=true";
   }
+  showRatingForm(review_id, param)
+};
+
+addThumbParam = function(thumb) {
+  if (thumb == true) {
+    param = "?thumb=up";
+  } else if (thumb == false) {
+    param = "?thumb=down";
+  } else {
+    param = "";
+  }
+  return param;
+};
+
+showRatingForm = function(review_id, param) {
   var callback = function(response) {
     dom.displayPartial("#new-rating", response);
     dom.hideElement("#new-rating-box");
@@ -16,11 +40,4 @@ showNewRatingForm = function(review_id, thumb) {
   };
   client.ajaxGet("/ratings/new/" + review_id + param,
                  callback);
-};
-
-submitNewRatingForm = function(review_id, callback) {
-  //var callback = function(response) {
-  //};
-  client.ajaxPost("/ratings/new/" + review_id,
-                  callback);
-};
+}
