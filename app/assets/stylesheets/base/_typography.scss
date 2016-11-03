@@ -1,0 +1,24 @@
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: $cutive;
+}
+
+body {
+  font-family: $verdana;
+  color: $med-black;
+}
+
+.card-small-text {
+  font-size: 0.8em;
+}
+
+.alert-error {
+  color: red;
+}
+
+.alert-notice {
+  color: green;
+}
