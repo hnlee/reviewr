@@ -49,17 +49,21 @@
     <div class='mini-box'>
       <div class='squarebrackets'>
         <span class='body-link'>
-        <center><% if rating.helpful %>
-          <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
-        <% else %>
-          <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
-        <% end %>
-        <% if !rating.explanation.blank? %>
-          <br /><br />
-          <span class='card-small-text'>
-            <%= rating.explanation %>
-          </span>
-        <% end %></center>
+          <center>
+            <div class='scroll'>
+              <% if rating.helpful %>
+                <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+              <% else %>
+                <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+              <% end %>
+              <% if !rating.explanation.blank? %>
+                <br /><br />
+                <span class='card-small-text'>
+                  <%= rating.explanation %>
+                </span>
+              <% end %>
+            </div>
+          </center>
         </span>
       </div>
     </div>
