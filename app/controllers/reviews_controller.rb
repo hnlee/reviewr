@@ -14,13 +14,13 @@ class ReviewsController < ApplicationController
       project_review = ProjectReview.create(project_id: review_params[:project_id],
                                             review_id: review.id)
       if request.xhr?
-        render :js => "window.location = '#{project_path(review_params[:project_id])}'"
+        render :js => "url.redirectToURI('#{project_path(review_params[:project_id])}')"
       else
         redirect_to project_path(review_params[:project_id])
       end
     else
       if request.xhr?
-        render :js => "$('.alert-error').empty().append('<p>Review cannot be blank</p><br />');"
+        render :js => "dom.replaceContent('.alert-error', '<p>Review cannot be blank</p><br />');"
       else
         redirect_to new_review_path(review_params[:project_id]), {:flash => { :error => "Review cannot be blank" }}
       end
@@ -38,13 +38,13 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
     if @review.update_attributes(review_params)
       if request.xhr?
-        render :js => "window.location = ('#{review_path(params[:id], update: "success")}');"
+        render :js => "url.redirectToURI('#{review_path(params[:id], update: "success")}');"
       else
         redirect_to @review, { :flash => { :notice => "Review has been updated" } }
       end
     else
       if request.xhr?
-        render :js => "$('.alert-error').empty().append('<p>Review cannot be blank</p><br />');"
+        render :js => "dom.replaceContent('.alert-error', '<p>Review cannot be blank</p><br />');"
       else
         redirect_to edit_review_path, {:flash => { :error => "Review cannot be blank" }}
       end
@@ -58,7 +58,7 @@ class ReviewsController < ApplicationController
     @project = @review.project
     @update = params[:update]
     if @update == "success"
-      flash[:notice] = "Review has been updated"
+      flash.now[:notice] = "Review has been updated"
     end
   end
 

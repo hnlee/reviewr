@@ -4,10 +4,10 @@
   <% end %>
 </div>
 
-<h2>Edit review</h2><br />
+<h2>Update review</h2><br />
 
 <%= form_for @review, url: review_path, remote: true do |f| %>
   <%= f.text_area :content, cols: 90, rows: 16, class: 'form-input', placeholder: 'content' %><br />
-  <%= f.submit 'Submit', style: 'font-size: 1.25em;', id: 'edit-review-button', class: 'button' %>
+  <%= f.submit 'Update review', style: 'font-size: 1.25em;', id: 'edit-review-button', class: 'button' %>
   <%= link_to 'cancel', review_path, class: 'cancel-link' %>
 <% end %>

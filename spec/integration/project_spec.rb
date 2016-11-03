@@ -56,13 +56,14 @@ describe 'project' do
       expect(page).to have_content(review2.content)
     end
 
-    it 'loads new review partial when link is clicked' do
+    it 'loads new review partial when link is clicked', :js => true do
       project = create(:project, title: "my title", description: "my desc")
 
       visit "/projects/" + project.id.to_s
       click_link('+ review project')
 
       expect(page).to have_css('form')
+      expect(current_path).to eq('/projects/' + project.id.to_s)
     end
 
     it 'navigates to edit project page when link is clicked' do

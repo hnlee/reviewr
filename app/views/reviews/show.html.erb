@@ -5,7 +5,7 @@
 </div>
 
 <h2>
-  Review
+  <span id='page-title'>Review</span>&nbsp;
   <%= link_to edit_review_path(@review), class: 'edit-link', id: 'edit-review-link', remote: true do %>
     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
   <% end %>
@@ -19,11 +19,11 @@
 
 <div id='edit-review' class='load-form'></div>
 
+<div id='new-rating' class='load-form'></div>
+
 <h3>Ratings</h3>
 
 <p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
-
-<div id='new-rating' class='load-form'></div>
 
 <div>
   <div class='mini-box' id='new-rating-box'>

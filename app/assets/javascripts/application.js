@@ -12,6 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require client.js
 //= require main.js
+//= require client.js
+//= require dom.js
+//= require url.js
+//= require rating.js
+//= require review.js
 //= require_tree .

@@ -16,20 +16,20 @@ class RatingsController < ApplicationController
       review_rating = ReviewRating.create(review_id: rating_params[:review_id],
                                           rating_id: rating.id)
       if request.xhr?
-        render :js => "window.location = '#{review_path(rating_params[:review_id])}'"
+        render :js => "url.redirectToURI('#{review_path(rating_params[:review_id])}')"
       else
         redirect_to review_path(rating_params[:review_id])
       end
     else
       if rating.helpful == false and rating.explanation.blank?
         if request.xhr?
-          render :js => "$('.alert-error').empty().append('<p>Please provide an explanation</p><br />');"
+          render :js => "dom.replaceContent('.alert-error', '<p>Please provide an explanation</p><br />');"
         else
           redirect_to new_rating_path(rating_params[:review_id]), { flash: { error: "Please provide an explanation" } }
         end
       else
         if request.xhr?
-          render :js => "$('.alert-error').empty().append('<p>Please select a button</p><br />');"
+          render :js => "dom.replaceContent('.alert-error', '<p>Please select a button</p><br />');"
         else
           redirect_to new_rating_path(rating_params[:review_id]), { flash: { error: "Please select a button" } }
         end
