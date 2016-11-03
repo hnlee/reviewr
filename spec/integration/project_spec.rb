@@ -56,37 +56,6 @@ describe 'project' do
       expect(page).to have_checked_field('rating_helpful_false')
       expect(page).to have_button('Rate review')
     end
-
-    it 'redirects to the index from the new rating form is cancel is hit', :js => true do
-      Capybara.ignore_hidden_elements = false
-
-      visit "/"
-      find_by_id('random-rating-up').trigger('click')
-      click_link('cancel')
-
-      expect(current_path).to eq('/')
-    end
-
-    it 'redirects to the index from the new rating form when a new rating is submitted', :js => true do
-      Capybara.ignore_hidden_elements = false
-
-      visit "/"
-      find_by_id('random-rating-up').trigger('click')
-      find_by_id('submit-rating-button').trigger('click')
-
-      expect(current_path).to eq('/')
-    end
-
-     it 'displays error message from index rating form if rated not helpful without any explanation', :js => true do
-      Capybara.ignore_hidden_elements = false
-
-      visit "/"
-      find_by_id('random-rating-down').trigger('click')
-      find_by_id('submit-rating-button').trigger('click')
-
-      expect(current_path).to eq('/')
-      expect(page).to have_content("Please provide an explanation")
-    end
   end
 
   describe 'show page' do
@@ -190,6 +159,14 @@ describe 'project' do
       expect(page).to have_content('Create new project')
       expect(page).to have_content('Please provide a description')
     end
+
+    it 'redirects to index if cancel link is clicked' do
+      visit '/projects/new'
+      click_link('cancel')
+
+      expect(current_path).to eq('/')
+      expect(page).to have_no_css('form')
+    end
   end
 
   describe 'edit page' do
@@ -244,5 +221,17 @@ describe 'project' do
       expect(current_path).to eq('/projects/' + project.id.to_s + '/edit')
       expect(page).to have_content('Please provide a description')
     end 
+
+    it 'redirects to project show page if cancel link is clicked' do
+      project = create(:project, title: "my title", description: "my desc")
+      
+      visit '/projects/' + project.id.to_s + '/edit'
+      click_link('cancel')
+
+      expect(current_path).to eq('/projects/' + project.id.to_s)
+      expect(page).to have_no_css('form')
+      expect(page).to have_content('my title')
+      expect(page).to have_content('my desc')
+    end
   end
 end
