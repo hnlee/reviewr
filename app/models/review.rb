@@ -6,4 +6,7 @@ class Review < ApplicationRecord
 
   has_many :review_ratings
   has_many :ratings, through: :review_ratings
+  
+  has_one :user_review
+  has_one :user, through: :user_review
 end

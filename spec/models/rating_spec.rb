@@ -23,8 +23,17 @@ RSpec.describe Rating do
 
   it 'does not save if helpful is false and explanation is blank' do
     rating = Rating.create(helpful: false,
-                        explanation: '')
+                           explanation: '')
     
     expect(rating.id).to eq(nil)
+  end
+
+  it 'has one user who gave the rating' do
+    rating = Rating.create(helpful: true)
+    user = create(:user)
+    create(:user_rating, user_id: user.id,
+                         rating_id: rating.id)
+
+    expect(rating.user).to eq(user)
   end
 end
