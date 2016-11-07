@@ -5,8 +5,10 @@ class Rating < ApplicationRecord
   has_one :review_rating
   has_one :review, through: :review_rating
 
+  has_one :user_rating
+  has_one :user, through: :user_rating
+
   def unhelpful?
     helpful == false
   end
-
 end
