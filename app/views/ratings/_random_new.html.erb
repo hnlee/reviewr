@@ -34,12 +34,12 @@
       <%= f.text_area(:explanation, cols: 80, rows: 8, class: 'form-input') %>
 
       <%= f.hidden_field :review_id, value: @review.id %>
+      <%= f.hidden_field :user_id, value: @user.id %>
       <%= f.submit "Rate review", style: 'font-size: 1.25em;', id: 'submit-rating-button', class: 'button' %>
-      <%= link_to 'cancel', projects_path, class: 'cancel-link' %>
+      <%= link_to 'cancel', user_path(@user), class: 'cancel-link' %>
     </div>
   <% end %>
 <% end %>
 
 <br />
 <br />
-

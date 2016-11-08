@@ -1,1 +1,35 @@
+<%= render partial: "reviews/show", locals: { review: @review, user: @user } %>
 
+<h2>Welcome, <%= @user.name %></h2>
+
+<div>
+  <div class='mini-box'>
+    <div class='squarebrackets'>
+      <center><%= link_to '+ create new project', new_project_path(user: @user.id), class: 'body-link new-form-link' %></center>
+    </div>
+  </div>
+</div>
+
+<h3>Projects you've created</h3>
+
+<% @projects.each do |project| %>
+  <div>
+    <div class='mini-box'>
+      <div class='squarebrackets'>
+        <center><%= link_to project.title, project, class: 'body-link' %></center>
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+<h3>Reviews you've written</h3>
+
+<% @reviews.each do |review| %>
+  <div>
+    <div class='mini-box'>
+      <div class='squarebrackets'>
+        <center><%= link_to review.content, review_path(review), class: 'body-link' %></center>
+      </div>
+    </div>
+  </div>
+<% end %>

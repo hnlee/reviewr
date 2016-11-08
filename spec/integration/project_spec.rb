@@ -1,66 +1,24 @@
 require 'spec_helper'
 
-describe 'project' do
-  describe 'index page' do
-    it 'shows all projects as links' do
-      project1 = create(:project)
-      project2 = create(:project, title: "Java Tic-Tac-Toe")
+describe 'project', :type => :feature do
+  before(:each) do
+    OmniAuth.config.add_mock(:google_oauth2,
+                             { uid: 'uidhillaryclinton',
+                               info: { name: 'hillaryclinton',
+                                       email: 'hillaryclinton@email.com' } })
+    @user = User.find_by_name('hillaryclinton')
 
-      visit "/projects"
-
-      expect(page).to have_content(project1.title)
-      expect(page).to have_content(project2.title)
-    end
-
-    it 'navigates to new project page when project link is clicked' do
-      visit "/projects"
-      click_link('+ create new project')
-
-      expect(page).to have_css('form')
-      expect(current_path).to eq('/projects/new')
-    end
-
-    it 'shows projects in reverse chronological order' do
-      project1 = create(:project)
-      project2 = create(:project, title: "Java Tic-Tac-Toe")
-
-      visit "/projects"
-
-      expect(page.body.index(project1.title)).to be > page.body.index(project2.title)
-    end
-
-    it 'shows a random review to be rated' do
-      visit "/projects"
-
-      expect(page).to have_content("Rate This Review")
-    end
-
-    it 'shows new rating form when thumbs up is clicked', :js => true do
-      Capybara.ignore_hidden_elements = false
-
-      visit "/projects"
-      find_by_id('random-rating-up').trigger('click')
-
-      expect(page).to have_css('form')
-      expect(page).to have_checked_field('rating_helpful_true')
-      expect(page).to have_button('Rate review')
-    end
-
-    it 'shows new rating form when thumbs down is clicked', :js => true do
-      Capybara.ignore_hidden_elements = false
-
-      visit "/projects"
-      find_by_id('random-rating-down').trigger('click')
-
-      expect(page).to have_css('form')
-      expect(page).to have_checked_field('rating_helpful_false')
-      expect(page).to have_button('Rate review')
-    end
+    visit '/'
+    click_link('Sign in with Google')
   end
 
   describe 'show page' do
+
     it 'shows the project title and description and link to new review' do
+      user = User.find_by_name('hillaryclinton')
       project = create(:project, title: "my title", description: "my desc")
+      create(:project_owner, user_id: user.id,
+                             project_id: project.id)
 
       visit "/projects/" + project.id.to_s
 
@@ -120,7 +78,9 @@ describe 'project' do
 
   describe 'new page' do
     it 'displays a form for a new project' do
-      visit '/projects/new'
+      user = create(:user, name: 'Name', email: 'name@example.com')
+
+      visit new_project_path(user: user.id)
 
       expect(page).to have_css('form')
       expect(page).to have_content('Create new project')
@@ -131,17 +91,20 @@ describe 'project' do
     end
 
     it 'redirects to the projects index page when a new project is submitted' do
-      visit '/projects/new'
+      visit new_project_path(user: @user.id)
       fill_in('project[title]', with: 'my project')
       fill_in('project[description]', with: 'a description')
       click_button('Create new project')
 
-      expect(current_path).to eq('/projects')
+      expect(current_path).to eq('/users/' + @user.id.to_s)
       expect(page).to have_content('my project')
     end
 
     it 'displays a warning if title is left blank when creating a new project' do
-      visit '/projects/new'
+      user = create(:user, name: 'Name', email: 'name@example.com')
+
+      visit new_project_path(user: user.id)
+
       fill_in('project[description]', with: 'a description')
       click_button('Create new project')
 
@@ -151,7 +114,9 @@ describe 'project' do
     end
 
     it 'displays a warning if description is left blank when creating a new project' do
-      visit '/projects/new'
+      user = create(:user, name: 'Name', email: 'name@example.com')
+
+      visit new_project_path(user: user.id)
       fill_in('project[title]', with: 'my project')
       click_button('Create new project')
 
@@ -161,10 +126,10 @@ describe 'project' do
     end
 
     it 'redirects to index if cancel link is clicked' do
-      visit '/projects/new'
+      visit new_project_path(user: @user.id)
       click_link('cancel')
 
-      expect(current_path).to eq('/')
+      expect(current_path).to eq('/users/' + @user.id.to_s)
       expect(page).to have_no_css('form')
     end
   end

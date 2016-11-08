@@ -72,9 +72,9 @@ describe("Ratings", function() {
       affix("#new-rating-box"); 
       affix("#rating-criteria");
       server.respondWith("GET",
-                         "/ratings/new/1?thumb=up&random=true",
+                         "/ratings/new/1?thumb=up&random=true&user=1",
                          "form html");
-      showRandomRatingForm(1, true);
+      showRandomRatingForm(1, 1, true);
       server.respond();
 
       expect($("#new-rating").html()).toEqual("form html");

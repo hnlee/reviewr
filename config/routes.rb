@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   root 'root#root'
 
-  resources :projects, only: [:index, :show, :new, :create, :edit, :update]
+  resources :projects, only: [:show, :new, :create, :edit, :update]
   resources :reviews, only: [:show, :create, :edit, :update]
   resources :ratings, only: [:create]
   resources :sessions, only: [:create, :destroy]

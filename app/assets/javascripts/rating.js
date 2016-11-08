@@ -11,12 +11,12 @@ submitNewRatingForm = function(review_id, callback) {
                   callback);
 };
 
-showRandomRatingForm = function(review_id, thumb) {
+showRandomRatingForm = function(review_id, user_id, thumb) {
   var param = addThumbParam(thumb);
   if (param == '') {
-    param = "?random=true";
+    param = "?random=true&user=" + user_id;
   } else {
-    param = param + "&random=true";
+    param = param + "&random=true&user=" + user_id;
   }
   showRatingForm(review_id, param)
 };

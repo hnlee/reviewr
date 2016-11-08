@@ -8,25 +8,28 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find_by_id(params[:id])
     @reviews = @project.reviews.order(updated_at: :desc)
-    @review = Review.new
+    @current_user_review = Review.includes(session[:user_id]).where(id: @reviews.map(&:id))
   end
 
   def new
     @project = Project.new
+    @user = current_user
   end
 
   def create
     project = Project.new(title: project_params[:title],
                           description: project_params[:description])
     if project.save
-      redirect_to projects_path
+      ProjectOwner.create(project_id: project.id,
+                          user_id: current_user.id)
+      redirect_to user_path(current_user.id)
     else
       if project.title.blank? and project.description.blank?
-        redirect_to new_project_path, { flash: { error: "Please provide a title and description" } }
+        redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: "Please provide a title and description" } }
       elsif project.description.blank?
-        redirect_to new_project_path, { flash: { error: "Please provide a description" } }
+        redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: "Please provide a description" } }
       else
-        redirect_to new_project_path, { flash: { error: "Please provide a title" } }
+        redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: "Please provide a title" } }
       end
     end
   end
@@ -53,6 +56,6 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:title, :description)
+    params.require(:project).permit(:title, :description, :user_id)
   end
 end

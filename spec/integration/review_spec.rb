@@ -1,6 +1,16 @@
 require 'spec_helper'
 
 describe 'review', :type => :feature do
+  before(:each) do
+    OmniAuth.config.add_mock(:google_oauth2,
+                             { uid: 'uidhillaryclinton',
+                               info: { name: 'hillaryclinton',
+                                       email: 'hillaryclinton@email.com' } })
+
+    visit '/'
+    click_link('Sign in with Google')
+  end
+
   describe 'show page' do
     it 'shows all ratings for a review' do
       review = create(:review, content: 'Looks good!')
@@ -20,6 +30,7 @@ describe 'review', :type => :feature do
 
     it 'loads new rating partial when thumbs up is clicked, with thumbs up preselected', :js => true do
       Capybara.ignore_hidden_elements = false
+      user = create(:user, name: 'Name', email: 'name@example.com')
       review = create(:review, content: 'Looks good!')
       project = create(:project, title: "Foo", description: "Bar")
       create(:project_review, project_id: project.id,
@@ -36,6 +47,7 @@ describe 'review', :type => :feature do
 
     it 'loads new rating partial when thumbs down is clicked, with thumbs down preselected', :js => true do
       Capybara.ignore_hidden_elements = false
+      user = create(:user, name: 'Name', email: 'name@example.com')
       review = create(:review, content: 'Looks good!')
       project = create(:project, title: "Foo", description: "Bar")
       create(:project_review, project_id: project.id,

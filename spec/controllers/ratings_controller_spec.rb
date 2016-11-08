@@ -6,8 +6,9 @@ RSpec.describe RatingsController, :type => :controller do
   describe 'GET /ratings/new' do
     it 'renders the new rating form' do
       review = create(:review, content: "Java Server")
+      user = create(:user, name: "Name", email: "name@example.com")
 
-      get :new, params: { review_id: review.id }
+      get :new, params: { review_id: review.id, user: user.id }
 
       expect(response.body).to include(review.content)
       expect(response.body).to include("Is this review kind, specific, and actionable?")

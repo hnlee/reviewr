@@ -18,7 +18,7 @@ p {
 }
 
 .mini-box {
-  @include span-columns(4);
+  @include span-columns(12);
   height: 12em;
   padding: 25px;
 }
