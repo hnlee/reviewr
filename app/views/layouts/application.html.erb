@@ -13,6 +13,9 @@
     <div class="header">
       <section class="big-box">
         <h1><a class="brand" href="/">Reviewr</a></h1>
+        <% if current_user %>
+          <%= link_to 'Sign out', '/logout' %>
+        <% end %>
       </section>
     </div>
     <section class="big-box">

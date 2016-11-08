@@ -12,6 +12,9 @@ require 'capybara/poltergeist'
 # Factory Girl
 require 'support/factory_girl'
 
+# OmniAuth
+OmniAuth.config.test_mode = true
+
 #############################################################
 
 

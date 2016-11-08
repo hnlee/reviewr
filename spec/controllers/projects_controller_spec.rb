@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe ProjectsController, :type => :controller do
   render_views
 
-  describe 'GET /' do
+  describe 'GET /projects' do
     it 'renders template for index' do
       project1 = create(:project)
       project2 = create(:project, title: "Java Tic-Tac-Toe")

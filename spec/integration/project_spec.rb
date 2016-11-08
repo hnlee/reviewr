@@ -6,14 +6,14 @@ describe 'project' do
       project1 = create(:project)
       project2 = create(:project, title: "Java Tic-Tac-Toe")
 
-      visit "/"
+      visit "/projects"
 
       expect(page).to have_content(project1.title)
       expect(page).to have_content(project2.title)
     end
 
     it 'navigates to new project page when project link is clicked' do
-      visit "/"
+      visit "/projects"
       click_link('+ create new project')
 
       expect(page).to have_css('form')
@@ -24,13 +24,13 @@ describe 'project' do
       project1 = create(:project)
       project2 = create(:project, title: "Java Tic-Tac-Toe")
 
-      visit "/"
+      visit "/projects"
 
       expect(page.body.index(project1.title)).to be > page.body.index(project2.title)
     end
 
     it 'shows a random review to be rated' do
-      visit "/"
+      visit "/projects"
 
       expect(page).to have_content("Rate This Review")
     end
@@ -38,7 +38,7 @@ describe 'project' do
     it 'shows new rating form when thumbs up is clicked', :js => true do
       Capybara.ignore_hidden_elements = false
 
-      visit "/"
+      visit "/projects"
       find_by_id('random-rating-up').trigger('click')
 
       expect(page).to have_css('form')
@@ -49,7 +49,7 @@ describe 'project' do
     it 'shows new rating form when thumbs down is clicked', :js => true do
       Capybara.ignore_hidden_elements = false
 
-      visit "/"
+      visit "/projects"
       find_by_id('random-rating-down').trigger('click')
 
       expect(page).to have_css('form')

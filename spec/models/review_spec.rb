@@ -23,8 +23,7 @@ RSpec.describe Review do
   it 'has one user who wrote the review' do
     review = Review.create(content: "Terrible")
     user = create(:user, name: 'Sally',
-                         email: 'sally@email.com',
-                         password: 'password')
+                         email: 'sally@email.com')
     create(:user_review, user_id: user.id, 
                          review_id: review.id)
                          

@@ -65,32 +65,32 @@ describe 'rating', :type => :feature do
     it 'redirects to the index from the new rating form is cancel is hit', :js => true do
       Capybara.ignore_hidden_elements = false
 
-      visit "/"
+      visit "/projects"
       find_by_id('random-rating-up').trigger('click')
       click_link('cancel')
 
-      expect(current_path).to eq('/')
+      expect(current_path).to eq('/projects')
       expect(page).to have_no_css('form')
     end
 
     it 'redirects to the index from the new rating form when a new rating is submitted', :js => true do
       Capybara.ignore_hidden_elements = false
 
-      visit "/"
+      visit "/projects"
       find_by_id('random-rating-up').trigger('click')
       find_by_id('submit-rating-button').trigger('click')
 
-      expect(current_path).to eq('/')
+      expect(current_path).to eq('/projects')
     end
 
      it 'displays error message from index rating form if rated not helpful without any explanation', :js => true do
       Capybara.ignore_hidden_elements = false
 
-      visit "/"
+      visit "/projects"
       find_by_id('random-rating-down').trigger('click')
       find_by_id('submit-rating-button').trigger('click')
 
-      expect(current_path).to eq('/')
+      expect(current_path).to eq('/projects')
       expect(page).to have_content("Please provide an explanation")
     end
   end

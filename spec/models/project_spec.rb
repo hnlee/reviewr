@@ -29,8 +29,7 @@ RSpec.describe Project do
     project = Project.create(title: "My Title",
                              description: "My Description")
     owner = create(:user, name: 'Sally',
-                          email: 'sally@email.com',
-                          password: 'password')
+                          email: 'sally@email.com')
     create(:project_owner, project_id: project.id,
                            user_id: owner.id)
 
@@ -41,14 +40,11 @@ RSpec.describe Project do
     project = Project.create(title: "My Title",
                              description: "My Description")
     invite1 = create(:user, name: "Sally",
-                            email: 'sally@email.com',
-                            password: 'password')
+                            email: 'sally@email.com')
     invite2 = create(:user, name: "Molly",
-                            email: 'molly@email.com',
-                            password: 'password')
+                            email: 'molly@email.com')
     invite3 = create(:user, name: "Polly",
-                            email: 'polly@email.com',
-                            password: 'password')
+                            email: 'polly@email.com')
     create(:project_invite, project_id: project.id,
                             user_id: invite1.id)
     create(:project_invite, project_id: project.id,

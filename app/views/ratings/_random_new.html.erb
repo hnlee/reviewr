@@ -35,7 +35,7 @@
 
       <%= f.hidden_field :review_id, value: @review.id %>
       <%= f.submit "Rate review", style: 'font-size: 1.25em;', id: 'submit-rating-button', class: 'button' %>
-      <%= link_to 'cancel', root_path, class: 'cancel-link' %>
+      <%= link_to 'cancel', projects_path, class: 'cancel-link' %>
     </div>
   <% end %>
 <% end %>
