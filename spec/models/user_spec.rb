@@ -1,20 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  it 'has a name, email, and password' do
+  it 'has a name and an email' do
     user = User.new(name: 'Sally',
-                    email: 'sally@email.com',
-                    password: 'password')
+                    email: 'sally@email.com')
     
     expect(user.name).to eq('Sally')
     expect(user.email).to eq('sally@email.com')
-    expect(user.password).to eq('password')
   end
 
   it 'has many projects it owns' do
     user = User.create(name: 'Molly',
-                       email: 'molly@email.com',
-                       password: 'password')
+                       email: 'molly@email.com')
     project1 = create(:project, title: 'project 1')
     project2 = create(:project, title: 'project 2')
     project3 = create(:project, title: 'project 3')
@@ -30,8 +27,7 @@ RSpec.describe User do
 
   it 'has many projects for which it has been invited to review' do
     user = User.create(name: 'Polly',
-                       email: 'polly@email.com',
-                       password: 'password')
+                       email: 'polly@email.com')
     project1 = create(:project, title: 'project 1')
     project2 = create(:project, title: 'project 2')
     create(:project_invite, user_id: user.id,
@@ -44,8 +40,7 @@ RSpec.describe User do
 
   it 'has many reviews it has written' do
     user = User.create(name: 'Sally',
-                       email: 'sally@email.com',
-                       password: 'password')
+                       email: 'sally@email.com')
     review1 = create(:review)
     review2 = create(:review)
     create(:user_review, user_id: user.id,
@@ -58,8 +53,7 @@ RSpec.describe User do
 
   it 'has many ratings it has given' do
     user = User.create(name: 'Molly',
-                       email: 'molly@email.com',
-                       password: 'password')
+                       email: 'molly@email.com')
     rating1 = create(:rating, helpful: true)
     rating2 = create(:rating, helpful: true, 
                               explanation: 'Very thorough')
@@ -73,5 +67,16 @@ RSpec.describe User do
                          rating_id: rating3.id)
 
     expect(user.ratings.length).to eq(3)
+  end
+
+  it 'can be created from an authentication hash' do
+    auth_hash = { uid: 'uid',
+                  info: { name: 'name',
+                          email: 'name@email.com' } }
+    user = User.from_omniauth(auth_hash) 
+
+    expect(user.uid).to eq('uid')
+    expect(user.name).to eq('name')
+    expect(user.email).to eq('name@email.com')
   end
 end

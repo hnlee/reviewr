@@ -5,7 +5,7 @@ RSpec.describe UserRating do
     rating = create(:rating, helpful: true)
     user = create(:user)
     user_rating = UserRating.new(rating_id: rating.id,
-                                   user_id: user.id)
+                                 user_id: user.id)
 
     expect(user_rating.user).to eq(user)
     expect(user_rating.rating).to eq(rating)

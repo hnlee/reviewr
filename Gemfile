@@ -14,6 +14,7 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'redcarpet', '~> 3.0.0'
 gem 'coderay'
+gem 'omniauth-google-oauth2'
 
 group :development, :test do
   gem 'capybara', '~> 2.8'

@@ -63,7 +63,7 @@ def get_random_item_index(collection)
 end
 
 user_names.each do |name|
-  User.create(name: name, email: name + '@gmail.com', password: 'password')
+  User.create(name: name, email: name + '@gmail.com')
 end
 
 project_count.times do |i|
