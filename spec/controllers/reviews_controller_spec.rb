@@ -35,30 +35,58 @@ RSpec.describe ReviewsController, :type => :controller do
  end
 
   describe 'GET /reviews/:id' do
-    it 'shows a review and ratings associated with the review' do
-      project = create(:project, title: "Foo", description: "Bar")
-      review = create(:review, content: "Java code retreat")
-      rating = create(:rating, helpful: true)
-      create(:project_review, project_id: project.id,
-                              review_id: review.id)
-      create(:review_rating, review_id: review.id,
-                             rating_id: rating.id)
+    describe 'when logged out' do
+      it 'redirects to root path' do
+      end
+    end
+    describe 'when logged in as user who is not the reviewer' do
+      it 'shows the review content' do
+      end
+    end
+    describe 'when logged in as the reviewer' do
+      it 'shows the review and ratings associated with the review' do
+        reviewer = create(:user)
+        project = create(:project, title: "Foo", description: "Bar")
+        review = create(:review, content: "Java code retreat")
+        rating = create(:rating, helpful: true)
+        create(:project_review, project_id: project.id,
+                                review_id: review.id)
+        create(:review_rating, review_id: review.id,
+                               rating_id: rating.id)
+        create(:user_review, user_id: reviewer.id,
+                             review_id: review.id)
+        session[:user_id] = reviewer.id
 
-      get :show, params: { id: review.id }
+        get :show, params: { id: review.id }
 
-      expect(response.body).to include(review.content)
-      expect(response.status).to eq(200)
+        expect(response.body).to include(review.content)
+        expect(response.status).to eq(200)
+      end
     end
   end
 
   describe 'GET /reviews/:id/edit' do
-    it 'renders a form populated with the current review content' do
-      review = create(:review, content: "This is really great")
+    describe 'when logged out' do
+      it 'redirects to root' do
+      end
+    end
+    describe 'when logged in as user who is not reviewer' do
+      it 'redirects to user show page' do
+      end
+    end
+    describe 'when logged in as the reviewer' do
+      it 'renders a form populated with the current review content' do
+        reviewer = create(:user)
+        review = create(:review, content: "This is really great")
+        create(:user_review, user_id: reviewer.id,
+                             review_id: review.id)
+        session[:user_id] = reviewer.id
 
-      get :edit, params: { id: review.id }
+        get :edit, params: { id: review.id }
 
-      expect(response.body).to include(review.content)
-      expect(response.status).to eq(200)
+        expect(response.body).to include(review.content)
+        expect(response.status).to eq(200)
+      end
     end
   end
 

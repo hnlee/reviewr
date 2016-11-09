@@ -16,13 +16,13 @@ class RatingsController < ApplicationController
   end
 
   def create
-    @user = current_user
+    @user = User.find(session[:user_id])
     rating = Rating.new(helpful: rating_params[:helpful],
                         explanation: rating_params[:explanation])
     if rating.save
       ReviewRating.create(review_id: rating_params[:review_id],
                           rating_id: rating.id)
-      UserRating.create(user_id: @user,
+      UserRating.create(user_id: @user.id,
                         rating_id: rating.id)
       if request.xhr?
         render :js => "if (window.location.pathname == '#{root_path}') {
