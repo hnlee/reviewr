@@ -22,7 +22,7 @@
   <h3>Reviews</h3>
 <% end %>
 
-<% if current_user %>
+<% if @user != @project.owner %>
   <div>
     <div class='mini-box' id='new-review-box'>
       <div class='squarebrackets'>
@@ -30,26 +30,13 @@
       </div>
     </div>
   </div>
+<% end %>
 
-  <% @reviews.each do |review| %>
-    <div>
-      <div class='mini-box'>
-        <div class='squarebrackets'>
-          <%= link_to(review, class: 'body-link') do %>
-            <span class='carrot'>&gt;</span> 
-            <span class='card-small-text'>
-              <%= truncate(review.content, length: 100) %>
-            </span>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-<% else %>
+<% @reviews.each do |review| %>
   <div>
     <div class='mini-box'>
       <div class='squarebrackets'>
-        <%= link_to(@current_user_review, class: 'body-link') do %>
+        <%= link_to(review, class: 'body-link') do %>
           <span class='carrot'>&gt;</span> 
           <span class='card-small-text'>
             <%= truncate(review.content, length: 100) %>

@@ -1,10 +1,10 @@
 class RootController < ApplicationController
 
   def root 
-    if session[:user_id].nil?
+    if logged_out? 
       render "logout" 
     else
-      redirect_to user_path(session[:user_id])
+      redirect_to user_path(current_user.id)
     end
   end
 end

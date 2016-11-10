@@ -6,8 +6,10 @@
 
 <h2>
   <span id='page-title'>Review</span>&nbsp;
-  <%= link_to edit_review_path(@review), class: 'edit-link', id: 'edit-review-link', remote: true do %>
-    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+  <% if @user == @review.user %>
+    <%= link_to edit_review_path(@review), class: 'edit-link', id: 'edit-review-link', remote: true do %>
+      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    <% end %>
   <% end %>
   <span class='back-link'><%= link_to '&#8592; back to project'.html_safe, project_path(id: @project.id), class: 'cancel-link' %></span>
 </h2>
@@ -25,50 +27,52 @@
   <h3>Ratings</h3>
 <% end %>
 
-<p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
+<% if @user != @project.owner %>
+  <% if @user != @review.user %>
+    <p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
 
-<div>
-  <div class='mini-box' id='new-rating-box'>
-    <div class='squarebrackets'>
-      <center>
-        <div class='body-link'>
-          <%# <%= link_to "+ rate review", new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-link' %>
-          <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-up'  do %>
-            <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
-          <% end %>
-          <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-down'  do %>
-            <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
-          <% end %>
-          <br /><br />+ rate review
-        </div>
-      </center>
-    </div>
-  </div>
-</div>
-
-<% @ratings.each do |rating| %>
-  <div>
-    <div class='mini-box'>
-      <div class='squarebrackets'>
-        <span class='body-link'>
+    <div>
+      <div class='mini-box' id='new-rating-box'>
+        <div class='squarebrackets'>
           <center>
-            <div class='scroll'>
-              <% if rating.helpful %>
-                <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
-              <% else %>
-                <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
-              <% end %>
-              <% if !rating.explanation.blank? %>
-                <br /><br />
-                <span class='card-small-text'>
-                  <%= rating.explanation %>
-                </span>
-              <% end %>
+            <div class='body-link'>
+                <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-up'  do %>
+                  <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                <% end %>
+                <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-down'  do %>
+                  <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                <% end %>
+                <br /><br />+ rate review
             </div>
           </center>
-        </span>
+        </div>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
+  <% @ratings.each do |rating| %>
+    <div>
+      <div class='mini-box'>
+        <div class='squarebrackets'>
+          <span class='body-link'>
+            <center>
+              <div class='scroll'>
+                <% if rating.helpful %>
+                  <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                <% else %>
+                  <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                <% end %>
+                <% if !rating.explanation.blank? %>
+                  <br /><br />
+                  <span class='card-small-text'>
+                    <%= rating.explanation %>
+                  </span>
+                <% end %>
+              </div>
+            </center>
+          </span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

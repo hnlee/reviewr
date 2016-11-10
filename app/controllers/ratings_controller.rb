@@ -16,7 +16,7 @@ class RatingsController < ApplicationController
   end
 
   def create
-    @user = User.find(session[:user_id])
+    @user = current_user 
     rating = Rating.new(helpful: rating_params[:helpful],
                         explanation: rating_params[:explanation])
     if rating.save

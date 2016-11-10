@@ -7,19 +7,19 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find_by_id(params[:id])
-    if session[:user_id].nil?
+    if logged_out? 
       redirect_to root_path
-    elsif session[:user_id] != @project.owner.id
-      redirect_to user_path(session[:user_id])
+    elsif current_user != @project.owner
+      redirect_to user_path(current_user.id)
+      #@current_user_review = Review.includes(session[:user_id]).where(id: @reviews.map(&:id))
     else
+      @user = current_user
       @reviews = @project.reviews.order(updated_at: :desc)
-      @current_user_review = Review.includes(session[:user_id]).where(id: @reviews.map(&:id))
-      @review = Review.new
     end
   end
 
   def new
-    if session[:user_id].nil?
+    if logged_out? 
       redirect_to root_path
     else    
       @project = Project.new
@@ -47,10 +47,10 @@ class ProjectsController < ApplicationController
 
   def edit
     @project = Project.find_by_id(params[:id])
-    if session[:user_id].nil?
+    if logged_out? 
       redirect_to root_path
-    elsif session[:user_id] != @project.owner.id
-      redirect_to user_path(session[:user_id])
+    elsif current_user != @project.owner
+      redirect_to user_path(current_user.id)
     else
     end
   end
