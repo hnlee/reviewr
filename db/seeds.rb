@@ -67,9 +67,7 @@ User.create(name: 'Hana Lee', email: 'hana@8thlight.com', uid: '1068129799360976
 
 project_count.times do |i|
   title = languages.sample + ' ' + coding_projects.sample
-  description = (greetings.sample + 'I want to invite you to check out my ' + title + '. ' + schmooze.sample 
-                 + '. You can check out my repo here: www.github.com/' + user_names.sample + '/' + title.gsub(/\s+/, '-') 
-                 + '. Thanks in advance for your feedback!')
+  description = (greetings.sample + 'I want to invite you to check out my ' + title + '. ' + schmooze.sample  + '. You can check out my repo here: www.github.com/' + user_names.sample + '/' + title.gsub(/\s+/, '-') + '. Thanks in advance for your feedback!')
   Project.create(title: title, description: description)
   ProjectOwner.create(project_id: i + 1, user_id: rand(User.count) + 1)
 end

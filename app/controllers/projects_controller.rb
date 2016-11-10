@@ -1,17 +1,11 @@
 class ProjectsController < ApplicationController
 
-  def index
-    @projects = Project.order(updated_at: :desc).all
-    @review = Review.offset(rand(Review.count)).first
-  end
-
   def show
     @project = Project.find_by_id(params[:id])
-    if logged_out? 
+    if logged_out?
       redirect_to root_path
     elsif current_user != @project.owner
       redirect_to user_path(current_user.id)
-      #@current_user_review = Review.includes(session[:user_id]).where(id: @reviews.map(&:id))
     else
       @user = current_user
       @reviews = @project.reviews.order(updated_at: :desc)
@@ -19,7 +13,7 @@ class ProjectsController < ApplicationController
   end
 
   def new
-    if logged_out? 
+    if logged_out?
       redirect_to root_path
     else    
       @project = Project.new
@@ -35,19 +29,13 @@ class ProjectsController < ApplicationController
                           user_id: current_user.id)
       redirect_to user_path(current_user.id)
     else
-      if project.title.blank? and project.description.blank?
-        redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: "Please provide a title and description" } }
-      elsif project.description.blank?
-        redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: "Please provide a description" } }
-      else
-        redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: "Please provide a title" } }
-      end
+      redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: project.get_error_message } }
     end
   end
 
   def edit
     @project = Project.find_by_id(params[:id])
-    if logged_out? 
+    if logged_out?
       redirect_to root_path
     elsif current_user != @project.owner
       redirect_to user_path(current_user.id)
@@ -60,13 +48,7 @@ class ProjectsController < ApplicationController
     if @project.update_attributes(project_params)
       redirect_to project_path(params[:id]), { flash: { notice: "Project has been updated" } }
     else
-      if @project.title.blank? and @project.description.blank?
-        redirect_to edit_project_path(params[:id]), { flash: { error: "Please provide a title and description" } }
-      elsif @project.description.blank?
-        redirect_to edit_project_path(params[:id]), { flash: { error: "Please provide a description" } }
-      else
-        redirect_to edit_project_path(params[:id]), { flash: { error: "Please provide a title" } }
-      end
+      redirect_to edit_project_path(params[:id]), { flash: { error: @project.get_error_message } }
     end
   end
 

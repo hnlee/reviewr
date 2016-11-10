@@ -31,47 +31,44 @@
   <% if @user != @review.user %>
     <p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
 
-    <div>
-      <div class='mini-box' id='new-rating-box'>
-        <div class='squarebrackets'>
-          <center>
-            <div class='body-link'>
-                <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-up'  do %>
-                  <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
-                <% end %>
-                <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-down'  do %>
-                  <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
-                <% end %>
-                <br /><br />+ rate review
-            </div>
-          </center>
-        </div>
+    <div class='mini-box' id='new-rating-box'>
+      <div class='squarebrackets'>
+        <center>
+          <div class='body-link'>
+              <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-up'  do %>
+                <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+              <% end %>
+              <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-down'  do %>
+                <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+              <% end %>
+              <br /><br />+ rate review
+          </div>
+        </center>
       </div>
     </div>
+
   <% end %>
 
   <% @ratings.each do |rating| %>
-    <div>
-      <div class='mini-box'>
-        <div class='squarebrackets'>
-          <span class='body-link'>
-            <center>
-              <div class='scroll'>
-                <% if rating.helpful %>
-                  <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
-                <% else %>
-                  <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
-                <% end %>
-                <% if !rating.explanation.blank? %>
-                  <br /><br />
-                  <span class='card-small-text'>
-                    <%= rating.explanation %>
-                  </span>
-                <% end %>
-              </div>
-            </center>
-          </span>
-        </div>
+    <div class='mini-box'>
+      <div class='squarebrackets'>
+        <span class='body-link'>
+          <center>
+            <div class='scroll'>
+              <% if rating.helpful %>
+                <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+              <% else %>
+                <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+              <% end %>
+              <% if !rating.explanation.blank? %>
+                <br /><br />
+                <span class='card-small-text'>
+                  <%= rating.explanation %>
+                </span>
+              <% end %>
+            </div>
+          </center>
+        </span>
       </div>
     </div>
   <% end %>
