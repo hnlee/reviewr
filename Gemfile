@@ -17,6 +17,7 @@ gem 'coderay'
 gem 'omniauth-google-oauth2'
 
 group :development, :test do
+  gem 'database_cleaner'
   gem 'capybara', '~> 2.8'
   gem 'poltergeist'
   gem 'rspec-rails', '~> 3.5'

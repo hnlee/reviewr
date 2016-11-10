@@ -36,6 +36,7 @@
       <%= f.text_area(:explanation, cols: 90, rows: 16, class: 'form-input') %>
 
       <%= f.hidden_field :review_id, value: @review.id %>
+      <%= f.hidden_field :user_id, value: @user.id %>
       <%= f.submit "Rate review", style: 'font-size: 1.25em;', id: 'submit-rating-button', class: 'button' %>
       <%= link_to 'cancel', review_path(@review), class: 'cancel-link' %>
     </div>

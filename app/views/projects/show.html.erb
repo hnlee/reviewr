@@ -22,19 +22,34 @@
   <h3>Reviews</h3>
 <% end %>
 
-<div>
-  <div class='mini-box' id='new-review-box'>
-    <div class='squarebrackets'>
-      <center><%= link_to '+ review project', new_review_path(@project), class: 'body-link new-form-link', remote: true, id: 'new-review-link' %></center>
+<% if current_user %>
+  <div>
+    <div class='mini-box' id='new-review-box'>
+      <div class='squarebrackets'>
+        <center><%= link_to '+ review project', new_review_path(@project), class: 'body-link new-form-link', remote: true, id: 'new-review-link' %></center>
+      </div>
     </div>
   </div>
-</div>
 
-<% @reviews.each do |review| %>
+  <% @reviews.each do |review| %>
+    <div>
+      <div class='mini-box'>
+        <div class='squarebrackets'>
+          <%= link_to(review, class: 'body-link') do %>
+            <span class='carrot'>&gt;</span> 
+            <span class='card-small-text'>
+              <%= truncate(review.content, length: 100) %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% else %>
   <div>
     <div class='mini-box'>
       <div class='squarebrackets'>
-        <%= link_to(review, class: 'body-link') do %>
+        <%= link_to(@current_user_review, class: 'body-link') do %>
           <span class='carrot'>&gt;</span> 
           <span class='card-small-text'>
             <%= truncate(review.content, length: 100) %>

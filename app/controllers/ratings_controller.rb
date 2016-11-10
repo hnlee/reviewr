@@ -1,10 +1,11 @@
 class RatingsController < ApplicationController
 
   def new
-    @review = Review.find(params[:review_id])
     @rating = Rating.new
-    @thumb = params[:thumb] 
+    @thumb = params[:thumb]
     @random = params[:random]
+    @review = Review.find(params[:review_id])
+    @user = current_user
     if request.xhr?
       if @random
         render partial: "ratings/random_new"
@@ -15,11 +16,14 @@ class RatingsController < ApplicationController
   end
 
   def create
+    @user = current_user
     rating = Rating.new(helpful: rating_params[:helpful],
                         explanation: rating_params[:explanation])
     if rating.save
-      review_rating = ReviewRating.create(review_id: rating_params[:review_id],
-                                          rating_id: rating.id)
+      ReviewRating.create(review_id: rating_params[:review_id],
+                          rating_id: rating.id)
+      UserRating.create(user_id: @user,
+                        rating_id: rating.id)
       if request.xhr?
         render :js => "if (window.location.pathname == '#{root_path}') {
                          url.redirectToURI('#{root_path}');
@@ -49,6 +53,6 @@ class RatingsController < ApplicationController
   private
 
   def rating_params
-    params.require(:rating).permit(:helpful, :explanation, :review_id)
+    params.require(:rating).permit(:helpful, :explanation, :review_id, :user_id)
   end
 end
