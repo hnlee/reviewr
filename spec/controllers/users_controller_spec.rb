@@ -4,6 +4,18 @@ RSpec.describe UsersController, :type => :controller do
   render_views
 
   describe 'GET /users/:id' do
+    describe 'when logged out' do
+      it 'redirects to root' do
+        user = create(:user, name: 'name',
+                             email: 'name@gmail.com',
+                             uid: 'uidname')
+
+        get :show, params: { id: user.id }
+        
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+
     describe 'when logged in as that user' do
       before(:each) do
         @user = create(:user, name: 'User Name', email: 'username@example.com')

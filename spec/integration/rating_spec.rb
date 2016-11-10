@@ -13,6 +13,11 @@ describe 'rating', :type => :feature do
       reviewer = create(:user, name: 'name1',
                                email: 'name1@email.com',
                                uid: 'uidname1')
+      owner = create(:user, name: 'name2',
+                            email: 'name2@email.com',
+                            uid: 'uidname2')
+      create(:project_owner, project_id: project.id,
+                             user_id: owner.id)
       create(:project_review, project_id: project.id,
                               review_id: @review.id)
       create(:user_review, user_id: reviewer.id,

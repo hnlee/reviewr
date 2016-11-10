@@ -84,13 +84,13 @@ end
   ProjectReview.create(project_id: rand(Project.count) + 1, review_id: review.id)
 end
 
-75.times do |index|
+75.times do
   rand_bool = rand(2)
   if rand_bool == 1
-    Rating.create(helpful: true, explanation: thumbs_up.sample)
+    rating = Rating.create(helpful: true, explanation: thumbs_up.sample)
   else
-    Rating.create(helpful: false, explanation: thumbs_down.sample) 
+    rating = Rating.create(helpful: false, explanation: thumbs_down.sample) 
   end
-  UserRating.create(user_id: rand(User.count) + 1, rating_id: index + 1)
-  ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: index + 1)
+  UserRating.create(user_id: rand(User.count) + 1, rating_id: rating.id)
+  ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: rating.id)
 end

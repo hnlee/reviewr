@@ -48,75 +48,57 @@ describe 'project' do
                                    info: { name: 'hillaryclinton',
                                            email: 'hillaryclinton@email.com' } })
         @user = User.find_by_name('hillaryclinton')
+        @project = create(:project, title: "my title", description: "my desc")
+        create(:project_owner, project_id: @project.id,
+                               user_id: @user.id)
 
         visit "/"
         find_link("Sign in with Google").click
       end
 
-      it 'shows the project title and description and link to new review when logged in as project owner' do
-        project = create(:project, title: "my title", description: "my desc")
-        create(:project_owner, project_id: project.id,
-                               user_id: @user.id)
+      it 'shows the project title and description' do
+        visit "/projects/" + @project.id.to_s
 
-        visit "/projects/" + project.id.to_s
+        expect(page).to have_content(@project.title)
+        expect(page).to have_content(@project.description)
+      end
 
-        expect(page).to have_content(project.title)
-        expect(page).to have_content(project.description)
-        expect(page).to have_content('+ review project')
+      it 'does not show the link to leave a new review' do
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).not_to have_content('+ review project')
       end
 
       it 'shows the reviews attached to the project' do
-        project = create(:project, title: "my title", description: "my desc")
-        create(:project_owner, project_id: project.id,
-                               user_id: @user.id)
         review1 = create(:review, content: "great")
         review2 = create(:review, content: "terrible")
-        project_review1 = create(:project_review, project_id: project.id,
+        project_review1 = create(:project_review, project_id: @project.id,
                                                   review_id: review1.id)
-        project_review2 = create(:project_review, project_id: project.id,
+        project_review2 = create(:project_review, project_id: @project.id,
                                                   review_id: review2.id)
 
-        visit "/projects/" + project.id.to_s
+        visit "/projects/" + @project.id.to_s
 
         expect(page).to have_content(review1.content)
         expect(page).to have_content(review2.content)
       end
 
-      it 'loads new review partial when link is clicked', :js => true do
-        project = create(:project, title: "my title", description: "my desc")
-        create(:project_owner, project_id: project.id,
-                               user_id: @user.id)
-
-        visit "/projects/" + project.id.to_s
-        click_link('+ review project')
-
-        expect(page).to have_css('form')
-        expect(current_path).to eq('/projects/' + project.id.to_s)
-      end
-
       it 'navigates to edit project page when link is clicked' do
-        project = create(:project, title: "my title", description: "my desc")
-        create(:project_owner, project_id: project.id,
-                               user_id: @user.id)
-
-        visit "/projects/" + project.id.to_s
+        visit "/projects/" + @project.id.to_s
         click_link('edit-project-link')
 
         expect(page).to have_css('form')
       end
 
       it 'shows the reviews in reverse chronological order' do
-        project = create(:project, title: "my title", description: "my desc")
-        create(:project_owner, project_id: project.id,
-                               user_id: @user.id)
         review1 = create(:review, content: "great")
         review2 = create(:review, content: "terrible")
-        project_review1 = create(:project_review, project_id: project.id,
+        project_review1 = create(:project_review, project_id: @project.id,
                                                   review_id: review1.id)
-        project_review2 = create(:project_review, project_id: project.id,
+        project_review2 = create(:project_review, project_id: @project.id,
                                                   review_id: review2.id)
 
-        visit "/projects/" + project.id.to_s
+        visit "/projects/" + @project.id.to_s
 
         expect(page.body.index(review1.content)).to be > page.body.index(review2.content)
       end

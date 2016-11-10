@@ -17,6 +17,8 @@ RSpec.describe ReviewsController, :type => :controller do
   describe 'POST /reviews/new' do
     it 'creates a new review and redirects to the project show page' do
       project = create(:project, title: "Java Tic-Tac-Toe", description: "TTT, you'll love it")
+      reviewer = create(:user)
+      session[:user_id] = reviewer.id
 
       post :create, params: { review: { content: "This looks good", project_id: project.id }, project_id: project.id }
 
@@ -25,6 +27,8 @@ RSpec.describe ReviewsController, :type => :controller do
 
     it 'reloads form with a flash warning when the content is left blank' do
       project = create(:project, title: "Java Tic-Tac-Toe", description: "TTT, you'll love it")
+      reviewer = create(:user)
+      session[:user_id] = reviewer.id
 
       post :create, params: { review: { content: "", project_id: project.id }, project_id: project.id }
 

@@ -15,7 +15,61 @@ describe 'review', :type => :feature do
       end 
     end
 
-    describe 'when logged in as a user who is not the reviewer' do
+    describe 'when logged in as the project owner' do
+      before(:each) do
+        OmniAuth.config.add_mock(:google_oauth2,
+                                 { uid: 'uidhillaryclinton',
+                                   info: { name: 'hillaryclinton',
+                                           email: 'hillaryclinton@email.com' } })
+        @user = User.find_by_name('hillaryclinton')
+        reviewer = create(:user, name: 'name1',
+                                 email: 'name1@email.com',
+                                 uid: 'uidname1')
+        @review = create(:review, content: 'Looks good!')
+        project = create(:project, title: "Foo", description: "Bar")
+        create(:project_owner, project_id: project.id,
+                               user_id: @user.id)
+        create(:project_review, project_id: project.id,
+                                review_id: @review.id)
+        create(:user_review, user_id: reviewer.id,
+                             review_id: @review.id)
+
+        visit "/"
+        find_link("Sign in with Google").click
+      end
+
+      it 'shows review content' do
+        visit '/reviews/' + @review.id.to_s
+
+        expect(page).to have_content(@review.content)
+      end
+
+      it 'does not show link to edit review' do
+        visit '/reviews/' + @review.id.to_s
+
+        expect(page).not_to have_xpath('//i', :class => 'fa fa-pencil-square-o')
+      end
+
+      it 'does not show link to leave rating' do
+        visit '/reviews/' + @review.id.to_s
+
+        expect(page).not_to have_xpath('//i', :class => 'fa fa-thumbs-up')
+        expect(page).not_to have_xpath('//i', :class => 'fa fa-thumbs-down')
+        expect(page).not_to have_content("+ rate review")
+      end
+      
+
+      it 'does not show any ratings' do
+        rating = create(:rating, helpful: true,
+                                 explanation: 'Great!')
+        create(:review_rating, review_id: @review.id,
+                               rating_id: rating.id)
+
+        expect(page).not_to have_content(rating.explanation)
+      end
+    end
+
+    describe 'when logged in as a user who is not the reviewer or project owner' do
       before(:each) do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
@@ -27,6 +81,11 @@ describe 'review', :type => :feature do
         reviewer = create(:user, name: 'name1',
                                  email: 'name1@email.com',
                                  uid: 'uidname1')
+        owner = create(:user, name: 'name2',
+                              email: 'name2@email.com',
+                              uid: 'uidname2')
+        create(:project_owner, project_id: project.id,
+                               user_id: owner.id)
         create(:project_review, project_id: project.id,
                                 review_id: @review.id)
         create(:user_review, user_id: reviewer.id,
@@ -42,7 +101,13 @@ describe 'review', :type => :feature do
         expect(page).to have_content(@review.content)
         expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-up')
         expect(page).to have_link('back to project')
-       end
+      end
+
+      it 'does not show link to edit review' do
+        visit '/reviews/' + @review.id.to_s
+
+        expect(page).not_to have_xpath('//i', :class => 'fa fa-pencil-square-o')
+      end
 
       it 'does not show ratings left by other people' do
         rating = create(:rating, helpful: true,
@@ -116,16 +181,25 @@ describe 'review', :type => :feature do
         find_link("Sign in with Google").click
       end
 
-      it 'shows all ratings for a review' do
-        rating = create(:rating, helpful: true)
+      it 'shows review content and all ratings for a review' do
+        rating = create(:rating, helpful: true,
+                                 explanation: 'Great!')
         create(:review_rating, review_id: @review.id,
                                rating_id: rating.id)
 
         visit '/reviews/' + @review.id.to_s
 
         expect(page).to have_content(@review.content)
-        expect(page).to have_xpath('//i', :class => 'fa fa-thumbs-up')
+        expect(page).to have_content(rating.explanation)
         expect(page).to have_link('back to project')
+      end
+
+      it 'does not show link to leave rating' do
+        visit '/reviews/' + @review.id.to_s
+
+        expect(page).not_to have_content("+ rate review")
+        expect(page).not_to have_xpath('//i', :class => 'fa fa-thumbs-up')
+        expect(page).not_to have_xpath('//i', :class => 'fa fa-thumbs-down')
       end
      
       it 'shows all ratings in reverse chronological order' do

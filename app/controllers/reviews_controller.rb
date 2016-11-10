@@ -13,7 +13,7 @@ class ReviewsController < ApplicationController
     if review.save
       ProjectReview.create(project_id: review_params[:project_id],
                                             review_id: review.id)
-      UserReview.create(review_id: review.id, user_id: session[:user_id])
+      UserReview.create(review_id: review.id, user_id: current_user.id)
       if request.xhr?
         render :js => "url.redirectToURI('#{project_path(review_params[:project_id])}')"
       else
@@ -30,11 +30,11 @@ class ReviewsController < ApplicationController
 
   def edit
     @review = Review.find(params[:id])
-    if session[:user_id].nil?
+    if logged_out? 
       redirect_to root_path
     else
-      if session[:user_id] != @review.user.id
-        redirect_to user_path(session[:user_id])
+      if current_user != @review.user
+        redirect_to user_path(current_user.id)
       elsif request.xhr?
         render partial: "reviews/edit"
       else
@@ -61,11 +61,11 @@ class ReviewsController < ApplicationController
 
   def show
     @review = Review.find(params[:id])
-    if session[:user_id].nil?
+    if logged_out? 
       redirect_to root_path
     else 
-      @user = User.find(session[:user_id])
-      if session[:user_id] == @review.user.id
+      @user = current_user 
+      if current_user == @review.user
         @ratings = @review.ratings.order(updated_at: :desc)
       else
         review_ratings = @review.ratings
@@ -75,7 +75,6 @@ class ReviewsController < ApplicationController
                          .all
                          .order(updated_at: :desc)
       end
-      @rating = Rating.new
       @project = @review.project
       @update = params[:update]
       if @update == "success"
