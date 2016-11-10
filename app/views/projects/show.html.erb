@@ -33,17 +33,19 @@
 <% end %>
 
 <% @reviews.each do |review| %>
-  <div>
-    <div class='mini-box'>
-      <div class='squarebrackets'>
-        <%= link_to(review, class: 'body-link') do %>
-          <span class='carrot'>&gt;</span> 
-          <span class='card-small-text'>
-            <%= truncate(review.content, length: 100) %>
-          </span>
-        <% end %>
+  <% if review.visible? %>
+    <div>
+      <div class='mini-box'>
+        <div class='squarebrackets'>
+          <%= link_to(review, class: 'body-link') do %>
+            <span class='carrot'>&gt;</span> 
+            <span class='card-small-text'>
+              <%= truncate(review.content, length: 100) %>
+            </span>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 

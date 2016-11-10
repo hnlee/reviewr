@@ -62,10 +62,12 @@ describe 'user', :type => :feature do
       end
 
       it 'does not show projects that do not belong to the user' do
-        user2 = create(:user, name: 'Name 2', email: 'name2@example.com')
+        user = create(:user, name: 'name1', 
+                             email: 'name1@example.com',
+                             uid: 'uidname1')
         project = create(:project, title: 'Ruby Game of Life')
         create(:project_owner, project_id: project.id,
-                               user_id: user2.id)
+                               user_id: user.id)
 
         visit user_path(id: @user)
 
@@ -133,10 +135,12 @@ describe 'user', :type => :feature do
       end
 
       it 'does not show reviews that do not belong to the user' do
-        user2 = create(:user, name: 'Name 2', email: 'name2@example.com')
-        review = create(:review, content: 'Good work here')
+        user = create(:user, name: 'name1', 
+                             email: 'name1@example.com',
+                             uid: 'uidname1')
+        review = create(:review, content: 'Amazing job')
         create(:user_review, review_id: review.id,
-                             user_id: user2.id)
+                             user_id: user.id)
 
         visit user_path(id: @user)
 
@@ -172,8 +176,8 @@ describe 'user', :type => :feature do
       end
 
       it 'shows reviews in reverse chronological order' do
-        review1 = create(:review, content: 'Good Job')
-        review2 = create(:review, content: 'Bad Job')
+        review1 = create(:review, content: 'Stupendous job')
+        review2 = create(:review, content: 'Atrocious job')
         create(:user_review, user_id: @user.id,
                              review_id: review1.id)
         create(:user_review, user_id: @user.id,

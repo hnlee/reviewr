@@ -95,7 +95,7 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response.body).to include(project.description)
     end
 
-    it 'includes reviews associated with the project when logged in as the owner' do
+    it 'includes positively rated reviews associated with the project when logged in as the owner' do
       project = create(:project)
       owner = create(:user, name: 'name',
                             email: 'name@email.com',
@@ -109,6 +109,12 @@ RSpec.describe ProjectsController, :type => :controller do
                               review_id: review1.id)
       create(:project_review, project_id: project.id,
                               review_id: review2.id)
+      rating1 = create(:rating, helpful: true)
+      rating2 = create(:rating, helpful: true)
+      create(:review_rating, review_id: review1.id,
+                             rating_id: rating1.id)
+      create(:review_rating, review_id: review2.id,
+                             rating_id: rating2.id)
 
       get :show, params: { id: project.id }
 
