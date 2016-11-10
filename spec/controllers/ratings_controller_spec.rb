@@ -6,7 +6,8 @@ RSpec.describe RatingsController, :type => :controller do
   describe 'GET /ratings/new' do
     it 'renders the new rating form' do
       review = create(:review, content: "Java Server")
-      user = create(:user, name: "Name", email: "name@example.com")
+      user = create(:user, name: "Name", email: "name@example.com", uid: "uidname")
+      session[:user_id] = user.id
 
       get :new, params: { review_id: review.id, user: user.id }
 
@@ -18,6 +19,8 @@ RSpec.describe RatingsController, :type => :controller do
   describe 'POST /ratings/new' do
     it 'creates a new rating and redirects to the review show page' do
       review = create(:review, content: "Java Server")
+      user = create(:user, name: "Name", email: "name@example.com", uid: "uidname")
+      session[:user_id] = user.id
 
       post :create, params: { rating: { helpful: true, review_id: review.id } }
 
@@ -27,6 +30,8 @@ RSpec.describe RatingsController, :type => :controller do
 
     it 'displays flash message if radio button not selected' do
       review = create(:review, content: "Java Server")
+      user = create(:user, name: "Name", email: "name@example.com", uid: "uidname")
+      session[:user_id] = user.id
 
       post :create, params: { rating: { helpful: nil, review_id: review.id } }
 
@@ -36,6 +41,8 @@ RSpec.describe RatingsController, :type => :controller do
 
     it 'displays flash message if helpful is set to false and explanation is blank' do
       review = create(:review, content: "Java Server")
+      user = create(:user, name: "Name", email: "name@example.com", uid: "uidname")
+      session[:user_id] = user.id
 
       post :create, params: { rating: { helpful: false,
                                         explanation: '',

@@ -11,8 +11,9 @@ class ReviewsController < ApplicationController
   def create
     review = Review.new(content: review_params[:content])
     if review.save
-      project_review = ProjectReview.create(project_id: review_params[:project_id],
+      ProjectReview.create(project_id: review_params[:project_id],
                                             review_id: review.id)
+      UserReview.create(review_id: review.id, user_id: session[:user_id])
       if request.xhr?
         render :js => "url.redirectToURI('#{project_path(review_params[:project_id])}')"
       else
@@ -29,8 +30,15 @@ class ReviewsController < ApplicationController
 
   def edit
     @review = Review.find(params[:id])
-    if request.xhr?
-      render partial: "reviews/edit"
+    if session[:user_id].nil?
+      redirect_to root_path
+    else
+      if session[:user_id] != @review.user.id
+        redirect_to user_path(session[:user_id])
+      elsif request.xhr?
+        render partial: "reviews/edit"
+      else
+      end
     end
   end
 
@@ -53,12 +61,26 @@ class ReviewsController < ApplicationController
 
   def show
     @review = Review.find(params[:id])
-    @ratings = @review.ratings.order(updated_at: :desc)
-    @rating = Rating.new
-    @project = @review.project
-    @update = params[:update]
-    if @update == "success"
-      flash.now[:notice] = "Review has been updated"
+    if session[:user_id].nil?
+      redirect_to root_path
+    else 
+      @user = User.find(session[:user_id])
+      if session[:user_id] == @review.user.id
+        @ratings = @review.ratings.order(updated_at: :desc)
+      else
+        review_ratings = @review.ratings
+        user_ratings = @user.ratings 
+        @ratings = Rating.where(id: review_ratings)
+                         .where(id: user_ratings)
+                         .all
+                         .order(updated_at: :desc)
+      end
+      @rating = Rating.new
+      @project = @review.project
+      @update = params[:update]
+      if @update == "success"
+        flash.now[:notice] = "Review has been updated"
+      end
     end
   end
 

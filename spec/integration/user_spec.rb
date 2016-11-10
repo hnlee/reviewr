@@ -23,11 +23,12 @@ describe 'user', :type => :feature do
   describe 'logged in index page' do
     it 'has a link to log out' do
       OmniAuth.config.add_mock(:google_oauth2,
-                               { uid: 'uid',
-                                 info: { name: 'name',
-                                         email: 'name@email.com' } })
+                               { uid: 'uidhillaryclinton',
+                                 info: { name: 'hillaryclinton',
+                                         email: 'hillaryclinton@email.com' } })
+
       visit '/'
-      click_link('Sign in with Google')
+      find_link('Sign in with Google').click
 
       expect(page).to have_link('Sign out')
     end

@@ -14,7 +14,7 @@ RSpec.describe RootController, :type => :controller do
     end
     
     it 'redirects you to user show page when user is logged in' do
-      session[:user_id] = create(:user)
+      session[:user_id] = create(:user).id
 
       get :root
 

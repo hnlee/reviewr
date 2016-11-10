@@ -59,7 +59,7 @@ thumbs_down = [ 'This is not kind',
 project_count = 20
 
 user_names.each do |name|
-  User.create(name: name, email: name + '@gmail.com')
+  User.create(name: name, email: name + '@gmail.com', uid: 'uid' + name)
 end
 
 User.create(name: 'Nicole Carpenter', email: 'ncarpenter@8thlight.com', uid: '101379786221150376018')
