@@ -56,7 +56,7 @@ thumbs_down = [ 'This is not kind',
                 'This is neither kind nor actionable',
                 'This is neither kind, specific, or actionable' ]
 
-project_count = 20
+project_count = 30
 
 user_names.each do |name|
   User.create(name: name, email: name + '@gmail.com', uid: 'uid' + name)
@@ -67,7 +67,9 @@ User.create(name: 'Hana Lee', email: 'hana@8thlight.com', uid: '1068129799360976
 
 project_count.times do |i|
   title = languages.sample + ' ' + coding_projects.sample
-  description = (greetings.sample + 'I want to invite you to check out my ' + title + '. ' + schmooze.sample + '. You can check out my repo here: www.github.com/' + user_names.sample + '/' + title.gsub(/\s+/, '-') + '. Thanks in advance for your feedback!')
+  description = (greetings.sample + 'I want to invite you to check out my ' + title + '. ' + schmooze.sample 
+                 + '. You can check out my repo here: www.github.com/' + user_names.sample + '/' + title.gsub(/\s+/, '-') 
+                 + '. Thanks in advance for your feedback!')
   Project.create(title: title, description: description)
   ProjectOwner.create(project_id: i + 1, user_id: rand(User.count) + 1)
 end
@@ -76,27 +78,19 @@ end
   ProjectInvite.create(project_id: rand(Project.count) + 1, user_id: rand(User.count) + 1)
 end
 
-review_content.each do |content|
-  Review.create(content: content)
+50.times do 
+  review = Review.create(content: review_content.sample)
+  UserReview.create(user_id: rand(User.count) + 1, review_id: review.id)
+  ProjectReview.create(project_id: rand(Project.count) + 1, review_id: review.id)
 end
 
-75.times do
-  review_id = rand(Review.count) + 1
-  ProjectReview.create(project_id: rand(Project.count) + 1, review_id: review_id)
-  UserReview.create(user_id: rand(User.count) + 1, review_id: review_id)
-end
-
-20.times do
+75.times do |index|
   rand_bool = rand(2)
   if rand_bool == 1
     Rating.create(helpful: true, explanation: thumbs_up.sample)
   else
     Rating.create(helpful: false, explanation: thumbs_down.sample) 
   end
-end
-
-75.times do
-  rating_id = rand(Rating.count) + 1
-  ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: rating_id)
-  UserRating.create(user_id: rand(User.count) + 1, rating_id: rating_id)
+  UserRating.create(user_id: rand(User.count) + 1, rating_id: index + 1)
+  ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: index + 1)
 end
