@@ -69,10 +69,7 @@ project_count.times do |i|
   title = languages.sample + ' ' + coding_projects.sample
   description = (greetings.sample + 'I want to invite you to check out my ' + title + '. ' + schmooze.sample + '. You can check out my repo here: www.github.com/' + user_names.sample + '/' + title.gsub(/\s+/, '-') + '. Thanks in advance for your feedback!')
   Project.create(title: title, description: description)
-end
-
-project_count.times do |index|
-  ProjectOwner.create(project_id: index + 1, user_id: rand(User.count) + 1)
+  ProjectOwner.create(project_id: i + 1, user_id: rand(User.count) + 1)
 end
 
 100.times do
@@ -84,11 +81,9 @@ review_content.each do |content|
 end
 
 75.times do
-  ProjectReview.create(project_id: rand(Project.count) + 1, review_id: rand(Review.count) + 1)
-end
-
-45.times do
-  UserReview.create(user_id: rand(User.count) + 1, review_id: rand(Review.count) + 1)
+  review_id = rand(Review.count) + 1
+  ProjectReview.create(project_id: rand(Project.count) + 1, review_id: review_id)
+  UserReview.create(user_id: rand(User.count) + 1, review_id: review_id)
 end
 
 20.times do
@@ -101,9 +96,7 @@ end
 end
 
 75.times do
-  ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: rand(Rating.count) + 1)
-end
-
-75.times do
-  UserRating.create(user_id: rand(User.count) + 1, rating_id: rand(Rating.count) + 1)
+  rating_id = rand(Rating.count) + 1
+  ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: rating_id)
+  UserRating.create(user_id: rand(User.count) + 1, rating_id: rating_id)
 end
