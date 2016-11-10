@@ -9,4 +9,14 @@ class Review < ApplicationRecord
   
   has_one :user_review
   has_one :user, through: :user_review
+
+  def visible?
+    positive = self.ratings.select { |rating| rating.helpful == true }
+    negative = self.ratings.select { |rating| rating.helpful == false }
+    if positive.count > 0 and negative.count == 0
+      return true
+    else
+      return false
+    end
+  end
 end
