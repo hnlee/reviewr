@@ -87,6 +87,12 @@ describe 'project' do
         
         expect(page).not_to have_content(review.content)
       end
+
+      it 'does not show edit project link' do
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).not_to have_xpath('//i', :class => 'fa fa-pencil-square-o')
+      end
     end
 
     describe 'when logged in as the owner' do

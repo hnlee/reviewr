@@ -2,9 +2,10 @@ $(document).ready(function () {
   url = new Url();
   client = new Client();
   dom = new Dom();
+  tab = new Tab();
 
   var path_id = url.getIdFromURI(window.location.pathname);
-  
+
   $("#new-review-link").on("click", function(event) {
     event.preventDefault();
     showNewReviewForm(path_id);
@@ -18,22 +19,20 @@ $(document).ready(function () {
   $("#random-rating-up").on("click", function(event) {
     event.preventDefault();
     var review_id = $(this).parent().attr('data-id');
-    var user_id = path_id
-    showRandomRatingForm(review_id, user_id, true);
+    showRandomRatingForm(review_id, path_id, true);
   });
 
   $("#random-rating-down").on("click", function(event) {
     event.preventDefault();
     var review_id = $(this).parent().attr('data-id');
-    var user_id = path_id
-    showRandomRatingForm(review_id, user_id, false);
+    showRandomRatingForm(review_id, path_id, false);
   });
 
   $("#new-rating-up").on("click", function(event) {
     event.preventDefault();
     showNewRatingForm(path_id, true);
   });
- 
+
   $("#new-rating-down").on("click", function(event) {
     event.preventDefault();
     showNewRatingForm(path_id, false);
@@ -54,17 +53,17 @@ $(document).ready(function () {
     submitEditReviewForm(path_id);
   });
 
+  tab.showActiveTabContents(".tab-content", "#projects");
+
   $(".tab-container").on("click", "li", function(event) {
     event.preventDefault();
-    var active_class = $("a",this).attr("href");
+    var active_content_id = $("a", this).attr("href");
 
-    console.log(active_class);
+    tab.deactivateTab("li.active");
+    tab.activateTab(this);
 
-    $("li.active").removeClass("active");
-    $(this).addClass("active");
-
-    $(".tab-content:not(.active)").hide()
-    $(".tab-content" + active_class).show();
+    tab.showActiveTabContents(".tab-content",
+                              active_content_id);
   });
 
 });
