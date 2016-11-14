@@ -23,13 +23,7 @@
 <% end %>
 
 <% if @user != @project.owner %>
-  <div>
-    <div class='bracket-box' id='new-review-box'>
-      <div class='squarebrackets'>
-        <center><%= link_to '+ review project', new_review_path(@project), class: 'bracket-link new-form-link', remote: true, id: 'new-review-link' %></center>
-      </div>
-    </div>
-  </div>
+  <%= link_to '+ review project', new_review_path(@project), class: 'new-form-link', remote: true, id: 'new-review-link' %>
 <% end %>
 
 <% @reviews.each do |review| %>
@@ -37,8 +31,8 @@
     <div>
       <div class='bracket-box'>
         <div class='squarebrackets'>
-          <%= link_to(review, class: 'bracket-link') do %>
-            <span class='carrot'>&gt;</span> 
+          <%= link_to(review, class: 'bracket-link single-content') do %>
+            <span class='carrot'>&gt;</span>
             <span class='card-small-text'>
               <%= truncate(review.content, length: 300) %>
             </span>
