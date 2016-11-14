@@ -6,7 +6,7 @@ class Review < ApplicationRecord
 
   has_many :review_ratings
   has_many :ratings, through: :review_ratings
-  
+
   has_one :user_review
   has_one :user, through: :user_review
 
@@ -33,8 +33,13 @@ class Review < ApplicationRecord
   end
 
   def self.get_random_review(user)
-    user_reviews = user.reviews
-    reviews = Review.where.not(id: user_reviews).all
+    reviews = Review.where.not(id: user.reviews).all
     reviews.offset(rand(reviews.count)).first
+  end
+
+  def self.get_user_owned_reviews(user, project)
+    return Review.where(id: project.reviews)
+                 .where(id: user.reviews)
+                 .all.order(updated_at: :desc)
   end
 end

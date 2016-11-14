@@ -12,7 +12,7 @@ RSpec.describe ProjectsController, :type => :controller do
 
     it 'renders the template for the project new page if logged in' do
       user = create(:user)
-      session[:user_id] = user.id 
+      session[:user_id] = user.id
 
       get :new
 
@@ -62,7 +62,7 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response).to have_http_status(:redirect)
     end
 
-    it 'redirects to root if you are not logged in as the owner' do
+    it 'redirects to root if you are not logged in as the owner or as a reviewer' do
       project = create(:project)
       owner = create(:user, name: 'name1',
                             email: 'name1@email.com',
@@ -78,7 +78,27 @@ RSpec.describe ProjectsController, :type => :controller do
 
       expect(response).to have_http_status(:redirect)
     end
-      
+
+    it 'renders the template for the project show page when logged in as a reviewer' do
+      project = create(:project)
+      review = create(:review, content: 'What a project')
+      reviewer = create(:user, name: 'name',
+                               email: 'name@email.com',
+                               uid: 'uidname')
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
+      create(:user_review, user_id: reviewer.id,
+                           review_id: review.id)
+      session[:user_id] = reviewer.id
+
+      get :show, params: { id: project.id }
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include(project.title)
+      expect(response.body).to include(project.description)
+      expect(response.body).to include(review.content)
+    end
+
     it 'renders the template for the project show page when logged in as the owner' do
       project = create(:project)
       owner = create(:user, name: 'name',
@@ -95,7 +115,7 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response.body).to include(project.description)
     end
 
-    it 'includes positively rated reviews associated with the project when logged in as the owner' do
+    it 'includes helpfully rated reviews associated with the project when logged in as the owner' do
       project = create(:project)
       owner = create(:user, name: 'name',
                             email: 'name@email.com',
@@ -140,7 +160,7 @@ RSpec.describe ProjectsController, :type => :controller do
   describe 'GET /projects/:id/edit' do
     it 'redirects when not logged in' do
       project = create(:project)
-      
+
       get :edit, params: { id: project.id }
 
       expect(response).to have_http_status(:redirect)
@@ -185,7 +205,7 @@ RSpec.describe ProjectsController, :type => :controller do
       project = create(:project)
 
       post :update, params: { id: project.id, project: { title: 'best title', description: 'best description' } }
-      
+
       updated_project = Project.find_by_id(project.id)
       expect(response).to redirect_to(project_path(project.id))
       expect(response).to have_http_status(:redirect)
@@ -198,7 +218,7 @@ RSpec.describe ProjectsController, :type => :controller do
       project = create(:project)
 
       post :update, params: { id: project.id, project: { title: 'best title', description: '' } }
-      
+
       expect(response).to redirect_to(edit_project_path(project.id))
       expect(flash[:error]).to match("Please provide a description")
     end
@@ -207,7 +227,7 @@ RSpec.describe ProjectsController, :type => :controller do
       project = create(:project)
 
       post :update, params: { id: project.id, project: { title: '', description: 'best description' } }
-      
+
       expect(response).to redirect_to(edit_project_path(project.id))
       expect(flash[:error]).to match("Please provide a title")
     end

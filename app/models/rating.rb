@@ -12,8 +12,9 @@ class Rating < ApplicationRecord
     helpful == false
   end
 
-  def self.get_user_owned_ratings(review_ratings, user_ratings)
-    return Rating.where(id: review_ratings).where(id: user_ratings).all.order(updated_at: :desc)
+  def self.get_user_owned_ratings(user, review)
+    return Rating.where(id: review.ratings)
+                 .where(id: user.ratings)
+                 .all.order(updated_at: :desc)
   end
-
 end

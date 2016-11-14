@@ -169,12 +169,12 @@ describe 'review', :type => :feature do
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
                                            email: 'hillaryclinton@email.com' } })
-        @reviewer = User.find_by_name('hillaryclinton')
+        reviewer = User.find_by_name('hillaryclinton')
         @review = create(:review, content: 'Looks good!')
-        project = create(:project, title: "Foo", description: "Bar")
-        create(:project_review, project_id: project.id,
+        @project = create(:project, title: "Foo", description: "Bar")
+        create(:project_review, project_id: @project.id,
                                 review_id: @review.id)
-        create(:user_review, user_id: @reviewer.id,
+        create(:user_review, user_id: reviewer.id,
                              review_id: @review.id)
 
         visit "/"
@@ -223,17 +223,12 @@ describe 'review', :type => :feature do
         expect(current_path).to eq('/reviews/' + @review.id.to_s)
       end
 
-      xit 'navigates to the project page when the back link is clicked' do
-        project = create(:project, title: 'my title', description: 'my desc')
-        review = create(:review, content: 'Looks good!')
-        create(:project_review, project_id: project.id,
-                                review_id: review.id)
-
-        visit '/reviews/' + review.id.to_s
+      it 'navigates to the project page when the back link is clicked' do
+        visit '/reviews/' + @review.id.to_s
         click_link('back to project')
 
-        expect(page).to have_content(project.title)
-        expect(current_path).to eq('/projects/' + project.id.to_s)
+        expect(page).to have_content(@project.title)
+        expect(current_path).to eq('/projects/' + @project.id.to_s)
       end
     end
   end

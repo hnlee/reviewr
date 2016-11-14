@@ -34,7 +34,7 @@ RSpec.describe Project do
       create(:project_owner, project_id: project.id,
                              user_id: owner.id)
 
-      expect(project.owner).to eq(owner)      
+      expect(project.owner).to eq(owner)
     end
 
     it 'has many users invited to review' do
@@ -77,23 +77,65 @@ RSpec.describe Project do
     end
   end
 
-  describe '#positive_reviews_count' do
-    it 'returns the number of reviews that are positive' do
-      project = create(:project)
-      review1 = Review.create(content: 'Looks good')
-      review2 = Review.create(content: 'Looks bad')
-      review3 = Review.create(content: 'Looks great')
-      rating_good = Rating.create(helpful: true)
-      rating_bad = Rating.create(helpful: false)
-      ProjectReview.create(project_id: project.id, review_id: review1.id)
-      ProjectReview.create(project_id: project.id, review_id: review2.id)
-      ProjectReview.create(project_id: project.id, review_id: review3.id)
-      ReviewRating.create(review_id: review1.id, rating_id: rating_good.id)
-      ReviewRating.create(review_id: review2.id, rating_id: rating_bad.id)
-      ReviewRating.create(review_id: review3.id, rating_id: rating_good.id)
-      reviews = [review1, review2, review3]
+  describe '#helpful_reviews_count' do
+    it 'returns the number of reviews that are helpful' do
+      project = Project.create(title: "My Title",
+                               description: "My Description")
+      review1 = create(:review, content: 'Looks good')
+      review2 = create(:review, content: 'Looks bad')
+      review3 = create(:review, content: 'Looks great')
+      rating_good = create(:rating, helpful: true)
+      rating_bad = create(:rating, helpful: false,
+                                   explanation: 'bad')
+      create(:project_review, project_id: project.id,
+                              review_id: review1.id)
+      create(:project_review, project_id: project.id,
+                              review_id: review2.id)
+      create(:project_review, project_id: project.id,
+                              review_id: review3.id)
+      create(:review_rating, review_id: review1.id,
+                             rating_id: rating_good.id)
+      create(:review_rating, review_id: review2.id,
+                             rating_id: rating_bad.id)
+      create(:review_rating, review_id: review3.id,
+                             rating_id: rating_good.id)
 
-      expect(project.positive_reviews_count).to eq(2)
+      expect(project.helpful_reviews_count).to eq(2)
+    end
+  end
+
+  describe '#get_reviewers' do
+    it 'returns the users who have reviewed the project' do
+      project = Project.create(title: "My Title",
+                               description: "My Description")
+      review1 = create(:review, content: 'Looks good')
+      review2 = create(:review, content: 'Looks bad')
+      review3 = create(:review, content: 'Looks great')
+      user1 = create(:user, name: 'name1',
+                            email: 'name1@email.com',
+                            uid: 'uidname1')
+      user2 = create(:user, name: 'name2',
+                            email: 'name2@email.com',
+                            uid: 'uidname2')
+      user3 = create(:user, name: 'name3',
+                            email: 'name3@email.com',
+                            uid: 'uidname3')
+      create(:project_review, project_id: project.id,
+                              review_id: review1.id)
+      create(:project_review, project_id: project.id,
+                              review_id: review2.id)
+      create(:project_review, project_id: project.id,
+                              review_id: review3.id)
+      create(:user_review, user_id: user1.id,
+                           review_id: review1.id)
+      create(:user_review, user_id: user2.id,
+                           review_id: review2.id)
+      create(:user_review, user_id: user3.id,
+                           review_id: review3.id)
+
+      expect(project.get_reviewers).to include(user1)
+      expect(project.get_reviewers).to include(user2)
+      expect(project.get_reviewers).to include(user3)
     end
   end
 end

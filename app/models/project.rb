@@ -20,8 +20,13 @@ class Project < ApplicationRecord
     end
   end
 
-  def positive_reviews_count
+  def helpful_reviews_count
     reviews.select{ |r| r.visible? }.count
   end
 
+  def get_reviewers
+    user_reviews = UserReview.where(review_id: reviews)
+                             .select('user_id')
+    return User.where(id: user_reviews).all
+  end
 end

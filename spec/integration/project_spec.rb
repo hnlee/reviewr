@@ -17,7 +17,7 @@ describe 'project' do
       end
     end
 
-    describe 'when logged in as user who is not the owner' do
+    describe 'when logged in as user who is not the owner and has not left review' do
       it 'redirects to user show page' do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
@@ -38,6 +38,54 @@ describe 'project' do
         visit "/projects/" + project.id.to_s
 
         expect(current_path).to eq("/users/" + @user.id.to_s)
+      end
+    end
+
+    describe 'when logged in as a user who has left review' do
+      before(:each) do
+        OmniAuth.config.add_mock(:google_oauth2,
+                                 { uid: 'uidhillaryclinton',
+                                   info: { name: 'hillaryclinton',
+                                           email: 'hillaryclinton@email.com' } })
+        @user = User.find_by_name('hillaryclinton')
+        owner = create(:user)
+        @project = create(:project, title: "my title", description: "my desc")
+        create(:project_owner, project_id: @project.id,
+                               user_id: owner.id)
+        @review = create(:review, content: "Insert a very thorough and detailed review")
+        create(:user_review, review_id: @review.id,
+                             user_id: @user.id)
+        create(:project_review, project_id: @project.id,
+                                review_id: @review.id) 
+
+        visit "/"
+        find_link("Sign in with Google").click
+      end
+
+      it 'shows the project title and description' do
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).to have_content(@project.title)
+        expect(page).to have_content(@project.description)
+      end
+
+      it 'shows the review left by the user' do
+        visit "/projects/" + @project.id.to_s
+        
+        expect(page).to have_content(@review.content)
+      end
+
+      it 'does not show review left by another user' do
+        review = create(:review, content: 'Written by someone else')
+        reviewer = create(:user) 
+        create(:user_review, review_id: review.id,
+                             user_id: reviewer.id)
+        create(:project_review, project_id: @project.id,
+                                review_id: review.id) 
+
+        visit "/projects/" + @project.id.to_s
+        
+        expect(page).not_to have_content(review.content)
       end
     end
 
