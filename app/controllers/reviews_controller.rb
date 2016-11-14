@@ -4,7 +4,7 @@ class ReviewsController < ApplicationController
     @project = Project.find(params[:project_id])
     @review = Review.new
     if request.xhr?
-      render partial: "reviews/new" 
+      render partial: "reviews/new"
     end
   end
 
@@ -30,7 +30,7 @@ class ReviewsController < ApplicationController
 
   def edit
     @review = Review.find(params[:id])
-    if logged_out? 
+    if logged_out?
       redirect_to root_path
     else
       if current_user != @review.user
@@ -61,16 +61,14 @@ class ReviewsController < ApplicationController
 
   def show
     @review = Review.find(params[:id])
-    if logged_out? 
+    if logged_out?
       redirect_to root_path
-    else 
-      @user = current_user 
+    else
+      @user = current_user
       if current_user == @review.user
         @ratings = @review.ratings.order(updated_at: :desc)
       else
-        review_ratings = @review.ratings
-        user_ratings = @user.ratings 
-        @ratings = Rating.get_user_owned_ratings(review_ratings, user_ratings)
+        @ratings = Rating.get_user_owned_ratings(@user, @review)
       end
       @project = @review.project
       @update = params[:update]

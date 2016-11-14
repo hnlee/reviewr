@@ -4,18 +4,22 @@ class ProjectsController < ApplicationController
     @project = Project.find_by_id(params[:id])
     if logged_out?
       redirect_to root_path
-    elsif current_user != @project.owner
-      redirect_to user_path(current_user.id)
-    else
+    elsif current_user == @project.owner
       @user = current_user
       @reviews = @project.reviews.order(updated_at: :desc)
+    elsif @project.get_reviewers.include?(current_user)
+      @user = current_user
+      @reviews = Review.get_user_owned_reviews(@user,
+                                               @project)
+    else
+      redirect_to user_path(current_user.id)
     end
   end
 
   def new
     if logged_out?
       redirect_to root_path
-    else    
+    else
       @project = Project.new
       @user = current_user
     end

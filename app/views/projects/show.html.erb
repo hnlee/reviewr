@@ -33,7 +33,7 @@
 <% end %>
 
 <% @reviews.each do |review| %>
-  <% if review.visible? %>
+  <% if review.visible? or review.user == @user %>
     <div>
       <div class='mini-box'>
         <div class='squarebrackets'>

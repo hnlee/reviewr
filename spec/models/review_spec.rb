@@ -11,7 +11,7 @@ RSpec.describe Review do
     it 'has many ratings' do
       review = Review.create(content: "Amazing")
       rating1 = create(:rating, helpful: true)
-      rating2 = create(:rating, helpful: false, 
+      rating2 = create(:rating, helpful: false,
                                 explanation: "not specific")
       create(:review_rating, review_id: review.id,
                              rating_id: rating1.id)
@@ -25,9 +25,9 @@ RSpec.describe Review do
       review = Review.create(content: "Terrible")
       user = create(:user, name: 'Sally',
                            email: 'sally@email.com')
-      create(:user_review, user_id: user.id, 
+      create(:user_review, user_id: user.id,
                            review_id: review.id)
-                           
+
       expect(review.user).to eq(user)
     end
   end
@@ -102,6 +102,46 @@ RSpec.describe Review do
       random_review = Review.get_random_review(user)
 
       expect(random_review).not_to eq(review1)
+    end
+  end
+
+  describe '.get_user_owned_reviews' do
+    it 'returns the reviews created by the user for the project' do
+      review = Review.create(content: 'Great work')
+      project = create(:project)
+      create(:project_review, review_id: review.id,
+                              project_id: project.id)
+      user = create(:user)
+      create(:user_review, user_id: user.id,
+                           review_id: review.id)
+
+      expect(Review.get_user_owned_reviews(user, project)).to include(review)
+    end
+
+    it 'does not return reviews created by other users' do
+      review = Review.create(content: 'Great work')
+      project = create(:project)
+      create(:project_review, review_id: review.id,
+                              project_id: project.id)
+      user1 = create(:user)
+      user2 = create(:user)
+      create(:user_review, user_id: user2.id,
+                           review_id: review.id)
+
+      expect(Review.get_user_owned_reviews(user1, project)).not_to include(review)
+    end
+
+    it 'does not return reviews created by the user for other projects' do
+      review = Review.create(content: 'Great work')
+      project1 = create(:project)
+      project2 = create(:project)
+      create(:project_review, review_id: review.id,
+                              project_id: project2.id)
+      user = create(:user)
+      create(:user_review, user_id: user.id,
+                           review_id: review.id)
+
+      expect(Review.get_user_owned_reviews(user, project1)).not_to include(review)
     end
   end
 end
