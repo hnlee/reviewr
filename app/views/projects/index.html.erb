@@ -1,18 +1,18 @@
 <%= render partial: "reviews/show", locals: { review: @review } %>
 
 <div>
-  <div class='mini-box'>
+  <div class='bracket-box'>
     <div class='squarebrackets'>
-      <center><%= link_to '+ create new project', new_project_path, class: 'body-link new-form-link' %></center>
+      <center><%= link_to '+ create new project', new_project_path, class: 'bracket-link new-form-link' %></center>
     </div>
   </div>
 </div>
 
 <% @projects.each do |project| %>
   <div>
-    <div class='mini-box'>
+    <div class='bracket-box'>
       <div class='squarebrackets'>
-        <center><%= link_to project.title, project, class: 'body-link' %></center>
+        <center><%= link_to project.title, project, class: 'bracket-link' %></center>
       </div>
     </div>
   </div>

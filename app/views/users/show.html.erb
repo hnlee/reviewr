@@ -2,43 +2,40 @@
 
 <h2>Welcome, <%= @user.name %></h2>
 
-<div>
-  <div class='mini-box'>
-    <div class='squarebrackets'>
-      <center><%= link_to '+ create new project', new_project_path(user: @user.id), class: 'body-link new-form-link' %></center>
-    </div>
+<%= link_to '+ create new project', new_project_path(user: @user.id), class: 'new-form-link' %>
+
+<div class="tab-container">
+  <ul class="tabs">
+    <li class="active"><a href="#projects">Projects</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+
+  <div class="tab-content margin" id="projects">
+    <h3>Projects You've Created</h3>
+
+    <% @projects.each do |project| %>
+      <div class='bracket-box'>
+        <div class='squarebrackets'>
+          <%= link_to project.title, project, class: 'bracket-link project-card' %>
+          <p><%= project.created_at.strftime('%b %d, %Y') %>
+          <% if project.updated_at != project.created_at %>
+            | updated <%= project.updated_at.strftime('%b %d, %Y') %>
+          <% end %></p>
+          <p><%= project.helpful_reviews_count %> Review<%if project.helpful_reviews_count > 1%>s<% end %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="tab-content margin" id="reviews">
+    <h3>Reviews You've Written</h3>
+    <% @reviews.each do |review| %>
+      <div class='bracket-box'>
+        <div class='squarebrackets'>
+          <%= link_to review.content, review_path(review), class: 'bracket-link review-card' %>
+              <p><%= review.get_project %> by <%= review.get_project_owner %></p><p></p>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
-
-<h3>Projects you've created</h3>
-
-<% @projects.each do |project| %>
-  <div>
-    <div class='mini-box'>
-      <div class='squarebrackets'>
-        <%= link_to project.title, project, class: 'body-link' %>
-        <p><%= project.created_at %>
-        <% if project.updated_at != project.created_at %>
-          | updated <%= project.updated_at %>
-        <% end %></p>
-        <p><%= project.helpful_reviews_count %></p>
-      </div>
-    </div>
-  </div>
-<% end %>
-
-<h3>Reviews you've written</h3>
-
-<% @reviews.each do |review| %>
-  <div>
-    <div class='mini-box'>
-      <div class='squarebrackets'>
-        <%= link_to review.content, review_path(review), class: 'body-link' %>
-
-            <p><%= review.get_project %></p>
-            <p><%= review.get_project_owner %></p>
-
-      </div>
-    </div>
-  </div>
-<% end %>

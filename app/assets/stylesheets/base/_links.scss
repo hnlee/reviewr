@@ -11,18 +11,24 @@ a.brand:hover {
   text-shadow: 1px 1px $light-black;
 }
 
-.body-link {
+.bracket-link {
   color: $dark-grey;
   letter-spacing: 2px;
+  padding: 0 10%;
+  display: block;
+}
+
+a.bracket-link:hover {
+  color: $med-grey;
+}
+
+.single-content {
   width: 75%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-}
-
-a.body-link:hover {
-  color: $med-grey;
+  font-size: 1.2em;
 }
 
 .edit-link {

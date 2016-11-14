@@ -12,15 +12,32 @@ p {
   margin-left: 40px;
 }
 
+.vertical-center {
+  position: absolute;
+  top: 50%;
+}
+
 .big-box {
   @include outer-container;
   padding: 15px 40px 15px 40px;
 }
 
-.mini-box {
-  @include span-columns(12);
+.bracket-box {
   height: 12em;
   padding: 25px;
+}
+
+.full-width {
+  @include span-columns(12);
+}
+
+.margin {
+  @include span-columns(10);
+  @include shift(1);
+}
+
+.thirds {
+  @include span-columns(4);
 }
 
 .squarebrackets {
@@ -54,6 +71,45 @@ p {
   top: 0px;
   bottom: 0px;
   right: -5px;
+}
+
+.single-content {
+  width: 75%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.project-card {
+  position: absolute;
+  top: 10%;
+  font-size: 1.5em;
+}
+
+.review-card {
+  position: absolute;
+  top: 10%;
+}
+
+.squarebrackets p {
+  padding: 0 10%;
+  position: absolute;
+  bottom: 15%;
+}
+
+.squarebrackets p:last-child {
+  padding: 0;
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+}
+
+.squarebrackets p:first-child {
+  padding: 0;
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
 }
 
 .load-form {
