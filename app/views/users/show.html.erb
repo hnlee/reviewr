@@ -32,7 +32,7 @@
     <% @reviews.each do |review| %>
       <div class='bracket-box'>
         <div class='squarebrackets'>
-          <%= link_to review.content, review_path(review), class: 'bracket-link review-card' %>
+          <%= link_to truncate(review.content, length: 170), review_path(review), class: 'bracket-link review-card' %>
               <p><%= review.get_project %> by <%= review.get_project_owner %></p><p></p>
         </div>
       </div>
