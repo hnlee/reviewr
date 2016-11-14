@@ -16,7 +16,7 @@ describe 'user', :type => :feature do
     it 'has a link to Google authentication' do 
       visit '/'
 
-      expect(page).to have_link('Sign in with Google')
+      expect(page).to have_button('Sign in with Google')
     end
   end
 
@@ -28,7 +28,7 @@ describe 'user', :type => :feature do
                                          email: 'hillaryclinton@email.com' } })
 
       visit '/'
-      find_link('Sign in with Google').click
+     find_button("Sign in with Google").click
 
       expect(page).to have_link('Sign out')
     end
@@ -43,7 +43,7 @@ describe 'user', :type => :feature do
       @user = User.find_by_name('hillaryclinton')
 
       visit "/"
-      find_link("Sign in with Google").click
+      find_button("Sign in with Google").click
     end
 
     describe 'projects tab' do

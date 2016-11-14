@@ -25,7 +25,7 @@ describe 'project' do
                                            email: 'hillaryclinton@email.com' } })
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
 
         project = create(:project, title: "my title", description: "my desc")
         owner = create(:user, name: 'name',
@@ -59,7 +59,7 @@ describe 'project' do
                                 review_id: @review.id) 
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'shows the project title and description' do
@@ -101,7 +101,7 @@ describe 'project' do
                                user_id: @user.id)
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'shows the project title and description' do
@@ -202,7 +202,7 @@ describe 'project' do
         @user = User.find_by_name('hillaryclinton')
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'displays a form for a new project' do
@@ -278,7 +278,7 @@ describe 'project' do
                                user_id: @user.id)
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'displays a form for editing a project' do
