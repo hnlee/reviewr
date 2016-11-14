@@ -35,7 +35,7 @@ describe 'review', :type => :feature do
                              review_id: @review.id)
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'shows review content' do
@@ -92,7 +92,7 @@ describe 'review', :type => :feature do
                              review_id: @review.id)
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'shows review content and link to leave rating' do
@@ -178,7 +178,7 @@ describe 'review', :type => :feature do
                              review_id: @review.id)
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'shows review content and all ratings for a review' do
@@ -302,7 +302,7 @@ describe 'review', :type => :feature do
                              review_id: @review.id)
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'redirects to user show page' do
@@ -327,7 +327,7 @@ describe 'review', :type => :feature do
                              review_id: @review.id)
 
         visit "/"
-        find_link("Sign in with Google").click
+        find_button("Sign in with Google").click
       end
 
       it 'reloads the review show page when a review is edited' do

@@ -24,7 +24,7 @@ describe 'rating', :type => :feature do
                            review_id: @review.id)
 
       visit "/"
-      find_link("Sign in with Google").click
+      find_button("Sign in with Google").click
     end
 
     it 'redirects to the review show page when a rating is submitted', :js => true do
@@ -76,7 +76,7 @@ describe 'rating', :type => :feature do
       @user = User.find_by_name('hillaryclinton')
 
       visit '/'
-      click_link('Sign in with Google')
+      find_button("Sign in with Google").click
     end
 
     it 'redirects to the index from the rating form is cancel is hit', :js => true do
