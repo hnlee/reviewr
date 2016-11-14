@@ -18,4 +18,5 @@
 //= require url.js
 //= require rating.js
 //= require review.js
+//= require tab.js
 //= require_tree .

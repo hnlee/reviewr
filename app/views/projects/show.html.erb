@@ -6,8 +6,10 @@
 
 <h2>
   <span id='page-title'><%= @project.title %></span>&nbsp;
-  <%= link_to(edit_project_path(@project), class: 'edit-link', id: 'edit-project-link') do %>
-    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+  <% if @user == @project.owner %>
+    <%= link_to(edit_project_path(@project), class: 'edit-link', id: 'edit-project-link') do %>
+      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    <% end %>
   <% end %>
 </h2>
 
@@ -19,7 +21,11 @@
 <div id='new-review' class='load-form'></div>
 
 <% if @reviews.length > 0 %>
-  <h3>Reviews</h3>
+  <% if @user == @project.owner %>
+    <h3>Reviews</h3>
+  <% else %>
+    <h3>Your review</h3>
+  <% end %>
 <% end %>
 
 <% if @user != @project.owner %>
