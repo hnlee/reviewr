@@ -19,4 +19,22 @@ class Review < ApplicationRecord
       return false
     end
   end
+
+  def get_project
+    if project
+      return project.title
+    end
+  end
+
+  def get_project_owner
+    if project and project.project_owner
+      return project.project_owner.user.name
+    end
+  end
+
+  def self.get_random_review(user)
+    user_reviews = user.reviews
+    reviews = Review.where.not(id: user_reviews).all
+    reviews.offset(rand(reviews.count)).first
+  end
 end

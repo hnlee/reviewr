@@ -70,10 +70,7 @@ class ReviewsController < ApplicationController
       else
         review_ratings = @review.ratings
         user_ratings = @user.ratings 
-        @ratings = Rating.where(id: review_ratings)
-                         .where(id: user_ratings)
-                         .all
-                         .order(updated_at: :desc)
+        @ratings = Rating.get_user_owned_ratings(review_ratings, user_ratings)
       end
       @project = @review.project
       @update = params[:update]

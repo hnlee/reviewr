@@ -25,8 +25,8 @@ class RatingsController < ApplicationController
       UserRating.create(user_id: @user.id,
                         rating_id: rating.id)
       if request.xhr?
-        render :js => "if (window.location.pathname == '#{root_path}') {
-                         url.redirectToURI('#{root_path}');
+        render :js => "if (window.location.pathname == '#{user_path(@user)}') {
+                         url.redirectToURI('#{user_path(@user)}');
                        } else {
                          url.redirectToURI('#{review_path(rating_params[:review_id])}');
                        };"
@@ -34,7 +34,7 @@ class RatingsController < ApplicationController
         redirect_to review_path(rating_params[:review_id])
       end
     else
-      if rating.helpful == false and rating.explanation.blank?
+      if rating.unhelpful? and rating.explanation.blank?
         if request.xhr?
           render :js => "dom.replaceContent('.alert-error', '<p>Please provide an explanation</p><br />');"
         else

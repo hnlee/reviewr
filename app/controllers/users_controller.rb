@@ -8,7 +8,7 @@ class UsersController < ApplicationController
       redirect_to user_path(current_user.id)
     else
       @user = current_user
-      @review = Review.offset(rand(Review.count)).first
+      @review = Review.get_random_review(@user)
       @projects = @user.projects.order(updated_at: :desc).all
       @reviews = @user.reviews.order(updated_at: :desc).all
     end
