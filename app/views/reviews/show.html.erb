@@ -31,10 +31,10 @@
   <% if @user != @review.user %>
     <p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
 
-    <div class='mini-box' id='new-rating-box'>
+    <div class='bracket-box' id='new-rating-box'>
       <div class='squarebrackets'>
         <center>
-          <div class='body-link'>
+          <div class='bracket-link'>
               <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-up'  do %>
                 <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
               <% end %>
@@ -50,9 +50,9 @@
   <% end %>
 
   <% @ratings.each do |rating| %>
-    <div class='mini-box'>
+    <div class='bracket-box thirds'>
       <div class='squarebrackets'>
-        <span class='body-link'>
+        <span class='bracket-link single-content'>
           <center>
             <div class='scroll'>
               <% if rating.helpful %>

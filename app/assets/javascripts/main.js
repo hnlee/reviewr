@@ -54,4 +54,17 @@ $(document).ready(function () {
     submitEditReviewForm(path_id);
   });
 
+  $(".tab-container").on("click", "li", function(event) {
+    event.preventDefault();
+    var active_class = $("a",this).attr("href");
+
+    console.log(active_class);
+
+    $("li.active").removeClass("active");
+    $(this).addClass("active");
+
+    $(".tab-content:not(.active)").hide()
+    $(".tab-content" + active_class).show();
+  });
+
 });

@@ -12,10 +12,10 @@
   <body>
     <div class="header">
       <section class="big-box">
-        <h1><a class="brand" href="/">Reviewr</a></h1>
+        <h1><a class="brand" href="/">Reviewr</a>
         <% if current_user %>
-          <%= link_to 'Sign out', '/logout' %>
-        <% end %>
+          <span class='back-link'><%= link_to 'Sign out', '/logout', class: 'cancel-link' %></span>
+        <% end %></h1>
       </section>
     </div>
     <section class="big-box">
