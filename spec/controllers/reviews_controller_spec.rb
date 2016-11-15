@@ -6,6 +6,10 @@ RSpec.describe ReviewsController, :type => :controller do
   describe 'GET /reviews/new' do
     it 'renders the template for the review new page' do
       project = create(:project)
+      invite = create(:user)
+      create(:project_invite, project_id: project.id,
+                              user_id: invite.id)
+      session[:user_id] = invite.id
 
       get :new, params: { project_id: project.id }
 

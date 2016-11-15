@@ -66,4 +66,7 @@ $(document).ready(function () {
                               active_content_id);
   });
 
+  $("#add-invite-link").on("click", function(event) {
+    addInviteField();
+  });
 });

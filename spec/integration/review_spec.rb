@@ -20,7 +20,7 @@ describe 'review', :type => :feature do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         @user = User.find_by_name('hillaryclinton')
         reviewer = create(:user, name: 'name1',
                                  email: 'name1@email.com',
@@ -67,6 +67,10 @@ describe 'review', :type => :feature do
 
         expect(page).not_to have_content(rating.explanation)
       end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
 
     describe 'when logged in as a user who is not the reviewer or project owner' do
@@ -74,7 +78,7 @@ describe 'review', :type => :feature do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         @user = User.find_by_name('hillaryclinton')
         @review = create(:review, content: 'Looks good!')
         project = create(:project, title: "Foo", description: "Bar")
@@ -161,6 +165,10 @@ describe 'review', :type => :feature do
         expect(page).to have_checked_field('rating_helpful_false')
         expect(page).to have_button('Rate review')
       end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
 
     describe 'when logged in as the reviewer' do
@@ -168,7 +176,7 @@ describe 'review', :type => :feature do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         reviewer = User.find_by_name('hillaryclinton')
         @review = create(:review, content: 'Looks good!')
         @project = create(:project, title: "Foo", description: "Bar")
@@ -230,45 +238,97 @@ describe 'review', :type => :feature do
         expect(page).to have_content(@project.title)
         expect(current_path).to eq('/projects/' + @project.id.to_s)
       end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
   end
 
   describe 'new page' do
-    xit 'redirects to the project show page when a review is submitted' do
-      project = create(:project, title: 'my title', description: 'my desc')
+    describe 'when logged out' do
+       it 'redirects to root' do
+        project = create(:project, title: "Foo", description: "Bar")
 
-      visit '/projects/' + project.id.to_s
-      click_link('+ review project')
-      fill_in('review[content]', with: 'my review')
-      click_button('Create new review')
+        visit "/reviews/new/" + project.id.to_s
 
-      expect(current_path).to eq('/projects/' + project.id.to_s)
-      expect(page).to have_content('my review')
+        expect(current_path).to eq('/')
+      end 
+    end
+    
+    describe 'when logged in as a user who is invited to review' do 
+      before(:each) do
+        OmniAuth.config.add_mock(:google_oauth2,
+                                 { uid: 'uidhillaryclinton',
+                                   info: { name: 'hillaryclinton',
+                                           email: 'hillaryclinton@gmail.com' } })
+        @invite = User.find_by_name('hillaryclinton')
+        @project = create(:project, title: "Foo", description: "Bar")
+        create(:project_invite, project_id: @project.id,
+                                user_id: @invite.id)
+
+        visit "/"
+        find_button("Sign in with Google").click
+      end
+
+     it 'redirects to the project show page when a review is submitted' do
+        visit '/projects/' + @project.id.to_s
+        click_link('+ review project')
+        fill_in('review[content]', with: 'my review')
+        click_button('Create new review')
+
+        expect(current_path).to eq('/projects/' + @project.id.to_s)
+        expect(page).to have_content('my review')
+      end
+
+      it 'displays a warning if content is left blank when creating a new review', :js => true do
+        visit '/projects/' + @project.id.to_s
+        click_link('+ review project')
+        click_button('Create new review')
+
+        expect(page).to have_content('Create new review')
+        expect(page).to have_content('Review cannot be blank')
+        expect(current_path).to eq('/projects/' + @project.id.to_s)
+      end
+
+      it 'redirects back to the project show page when cancel link is clicked', :js => true do
+        visit '/projects/' + @project.id.to_s
+        click_link('+ review project')
+        click_link('cancel')
+
+        expect(current_path).to eq('/projects/' + @project.id.to_s)
+        expect(page).to have_no_css('form')
+      end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
 
-    xit 'displays a warning if content is left blank when creating a new review', :js => true do
-      project = create(:project, title: 'my title', description: 'my desc')
+    describe 'when logged in as a user who has not been invited to review' do
+      before(:each) do
+        OmniAuth.config.add_mock(:google_oauth2,
+                                 { uid: 'uidhillaryclinton',
+                                   info: { name: 'hillaryclinton',
+                                           email: 'hillaryclinton@gmail.com' } })
+        @user = User.find_by_name('hillaryclinton')
+        @project = create(:project, title: "Foo", description: "Bar")
 
-      visit '/projects/' + project.id.to_s
-      click_link('+ review project')
-      click_button('Create new review')
+        visit "/"
+        find_button("Sign in with Google").click
+      end
 
-      expect(page).to have_content('Create new review')
-      expect(page).to have_content('Review cannot be blank')
-      expect(current_path).to eq('/projects/' + project.id.to_s)
+      it 'redirects to user show page' do
+        visit '/reviews/new/' + @project.id.to_s
+
+        expect(current_path).to eq('/users/' + @user.id.to_s)
+      end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
-
-    xit 'redirects back to the project show page when cancel link is clicked', :js => true do
-      project = create(:project, title: 'my title', description: 'my desc')
-
-      visit '/projects/' + project.id.to_s
-      click_link('+ review project')
-      click_link('cancel')
-
-      expect(current_path).to eq('/projects/' + project.id.to_s)
-      expect(page).to have_no_css('form')
-    end
-   end
+  end
 
   describe 'edit page' do
     describe 'when logged out' do
@@ -289,7 +349,7 @@ describe 'review', :type => :feature do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         @user = User.find_by_name('hillaryclinton')
         reviewer = create(:user, name: 'name1',
                                  email: 'name1@email.com',
@@ -310,6 +370,10 @@ describe 'review', :type => :feature do
 
         expect(current_path).to eq('/users/' + @user.id.to_s)
       end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
 
     describe 'when logged in as reviewer' do
@@ -317,7 +381,7 @@ describe 'review', :type => :feature do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         @reviewer = User.find_by_name('hillaryclinton')
         @review = create(:review, content: 'Looks good!')
         project = create(:project, title: "Foo", description: "Bar")
@@ -360,6 +424,10 @@ describe 'review', :type => :feature do
         expect(current_path).to eq('/reviews/' + @review.id.to_s)
         expect(page).to have_no_css('form')
         expect(page).to have_content('Looks good!')
+      end
+
+      after(:each) do
+        visit "/logout"
       end
     end
   end

@@ -56,7 +56,7 @@ thumbs_down = [ 'This is not kind',
                 'This is neither kind nor actionable',
                 'This is neither kind, specific, or actionable' ]
 
-project_count = 30
+project_count = 40
 
 user_names.each do |name|
   User.create(name: name, email: name + '@gmail.com', uid: 'uid' + name)
@@ -65,24 +65,29 @@ end
 User.create(name: 'Nicole Carpenter', email: 'ncarpenter@8thlight.com', uid: '101379786221150376018')
 User.create(name: 'Hana Lee', email: 'hana@8thlight.com', uid: '106812979936097644716')
 
+user_names += ['Nicole Carpenter', 'Hana Lee']
+
 project_count.times do |i|
   title = languages.sample + ' ' + coding_projects.sample
-  description = (greetings.sample + 'I want to invite you to check out my ' + title + '. ' + schmooze.sample  + '. You can check out my repo here: www.github.com/' + user_names.sample + '/' + title.gsub(/\s+/, '-') + '. Thanks in advance for your feedback!')
+  user = user_names.sample
+  description = (greetings.sample + 'I want to invite you to check out my ' + title + '. ' + schmooze.sample  + '. You can check out my repo here: www.github.com/' + user.downcase.gsub(/\s+/, '') + '/' + title.gsub(/\s+/, '-') + '. Thanks in advance for your feedback!')
   Project.create(title: title, description: description)
-  ProjectOwner.create(project_id: i + 1, user_id: rand(User.count) + 1)
+  ProjectOwner.create(project_id: i + 1, user_id: User.find_by(name: user).id)
 end
 
 100.times do
-  ProjectInvite.create(project_id: rand(Project.count) + 1, user_id: rand(User.count) + 1)
+  project = rand(Project.count) + 1
+  user = ((1..User.count).to_a - [Project.find(project).owner]).sample
+  ProjectInvite.find_or_create_by(project_id: project, user_id: user)
 end
 
-50.times do 
+100.times do 
   review = Review.create(content: review_content.sample)
   UserReview.create(user_id: rand(User.count) + 1, review_id: review.id)
   ProjectReview.create(project_id: rand(Project.count) + 1, review_id: review.id)
 end
 
-75.times do
+100.times do
   rand_bool = rand(2)
   if rand_bool == 1
     rating = Rating.create(helpful: true, explanation: thumbs_up.sample)

@@ -6,7 +6,7 @@ describe 'rating', :type => :feature do
       OmniAuth.config.add_mock(:google_oauth2,
                                { uid: 'uidhillaryclinton',
                                  info: { name: 'hillaryclinton',
-                                         email: 'hillaryclinton@email.com' } })
+                                         email: 'hillaryclinton@gmail.com' } })
       @user = User.find_by_name('hillaryclinton')
       @review = create(:review, content: 'Looks good!')
       project = create(:project, title: "Foo", description: "Bar")
@@ -65,6 +65,10 @@ describe 'rating', :type => :feature do
       expect(current_path).to eq('/reviews/' + @review.id.to_s)
       expect(page).to have_no_css('form') 
     end
+
+    after(:each) do
+      visit "/logout"
+    end
   end
 
   describe 'random new page' do
@@ -72,7 +76,7 @@ describe 'rating', :type => :feature do
       OmniAuth.config.add_mock(:google_oauth2,
                                { uid: 'uidhillaryclinton',
                                  info: { name: 'hillaryclinton',
-                                         email: 'hillaryclinton@email.com' } })
+                                         email: 'hillaryclinton@gmail.com' } })
       @user = User.find_by_name('hillaryclinton')
 
       visit '/'
@@ -109,6 +113,10 @@ describe 'rating', :type => :feature do
 
       expect(current_path).to eq('/users/' + @user.id.to_s)
       expect(page).to have_content("Please provide an explanation")
+    end
+
+    after(:each) do
+      visit "/logout"
     end
   end
 end

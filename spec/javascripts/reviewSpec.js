@@ -8,7 +8,7 @@ describe("Reviews", function() {
   describe("showNewReviewForm()", function() {
     it("loads new review form and hides container for link to new review", function() {
       affix("#new-review");
-      affix("#new-review-box");
+      affix("#new-review-link");
       server.respondWith("GET",
                          "/reviews/new/1",
                          "form html");
@@ -16,7 +16,7 @@ describe("Reviews", function() {
       server.respond();
 
       expect($("#new-review").html()).toEqual("form html");
-      expect($("#new-review-box").css("display")).toEqual("none");
+      expect($("#new-review-link").css("display")).toEqual("none");
     });
   });
 
