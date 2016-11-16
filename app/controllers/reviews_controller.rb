@@ -1,10 +1,17 @@
 class ReviewsController < ApplicationController
 
   def new
-    @project = Project.find(params[:project_id])
-    @review = Review.new
-    if request.xhr?
-      render partial: "reviews/new"
+    if logged_out?
+      redirect_to root_path
+    else
+      @project = Project.find(params[:project_id])
+      @review = Review.new
+      if !@project.get_invites.include?(current_user)
+        redirect_to user_path(current_user.id)
+      elsif request.xhr?
+        render partial: "reviews/new"
+      else
+      end
     end
   end
 
