@@ -37,6 +37,7 @@ class ProjectsController < ApplicationController
           user = User.find_or_create_by(email: email)
           ProjectInvite.create(project_id: project.id,
                                user_id: user.id)
+          InviteMailer.invite_email(project, user).deliver_now
         end
       end
       redirect_to user_path(current_user.id)

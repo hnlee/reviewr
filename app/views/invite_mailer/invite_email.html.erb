@@ -1,0 +1,12 @@
+<p>Hi <%= @user.name %>!</p>
+
+<p><%= @project.owner.name %> has invited you to review <%= link_to @project.title, project_url(@project) %> on <%= link_to "Reviewr", root_url %>.</p>
+
+<h3><%= link_to @project.title, project_url(@project) %>, by <%= @project.owner.name %></h3>
+
+<blockquote><%= @project.description %></blockquote>
+
+<p>If you have not used <%= link_to "Reviewr", root_url %> before, you can sign in with any Google account to access the project page.</p>
+
+<p>Your review will be made visible to the project creator when it has been rated as being kind, specific, and actionable.</p>
+

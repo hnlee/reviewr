@@ -1,0 +1,16 @@
+Hi <%= @user.name %>!
+
+<%= @project.owner.name %> has invited you to review @project.title on Reviewr.
+
+-------------------------------------------------------------------------------
+
+<%= @project.title %> by <%= @project.owner.name %>: <%= project_url(@project) %>
+
+Description: "<%= @project.description %>"
+
+-------------------------------------------------------------------------------
+
+If you have not used Reviewr before, you can sign in with any Google account to access the project page: <%= root_url %>
+
+Your review will be made visible to the project creator when it has been rated as being kind, specific, and actionable.
+
