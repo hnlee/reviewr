@@ -23,11 +23,11 @@
 
 <div id='new-rating' class='load-form'></div>
 
-<% if @ratings.length > 0 %>
-  <h3>Ratings</h3>
-<% end %>
-
 <% if @user != @project.owner %>
+  <% if @ratings.length > 0 %>
+    <h3>Ratings</h3>
+  <% end %>
+
   <% if @user != @review.user %>
     <p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
 

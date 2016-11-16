@@ -8,6 +8,7 @@
   <ul class="tabs">
     <li class="active"><a href="#projects">Projects</a></li>
     <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#invites">Invites</a></li>
   </ul>
 
   <div class="tab-content margin" id="projects">
@@ -21,7 +22,7 @@
           <% if project.updated_at != project.created_at %>
             | updated <%= project.updated_at.strftime('%b %d, %Y') %>
           <% end %></p>
-          <p><%= project.helpful_reviews_count %> Review<%if project.helpful_reviews_count > 1%>s<% end %></p>
+          <p><%= project.helpful_reviews_count %> Review<%if project.helpful_reviews_count != 1%>s<% end %></p>
         </div>
       </div>
     <% end %>
@@ -34,6 +35,22 @@
         <div class='squarebrackets'>
           <%= link_to truncate(review.content, length: 170), review_path(review), class: 'bracket-link review-card' %>
               <p><%= review.get_project %> by <%= review.get_project_owner %></p><p></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="tab-content margin" id="invites">
+    <h3>Projects You're Invited to Review</h3>
+    <% @invites.each do |invite| %>
+      <div class='bracket-box'>
+        <div class='squarebrackets'>
+          <%= link_to invite.title, invite, class: 'bracket-link project-card' %>
+          <p><%= invite.created_at.strftime('%b %d, %Y') %>
+          <% if invite.updated_at != invite.created_at %>
+            | updated <%= invite.updated_at.strftime('%b %d, %Y') %>
+          <% end %></p>
+          <p><%= invite.helpful_reviews_count %> Review<%if invite.helpful_reviews_count != 1%>s<% end %></p>
         </div>
       </div>
     <% end %>

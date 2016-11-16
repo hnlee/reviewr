@@ -18,6 +18,7 @@ RSpec.describe ProjectsController, :type => :controller do
 
       expect(response.body).to include("Title")
       expect(response.body).to include("Description")
+      expect(response.body).to include("Enter email address to invite reviewer")
     end
   end
 
@@ -26,7 +27,7 @@ RSpec.describe ProjectsController, :type => :controller do
       user = create(:user)
       session[:user_id] = user.id
 
-      post :create, params: { project: { title: 'my project', description: 'a description' } }
+      post :create, params: { project: { title: 'my project', description: 'a description', email: 'an@email.com' } }
 
       expect(response).to redirect_to(user_path(session[:user_id]))
       expect(response).to have_http_status(:redirect)
@@ -62,7 +63,7 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response).to have_http_status(:redirect)
     end
 
-    it 'redirects to root if you are not logged in as the owner or as a reviewer' do
+    it 'redirects to root if you are not logged in as the owner, invited reviewer, or previous reviewer' do
       project = create(:project)
       owner = create(:user, name: 'name1',
                             email: 'name1@email.com',
@@ -79,12 +80,43 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response).to have_http_status(:redirect)
     end
 
-    it 'renders the template for the project show page when logged in as a reviewer' do
+    it 'renders the template for the project show page when logged in as an invited reviewer' do
       project = create(:project)
       review = create(:review, content: 'What a project')
-      reviewer = create(:user, name: 'name',
-                               email: 'name@email.com',
-                               uid: 'uidname')
+      reviewer = create(:user, name: 'name1',
+                               email: 'name1@email.com',
+                               uid: 'uidname1')
+      invite = create(:user, name: 'name2',
+                             email: 'name2@email.com',
+                             uid: 'uidname2')
+      create(:project_invite, project_id: project.id,
+                              user_id: invite.id)
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
+      create(:user_review, user_id: reviewer.id,
+                           review_id: review.id)
+      session[:user_id] = invite.id
+
+      get :show, params: { id: project.id }
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include(project.title)
+      expect(response.body).to include(project.description)
+      expect(response.body).not_to include(review.content)
+      expect(response.body).not_to include(invite.email)
+    end
+
+    it 'renders the template for the project show page when logged in as a previous reviewer' do
+      project = create(:project)
+      review = create(:review, content: 'What a project')
+      reviewer = create(:user, name: 'name1',
+                               email: 'name1@email.com',
+                               uid: 'uidname1')
+      invite = create(:user, name: 'name2',
+                             email: 'name2@email.com',
+                             uid: 'uidname2')
+      create(:project_invite, project_id: project.id,
+                              user_id: invite.id)
       create(:project_review, project_id: project.id,
                               review_id: review.id)
       create(:user_review, user_id: reviewer.id,
@@ -97,15 +129,21 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response.body).to include(project.title)
       expect(response.body).to include(project.description)
       expect(response.body).to include(review.content)
+      expect(response.body).not_to include(invite.email)
     end
 
     it 'renders the template for the project show page when logged in as the owner' do
       project = create(:project)
-      owner = create(:user, name: 'name',
-                            email: 'name@email.com',
-                            uid: 'uidname')
+      owner = create(:user, name: 'name1',
+                            email: 'name1@email.com',
+                            uid: 'uidname1')
+      invite = create(:user, name: 'name2',
+                             email: 'name2@email.com',
+                             uid: 'uidname2')
       create(:project_owner, project_id: project.id,
                              user_id: owner.id)
+      create(:project_invite, project_id: project.id,
+                              user_id: invite.id)
       session[:user_id] = owner.id
 
       get :show, params: { id: project.id }
@@ -113,6 +151,7 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response.status).to eq(200)
       expect(response.body).to include(project.title)
       expect(response.body).to include(project.description)
+      expect(response.body).to include(invite.email)
     end
 
     it 'includes helpfully rated reviews associated with the project when logged in as the owner' do
@@ -130,7 +169,8 @@ RSpec.describe ProjectsController, :type => :controller do
       create(:project_review, project_id: project.id,
                               review_id: review2.id)
       rating1 = create(:rating, helpful: true)
-      rating2 = create(:rating, helpful: true)
+      rating2 = create(:rating, helpful: false,
+                                explanation: "Not helpful")
       create(:review_rating, review_id: review1.id,
                              rating_id: rating1.id)
       create(:review_rating, review_id: review2.id,
@@ -139,7 +179,7 @@ RSpec.describe ProjectsController, :type => :controller do
       get :show, params: { id: project.id }
 
       expect(response.body).to include(review1.content)
-      expect(response.body).to include(review2.content)
+      expect(response.body).not_to include(review2.content)
     end
 
     it 'includes a link to edit the project when logged in as the owner' do

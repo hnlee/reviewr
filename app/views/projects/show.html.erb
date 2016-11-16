@@ -18,14 +18,25 @@
 </div>
 <br \>
 
+<% if @project.invites.count > 0 and @user == @project.owner %>
+  <div>
+    <h3>Invited reviewers</h3>
+    <ul>
+      <% @project.invites.each do |invite| %>
+        <li><%= invite.email %></li>
+      <% end %>
+    </ul>
+  </div>
+<br \>
+<% end %>
+
 <div id='new-review' class='load-form'></div>
 
-<% if @reviews.length > 0 %>
-  <% if @user == @project.owner %>
-    <h3>Reviews</h3>
-  <% else %>
-    <h3>Your review</h3>
-  <% end %>
+<% if @user == @project.owner and @project.helpful_reviews_count > 0 %>
+  <h3>Reviews</h3>
+<% end %>
+<% if @project.get_reviewers.include?(current_user) %>
+  <h3>Your review</h3>
 <% end %>
 
 <% if @user != @project.owner %>
@@ -33,7 +44,7 @@
 <% end %>
 
 <% @reviews.each do |review| %>
-  <% if review.visible? or review.user == @user %>
+  <% if (@user == @project.owner and review.visible?) or @user == review.user %>
     <div>
       <div class='bracket-box'>
         <div class='squarebrackets'>

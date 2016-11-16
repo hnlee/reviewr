@@ -5,7 +5,7 @@ showNewReviewForm = function(project_id) {
   var callback = function(response) {
     dom.displayPartial("#new-review",
                        response);
-    dom.hideElement("#new-review-box");
+    dom.hideElement("#new-review-link");
   };
   client.ajaxGet("/reviews/new/" + project_id,
                  callback); 

@@ -29,4 +29,10 @@ class Project < ApplicationRecord
                              .select('user_id')
     return User.where(id: user_reviews).all
   end
+
+  def get_invites
+    project_invites = ProjectInvite.where(project_id: id)
+                                   .select('user_id')
+    return User.where(id: project_invites).all
+  end
 end

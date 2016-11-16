@@ -22,7 +22,7 @@ describe 'project' do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
 
         visit "/"
         find_button("Sign in with Google").click
@@ -38,6 +38,75 @@ describe 'project' do
         visit "/projects/" + project.id.to_s
 
         expect(current_path).to eq("/users/" + @user.id.to_s)
+
+        visit "/logout"
+      end
+    end
+
+    describe 'when logged in as a user who is invited to review' do
+      before(:each) do
+        OmniAuth.config.add_mock(:google_oauth2,
+                                 { uid: 'uidhillaryclinton',
+                                   info: { name: 'hillaryclinton',
+                                           email: 'hillaryclinton@gmail.com' } })
+        @user = User.find_by_name('hillaryclinton')
+        owner = create(:user)
+        @project = create(:project, title: "my title", description: "my desc")
+        create(:project_owner, project_id: @project.id,
+                               user_id: owner.id)
+        create(:project_invite, project_id: @project.id,
+                                user_id: @user.id) 
+
+        visit "/"
+        find_button("Sign in with Google").click
+      end
+
+      it 'shows the project title and description' do
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).to have_content(@project.title)
+        expect(page).to have_content(@project.description)
+      end
+
+      it 'shows link to leave review' do
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).to have_content('+ review project')
+      end
+
+      it 'does not show review left by another user' do
+        review = create(:review, content: 'Written by someone else')
+        reviewer = create(:user) 
+        create(:user_review, review_id: review.id,
+                             user_id: reviewer.id)
+        create(:project_review, project_id: @project.id,
+                                review_id: review.id) 
+
+        visit "/projects/" + @project.id.to_s
+        
+        expect(page).not_to have_content(review.content)
+      end
+
+      it 'does not show edit project link' do
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).not_to have_xpath('//i', :class => 'fa fa-pencil-square-o')
+      end
+
+      it 'does not show invited reviewers' do
+        invite = create(:user, name: 'name',
+                               email: 'name@email.com',
+                               uid: 'uidname')
+        create(:project_invite, project_id: @project.id,
+                                user_id: invite.id)
+
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).not_to have_content(invite.email)
+      end
+
+      after(:each) do
+        visit "/logout"
       end
     end
 
@@ -46,7 +115,7 @@ describe 'project' do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         @user = User.find_by_name('hillaryclinton')
         owner = create(:user)
         @project = create(:project, title: "my title", description: "my desc")
@@ -72,6 +141,7 @@ describe 'project' do
       it 'shows the review left by the user' do
         visit "/projects/" + @project.id.to_s
         
+        expect(page).to have_content("Your review")
         expect(page).to have_content(@review.content)
       end
 
@@ -93,6 +163,22 @@ describe 'project' do
 
         expect(page).not_to have_xpath('//i', :class => 'fa fa-pencil-square-o')
       end
+
+      it 'does not show invited reviewers' do
+        invite = create(:user, name: 'name',
+                               email: 'name@email.com',
+                               uid: 'uidname')
+        create(:project_invite, project_id: @project.id,
+                                user_id: invite.id)
+
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).not_to have_content(invite.email)
+      end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
 
     describe 'when logged in as the owner' do
@@ -100,7 +186,7 @@ describe 'project' do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         @user = User.find_by_name('hillaryclinton')
         @project = create(:project, title: "my title", description: "my desc")
         create(:project_owner, project_id: @project.id,
@@ -143,6 +229,7 @@ describe 'project' do
 
         visit "/projects/" + @project.id.to_s
 
+        expect(page).to have_content("Reviews")
         expect(page).to have_content(review.content)
       end
 
@@ -187,6 +274,23 @@ describe 'project' do
 
         expect(page.body.index(review1.content)).to be > page.body.index(review2.content)
       end
+
+      it 'shows invited reviewers' do
+        invite = create(:user, name: 'name',
+                               email: 'name@email.com',
+                               uid: 'uidname')
+        create(:project_invite, project_id: @project.id,
+                                user_id: invite.id)
+
+        visit "/projects/" + @project.id.to_s
+
+        expect(page).to have_content("Invited reviewers")
+        expect(page).to have_content(invite.email)
+      end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
   end
 
@@ -204,7 +308,7 @@ describe 'project' do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         @user = User.find_by_name('hillaryclinton')
 
         visit "/"
@@ -218,6 +322,7 @@ describe 'project' do
         expect(page).to have_content('Create new project')
         expect(page).to have_field('Title')
         expect(page).to have_field('Description')
+        expect(page).to have_field('Enter email address to invite reviewer')
         expect(page).to have_button('Create new project')
         expect(page).to have_content('This form supports markdown')
       end
@@ -226,6 +331,7 @@ describe 'project' do
         visit '/projects/new'
         fill_in('project[title]', with: 'my project')
         fill_in('project[description]', with: 'a description')
+        fill_in('emails_', with: 'an@email.com')
         click_button('Create new project')
 
         expect(current_path).to eq('/users/' + @user.id.to_s)
@@ -259,6 +365,10 @@ describe 'project' do
         expect(current_path).to eq('/users/' + @user.id.to_s)
         expect(page).to have_no_css('form')
       end
+
+      after(:each) do
+        visit "/logout"
+      end
     end
   end
 
@@ -272,12 +382,13 @@ describe 'project' do
         expect(current_path).to eq('/')
       end
     end
+
     describe 'when logged in as the project owner' do
       before(:each) do
         OmniAuth.config.add_mock(:google_oauth2,
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@email.com' } })
+                                           email: 'hillaryclinton@gmail.com' } })
         @user = User.find_by_name('hillaryclinton')
         @project = create(:project, title: "my title", description: "my desc")
         create(:project_owner, project_id: @project.id,
@@ -339,6 +450,10 @@ describe 'project' do
         expect(page).to have_no_css('form')
         expect(page).to have_content('my title')
         expect(page).to have_content('my desc')
+      end
+
+      after(:each) do
+        visit "/logout"
       end
     end
   end

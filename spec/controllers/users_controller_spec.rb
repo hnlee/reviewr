@@ -52,6 +52,16 @@ RSpec.describe UsersController, :type => :controller do
         expect(response.body).to include(review1.content)
         expect(response.body).to include(review2.content)
       end
+
+      it 'displays the projects that the user has been invited to review' do
+        project = create(:project, title: 'Invited to review')
+        create(:project_invite, project_id: project.id, 
+                                user_id: @user.id)
+
+        get :show, params: { id: @user.id }
+
+        expect(response.body).to include(project.title)
+      end
     end
    
     describe 'when logged in as a different user' do 

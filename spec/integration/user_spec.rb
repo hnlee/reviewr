@@ -25,10 +25,10 @@ describe 'user', :type => :feature do
       OmniAuth.config.add_mock(:google_oauth2,
                                { uid: 'uidhillaryclinton',
                                  info: { name: 'hillaryclinton',
-                                         email: 'hillaryclinton@email.com' } })
+                                         email: 'hillaryclinton@gmail.com' } })
 
       visit '/'
-     find_button("Sign in with Google").click
+      find_button("Sign in with Google").click
 
       expect(page).to have_link('Sign out')
     end
@@ -39,7 +39,7 @@ describe 'user', :type => :feature do
       OmniAuth.config.add_mock(:google_oauth2,
                                { uid: 'uidhillaryclinton',
                                  info: { name: 'hillaryclinton',
-                                         email: 'hillaryclinton@email.com' } })
+                                         email: 'hillaryclinton@gmail.com' } })
       @user = User.find_by_name('hillaryclinton')
 
       visit "/"
@@ -138,7 +138,7 @@ describe 'user', :type => :feature do
         user = create(:user, name: 'name1', 
                              email: 'name1@example.com',
                              uid: 'uidname1')
-        review = create(:review, content: 'Amazing job')
+        review = create(:review, content: 'Fantabulous')
         create(:user_review, review_id: review.id,
                              user_id: user.id)
 
@@ -186,6 +186,18 @@ describe 'user', :type => :feature do
         visit user_path(id: @user)
 
         expect(page.body.index(review1.content)).to be > page.body.index(review2.content)
+      end
+    end
+
+    describe 'pending reviews tab' do 
+      it 'shows projects for which the user has been invited to review' do
+        project = create(:project, title: 'Java Bowling Game')
+        create(:project_invite, project_id: project.id,
+                                user_id: @user.id)
+
+        visit user_path(id: @user)
+        
+        expect(page).to have_link(project.title)
       end
     end
 
