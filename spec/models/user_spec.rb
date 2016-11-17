@@ -10,12 +10,18 @@ RSpec.describe User do
       expect(user.email).to eq("sally@email.com")
     end
 
-    it "has many projects it owns" do
-      user = User.create(name: "Molly",
-                         email: "molly@email.com")
-      project1 = create(:project, title: "project 1")
-      project2 = create(:project, title: "project 2")
-      project3 = create(:project, title: "project 3")
+   it 'is invalid if email is not given' do 
+      user = User.create(name: 'Sally')
+
+      expect(user.id).to be_nil
+    end
+
+    it 'has many projects it owns' do
+      user = User.create(name: 'Molly',
+                         email: 'molly@email.com')
+      project1 = create(:project, title: 'project 1')
+      project2 = create(:project, title: 'project 2')
+      project3 = create(:project, title: 'project 3')
       create(:project_owner, user_id: user.id,
                              project_id: project1.id)
       create(:project_owner, user_id: user.id,
@@ -114,5 +120,4 @@ RSpec.describe User do
       expect(user.get_open_invites).not_to include(project)
     end
   end
-
 end

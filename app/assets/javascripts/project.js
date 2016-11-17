@@ -19,3 +19,11 @@ getIdIndex = function(element, id_prefix) {
   var id = $(element).attr("id")
   return id.replace(id_prefix, "");
 };
+
+isLastFieldBlank = function(element) {
+  if($(element).last().val()) {
+    return true;
+  } else {
+    return false;
+  }
+}

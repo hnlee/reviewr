@@ -327,11 +327,11 @@ describe "project" do
         expect(page).to have_content("This form supports markdown")
       end
 
-      it "redirects to the user show page when a new project is submitted" do
+      it "redirects to the user show page when a new project is submitted", :js => true do
         visit "/projects/new"
         fill_in("project[title]", with: "my project")
         fill_in("project[description]", with: "a description")
-        fill_in("emails_", with: "an@email.com")
+        fill_in("input_0", with: "an@email.com")
         click_button("Create new project")
 
         expect(current_path).to eq("/users/" + @user.id.to_s)
@@ -358,6 +358,24 @@ describe "project" do
         expect(page).to have_content("Please provide a description")
       end
 
+      it "displays a warning if email field is blank before clicking on plus icon", :js => true do
+        visit "/projects/new"
+        fill_in("project[title]", with: "my project")
+        fill_in("project[description]", with: "a description")
+        find_by_id("add-invite-link").trigger("click") 
+        
+        expect(page).to have_content("Please input an email address") 
+      end
+
+      it "displays a warning if email field is blank before submitting", :js => true do
+        visit "/projects/new"
+        fill_in("project[title]", with: "my project")
+        fill_in("project[description]", with: "a description")
+        click_button("Create new project")
+        
+        expect(page).to have_content("Please input an email address") 
+      end
+
       it "redirects to user show page if cancel link is clicked" do
         visit "/projects/new"
         click_link("cancel")
@@ -368,6 +386,7 @@ describe "project" do
 
       it "adds an email field when the plus icon is clicked", :js => true do
         visit "/projects/new"
+        fill_in("input_0", with: "an@email.com")
         find_by_id("add-invite-link").trigger("click")
 
         expect(page).to have_field("input_1")
@@ -375,6 +394,7 @@ describe "project" do
 
       it "removes an email field when the minus icon is clicked", :js => true do
         visit "/projects/new"
+        fill_in("input_0", with: "an@email.com")
         find_by_id("add-invite-link").trigger("click")
         find_by_id("remove_invite_0").trigger("click")
 
@@ -426,7 +446,7 @@ describe "project" do
         expect(page).to have_content("my desc")
         expect(page).to have_button("Update project")
         expect(page).to have_content("This form supports markdown")
-        expect(page).to have_field("email", with: "user@example.com")
+        expect(page).to have_field("emails[]", with: "user@example.com")
       end
 
       it "redirects to the project show page after a project is edited and shows a flash notice" do
@@ -459,6 +479,22 @@ describe "project" do
 
         expect(current_path).to eq("/projects/" + @project.id.to_s + "/edit")
         expect(page).to have_content("Please provide a description")
+      end
+
+      it "displays a warning if email field is blank before clicking on plus icon", :js => true do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        find_by_id("add-invite-link").trigger("click") 
+        find_by_id("add-invite-link").trigger("click") 
+        
+        expect(page).to have_content("Please input an email address") 
+      end
+
+      it "displays a warning if email field is blank before submitting", :js => true do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        find_by_id("add-invite-link").trigger("click") 
+        click_button("Update project")
+        
+        expect(page).to have_content("Please input an email address") 
       end
 
       it "redirects to project show page if cancel link is clicked" do

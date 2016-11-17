@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  validates :email, presence: true
+  
   has_many :project_owners
   has_many :projects, through: :project_owners
 

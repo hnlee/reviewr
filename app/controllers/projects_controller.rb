@@ -32,15 +32,13 @@ class ProjectsController < ApplicationController
     if project.save
       ProjectOwner.create(project_id: project.id,
                           user_id: current_user.id)
-      if emails
-        emails.each do |email|
-          user = User.find_or_create_by(email: email)
-          ProjectInvite.create(project_id: project.id,
-                               user_id: user.id)
-          InviteMailer.invite_email(project, user).deliver_now
-        end
+      emails.each do |email|
+        user = User.find_or_create_by(email: email)
+        ProjectInvite.create(project_id: project.id,
+                             user_id: user.id)
+        InviteMailer.invite_email(project, user).deliver_now
+        redirect_to user_path(current_user.id)
       end
-      redirect_to user_path(current_user.id)
     else
       redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: project.get_error_message } }
     end
@@ -62,14 +60,13 @@ class ProjectsController < ApplicationController
     @invited_reviewers = @project.get_invited_reviewers
     emails = params[:emails]
     if @project.update_attributes(project_params)
-      if emails
-        emails.each do |email|
-          if !@invited_reviewers.find_by(email: email)
-            user = User.find_or_create_by(email: email)
-            ProjectInvite.create(project_id: @project.id,
-                                 user_id: user.id)
-            InviteMailer.invite_email(@project, user).deliver_now
-          end
+      emails.each do |email|
+        if !@invited_reviewers.find_by(email: email)
+          user = User.find_or_create_by(email: email)
+          ProjectInvite.create(project_id: @project.id,
+                               user_id: user.id)
+          InviteMailer.invite_email(@project, user).deliver_now
+        else
         end
       end
       redirect_to project_path(params[:id]), { flash: { notice: "Project has been updated" } }
