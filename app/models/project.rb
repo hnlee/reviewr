@@ -26,13 +26,13 @@ class Project < ApplicationRecord
 
   def get_reviewers
     user_reviews = UserReview.where(review_id: reviews)
-                             .select('user_id')
+                             .select("user_id")
     return User.where(id: user_reviews).all
   end
 
   def get_invited_reviewers
     project_invites = ProjectInvite.where(project_id: id)
-                                   .select('user_id')
+                                   .select("user_id")
     return User.where(id: project_invites).all
   end
 end

@@ -1,10 +1,10 @@
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe RatingsController, :type => :controller do
   render_views
 
-  describe 'GET /ratings/new' do
-    it 'renders the new rating form' do
+  describe "GET /ratings/new" do
+    it "renders the new rating form" do
       review = create(:review, content: "Java Server")
       user = create(:user, name: "Name", email: "name@example.com", uid: "uidname")
       session[:user_id] = user.id
@@ -16,8 +16,8 @@ RSpec.describe RatingsController, :type => :controller do
     end
   end
 
-  describe 'POST /ratings/new' do
-    it 'creates a new rating and redirects to the review show page' do
+  describe "POST /ratings/new" do
+    it "creates a new rating and redirects to the review show page" do
       review = create(:review, content: "Java Server")
       user = create(:user, name: "Name", email: "name@example.com", uid: "uidname")
       session[:user_id] = user.id
@@ -28,7 +28,7 @@ RSpec.describe RatingsController, :type => :controller do
       expect(response).to have_http_status(:redirect)
     end
 
-    it 'displays flash message if radio button not selected' do
+    it "displays flash message if radio button not selected" do
       review = create(:review, content: "Java Server")
       user = create(:user, name: "Name", email: "name@example.com", uid: "uidname")
       session[:user_id] = user.id
@@ -39,13 +39,13 @@ RSpec.describe RatingsController, :type => :controller do
       expect(flash[:error]).to match("Please select a button")
     end
 
-    it 'displays flash message if helpful is set to false and explanation is blank' do
+    it "displays flash message if helpful is set to false and explanation is blank" do
       review = create(:review, content: "Java Server")
       user = create(:user, name: "Name", email: "name@example.com", uid: "uidname")
       session[:user_id] = user.id
 
       post :create, params: { rating: { helpful: false,
-                                        explanation: '',
+                                        explanation: "",
                                         review_id: review.id } }
 
       expect(response).to redirect_to(new_rating_path(review))

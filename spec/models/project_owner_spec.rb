@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe ProjectOwner do
-  it 'belongs to a project and a user' do
+  it "belongs to a project and a user" do
     project = create(:project)
     user = create(:user)
     project_owner = ProjectOwner.new(project_id: project.id,

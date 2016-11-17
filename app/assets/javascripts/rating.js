@@ -13,7 +13,7 @@ submitNewRatingForm = function(review_id, callback) {
 
 showRandomRatingForm = function(review_id, user_id, thumb) {
   var param = addThumbParam(thumb);
-  if (param == '') {
+  if (param == "") {
     param = "?random=true&user=" + user_id;
   } else {
     param = param + "&random=true&user=" + user_id;

@@ -6,7 +6,7 @@ Dom.prototype.displayPartial = function(element, partial) {
 };
 
 Dom.prototype.hideElement = function(element) {
-  $(element).css('display', 'none');
+  $(element).css("display", "none");
 };
 
 Dom.prototype.replaceContent = function(element, content) {

@@ -1,10 +1,10 @@
 class InviteMailer < ApplicationMailer
-  layout 'mailer'
+  layout "mailer"
 
   def invite_email(project, user)
     @user = user
     @project = project
     mail(to: @user.email,
-         subject: 'You are invited to review ' + @project.title)
+         subject: "You are invited to review " + @project.title)
   end
 end

@@ -1,13 +1,13 @@
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe SessionsController, :type => :controller do
   render_views
 
-  describe 'GET /auth/google_oauth2/callback' do
-    it 'authenticates and redirects' do
-      auth_hash = { uid: 'uid',
-                    info: { name: 'name', 
-                            email: 'email' } }
+  describe "GET /auth/google_oauth2/callback" do
+    it "authenticates and redirects" do
+      auth_hash = { uid: "uid",
+                    info: { name: "name", 
+                            email: "email" } }
       request.env["omniauth.auth"] = auth_hash
 
       process :create
@@ -17,9 +17,9 @@ RSpec.describe SessionsController, :type => :controller do
     end
   end
 
-  describe 'GET /logout' do
-    it 'logs you out and redirects you to root' do
-      session[:user_id] = 'uid'
+  describe "GET /logout" do
+    it "logs you out and redirects you to root" do
+      session[:user_id] = "uid"
 
       process :destroy
 

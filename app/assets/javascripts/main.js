@@ -38,17 +38,17 @@ $(document).ready(function () {
     showNewRatingForm(path_id, false);
   });
 
-   $('#submit-rating-button').on("click", function(event) {
+   $("#submit-rating-button").on("click", function(event) {
      event.preventDefault();
      submitNewRatingForm(path_id);
   });
 
-  $('#edit-review-link').on("click", function(event) {
+  $("#edit-review-link").on("click", function(event) {
     event.preventDefault();
     showEditReviewForm(path_id);
   });
 
-  $('#edit-review-button').on("click", function(event) {
+  $("#edit-review-button").on("click", function(event) {
     event.preventDefault();
     submitEditReviewForm(path_id);
   });
@@ -66,17 +66,17 @@ $(document).ready(function () {
                               active_content_id);
   });
 
-  assignIds('#invites .form-input', 'input_');
+  assignIds("#invites .form-input", "input_");
 
   $("#add-invite-link").on("click", function(event) {
-    addField('#invites', '#new-invite-field');
-    assignIds('.remove-invite-link', 'remove_invite_');
-    assignIds('#invites .form-input', 'input_');
+    addField("#invites", "#new-invite-field");
+    assignIds(".remove-invite-link", "remove_invite_");
+    assignIds("#invites .form-input", "input_");
 
     $(".remove-invite-link").on("click", function(event) {
-      var index = getIdIndex(this, 'remove_invite_');
-      removeElement('#input_', index);
-      removeElement('#remove_invite_', index);
+      var index = getIdIndex(this, "remove_invite_");
+      removeElement("#input_", index);
+      removeElement("#remove_invite_", index);
     });
   });
 });

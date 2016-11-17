@@ -8,7 +8,7 @@
 
 <%= form_tag("/ratings", method: "post", remote: true) do %>
   <%= fields_for :rating do |f| %>
-    <div class='big-box'>
+    <div class="big-box">
       <% if @thumb == "up" %>
         <%= f.radio_button(:helpful, true, checked: "checked") %>
       <% else %>
@@ -31,12 +31,12 @@
       <br /><br />
 
       <%= f.label :explanation, "Explanation:" %><br /><br />
-      <%= f.text_area(:explanation, cols: 80, rows: 8, class: 'form-input') %>
+      <%= f.text_area(:explanation, cols: 80, rows: 8, class: "form-input") %>
 
       <%= f.hidden_field :review_id, value: @review.id %>
       <%= f.hidden_field :user_id, value: @user.id %>
-      <%= f.submit "Rate review", style: 'font-size: 1.25em;', id: 'submit-rating-button', class: 'button' %>
-      <%= link_to 'cancel', user_path(@user), class: 'cancel-link' %>
+      <%= f.submit "Rate review", style: "font-size: 1.25em;", id: "submit-rating-button", class: "button" %>
+      <%= link_to "cancel", user_path(@user), class: "cancel-link" %>
     </div>
   <% end %>
 <% end %>

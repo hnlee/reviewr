@@ -1,39 +1,39 @@
 <h2>Update project</h2>
 
-<div class='alert-error'>
+<div class="alert-error">
   <% if flash[:error] %>
     <%= flash[:error] %><br />
   <% end %>
 </div>
 
 <%= form_for @project do |f| %>
-  <div class='big-box'>
+  <div class="big-box">
     <%= f.label :title, "Title:" %>
-    <%= f.text_field :title, value: @project.title, size: 60, class: 'form-input' %><br /><br />
+    <%= f.text_field :title, value: @project.title, size: 60, class: "form-input" %><br /><br />
     <%= f.label :description, "Description:" %><br /><br />
-    <%= f.text_area(:description, value: @project.description, cols: 90, rows: 16, class: 'form-input' ) %><br />
+    <%= f.text_area(:description, value: @project.description, cols: 90, rows: 16, class: "form-input" ) %><br />
 
     <span id="invites">
       <% @invited_reviewers.each do |invited_reviewer| %>
-        <%= email_field_tag('email', invited_reviewer.email, size: 60, class: 'form-input single-field' ) %>
+        <%= email_field_tag("email", invited_reviewer.email, size: 60, class: "form-input single-field" ) %>
       <% end %>
     </span>
 
-    <a href='#invites' id='add-invite-link'><i class="fa fa-plus fa-2x edit-link" aria-hidden="true"></i></a>
+    <a href="#invites" id="add-invite-link"><i class="fa fa-plus fa-2x edit-link" aria-hidden="true"></i></a>
     <br />
     <br />
 
-    <%= f.submit "Update project" , class: 'button' %>
-    <%= link_to 'cancel', project_path(@project), class: 'cancel-link' %>
+    <%= f.submit "Update project" , class: "button" %>
+    <%= link_to "cancel", project_path(@project), class: "cancel-link" %>
   </div>
 <% end %>
 
-<div class='big-box'>
-  <div class='markdown-key'>
+<div class="big-box">
+  <div class="markdown-key">
     <p> This form supports markdown: **bold**, *italics*, _underline_  ~~strikethrough~~, ^(superscript), ==highlight== ```code``` (syntax highlighting supported)</p>
   </div>
 </div>
 
 <div style="display:none" id="new-invite-field">
-  <%= render 'invite', locals: {project: false} %>
+  <%= render "invite", locals: {project: false} %>
 </div>

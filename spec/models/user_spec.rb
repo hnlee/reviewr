@@ -1,21 +1,21 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe User do
-  describe 'attributes' do
-    it 'has a name and an email' do
-      user = User.new(name: 'Sally',
-                      email: 'sally@email.com')
+  describe "attributes" do
+    it "has a name and an email" do
+      user = User.new(name: "Sally",
+                      email: "sally@email.com")
 
-      expect(user.name).to eq('Sally')
-      expect(user.email).to eq('sally@email.com')
+      expect(user.name).to eq("Sally")
+      expect(user.email).to eq("sally@email.com")
     end
 
-    it 'has many projects it owns' do
-      user = User.create(name: 'Molly',
-                         email: 'molly@email.com')
-      project1 = create(:project, title: 'project 1')
-      project2 = create(:project, title: 'project 2')
-      project3 = create(:project, title: 'project 3')
+    it "has many projects it owns" do
+      user = User.create(name: "Molly",
+                         email: "molly@email.com")
+      project1 = create(:project, title: "project 1")
+      project2 = create(:project, title: "project 2")
+      project3 = create(:project, title: "project 3")
       create(:project_owner, user_id: user.id,
                              project_id: project1.id)
       create(:project_owner, user_id: user.id,
@@ -26,11 +26,11 @@ RSpec.describe User do
       expect(user.projects.length).to eq(3)
     end
 
-    it 'has many projects for which it has been invited to review' do
-      user = User.create(name: 'Polly',
-                         email: 'polly@email.com')
-      project1 = create(:project, title: 'project 1')
-      project2 = create(:project, title: 'project 2')
+    it "has many projects for which it has been invited to review" do
+      user = User.create(name: "Polly",
+                         email: "polly@email.com")
+      project1 = create(:project, title: "project 1")
+      project2 = create(:project, title: "project 2")
       create(:project_invite, user_id: user.id,
                               project_id: project1.id)
       create(:project_invite, user_id: user.id,
@@ -39,9 +39,9 @@ RSpec.describe User do
       expect(user.invites.length).to eq(2)
     end
 
-    it 'has many reviews it has written' do
-      user = User.create(name: 'Sally',
-                         email: 'sally@email.com')
+    it "has many reviews it has written" do
+      user = User.create(name: "Sally",
+                         email: "sally@email.com")
       review1 = create(:review)
       review2 = create(:review)
       create(:user_review, user_id: user.id,
@@ -52,14 +52,14 @@ RSpec.describe User do
       expect(user.reviews.length).to eq(2)
     end
 
-    it 'has many ratings it has given' do
-      user = User.create(name: 'Molly',
-                         email: 'molly@email.com')
+    it "has many ratings it has given" do
+      user = User.create(name: "Molly",
+                         email: "molly@email.com")
       rating1 = create(:rating, helpful: true)
       rating2 = create(:rating, helpful: true,
-                                explanation: 'Very thorough')
+                                explanation: "Very thorough")
       rating3 = create(:rating, helpful: true,
-                                explanation: 'Needs more detail')
+                                explanation: "Needs more detail")
       create(:user_rating, user_id: user.id,
                            rating_id: rating1.id)
       create(:user_rating, user_id: user.id,
@@ -71,23 +71,23 @@ RSpec.describe User do
     end
   end
 
-  describe '.from_omniauth' do
-    it 'can be created from an authentication hash' do
-      auth_hash = { uid: 'uid',
-                    info: { name: 'name',
-                            email: 'name@email.com' } }
+  describe ".from_omniauth" do
+    it "can be created from an authentication hash" do
+      auth_hash = { uid: "uid",
+                    info: { name: "name",
+                            email: "name@email.com" } }
       user = User.from_omniauth(auth_hash)
 
-      expect(user.uid).to eq('uid')
-      expect(user.name).to eq('name')
-      expect(user.email).to eq('name@email.com')
+      expect(user.uid).to eq("uid")
+      expect(user.name).to eq("name")
+      expect(user.email).to eq("name@email.com")
     end
   end
 
-  describe '#get_open_invites' do
-    it 'returns a list of projects that the user has been invited to review' do
-      user = User.create(name: 'Jenny',
-                         email: 'jenny@email.com')
+  describe "#get_open_invites" do
+    it "returns a list of projects that the user has been invited to review" do
+      user = User.create(name: "Jenny",
+                         email: "jenny@email.com")
       project1 = create(:project)
       project2 = create(:project)
       create(:project_invite, user_id: user.id,
@@ -99,9 +99,9 @@ RSpec.describe User do
       expect(user.invites).to include(project2)
     end
 
-    it 'does not return projects for which the user has already reviewed' do
-      user = User.create(name: 'Jenny',
-                         email: 'jenny@email.com')
+    it "does not return projects for which the user has already reviewed" do
+      user = User.create(name: "Jenny",
+                         email: "jenny@email.com")
       project = create(:project)
       review = create(:review)
       create(:project_invite, user_id: user.id,

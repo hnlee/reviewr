@@ -13,7 +13,7 @@ describe("Ratings", function() {
       server.respondWith("GET",
                          "/ratings/new/1",
                          "form html");
-      showRatingForm(1, '');
+      showRatingForm(1, "");
       server.respond();
 
       expect($("#new-rating").html()).toEqual("form html");
