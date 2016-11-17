@@ -20,10 +20,12 @@
       </div><br />
 
       <%= label_tag "emails[]", "Enter email address to invite reviewer:" %><br /><br />
+
       <span id="invites">
         <%= render 'invite' %>
       </span>
-      <a href='#invites' id='add-invite-link'>+</a>
+
+      <a href='#invites' id='add-invite-link'><i class="fa fa-plus fa-2x edit-link" aria-hidden="true"></i></a>
       <br /><br />
 
       <%= f.hidden_field :user_id, value: @user.id %>
@@ -34,5 +36,6 @@
 <% end %>
 
 <div style="display:none" id="new-invite-field">
+  <a href='#invites' class="remove-invite-link"><i class="fa fa-minus fa-2x edit-link" aria-hidden="true"></i></a>
   <%= render 'invite', locals: {project: false} %>
 </div>
