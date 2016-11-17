@@ -3,6 +3,14 @@ require 'spec_helper'
 RSpec.describe ProjectsController, :type => :controller do
   render_views
 
+  before(:all) {
+    DatabaseCleaner.strategy = :truncation
+  }
+
+  after(:all) {
+    DatabaseCleaner.clean
+  }
+
   describe 'GET /projects/new' do
     it 'redirects to root if not logged in' do
       get :new
@@ -226,8 +234,11 @@ RSpec.describe ProjectsController, :type => :controller do
     it 'renders the template for the project edit page when logged in as the project owner' do
       project = create(:project)
       owner = create(:user)
+      user = create(:user, email: 'user@example.com')
       create(:project_owner, project_id: project.id,
                              user_id: owner.id)
+      create(:project_invite, project_id: project.id,
+                              user_id: user.id)
       session[:user_id] = owner.id
 
       get :edit, params: { id: project.id }
@@ -237,20 +248,26 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(response.body).to include(project.title)
       expect(response.body).to include("Description")
       expect(response.body).to include(project.description)
+      expect(response.body).to include(user.email)
     end
   end
 
   describe 'POST /projects/:id/edit' do
     it 'edits the project and redirects to the index page with flash notice of changes' do
       project = create(:project)
+      owner = create(:user, name: 'name1', email: 'owner@example.com')
+      create(:project_owner, project_id: project.id,
+                             user_id: owner.id)
+      user = create(:user, name: 'name2', email: 'invitedreviewer@example.com')
 
-      post :update, params: { id: project.id, project: { title: 'best title', description: 'best description' } }
+      post :update, params: { id: project.id, project: { title: 'best title', description: 'best description' }, emails: [user.email] }
 
       updated_project = Project.find_by_id(project.id)
       expect(response).to redirect_to(project_path(project.id))
       expect(response).to have_http_status(:redirect)
       expect(updated_project.title).to eq('best title')
       expect(updated_project.description).to eq('best description')
+      expect(updated_project.get_invited_reviewers).to include(user)
       expect(flash[:notice]).to match('Project has been updated')
     end
 

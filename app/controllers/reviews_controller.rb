@@ -6,7 +6,7 @@ class ReviewsController < ApplicationController
     else
       @project = Project.find(params[:project_id])
       @review = Review.new
-      if !@project.get_invites.include?(current_user)
+      if !@project.get_invited_reviewers.include?(current_user)
         redirect_to user_path(current_user.id)
       elsif request.xhr?
         render partial: "reviews/new"

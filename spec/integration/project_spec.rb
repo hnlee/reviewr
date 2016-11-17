@@ -366,6 +366,21 @@ describe 'project' do
         expect(page).to have_no_css('form')
       end
 
+      it 'adds an email field when the plus icon is clicked', :js => true do
+        visit '/projects/new'
+        find_by_id('add-invite-link').trigger('click')
+
+        expect(page).to have_field('input_1')
+      end
+
+      it 'removes an email field when the minus icon is clicked', :js => true do
+        visit '/projects/new'
+        find_by_id('add-invite-link').trigger('click')
+        find_by_id('remove_invite_0').trigger('click')
+
+        expect(page).not_to have_field('input_0')
+      end
+
       after(:each) do
         visit "/logout"
       end
@@ -389,10 +404,13 @@ describe 'project' do
                                  { uid: 'uidhillaryclinton',
                                    info: { name: 'hillaryclinton',
                                            email: 'hillaryclinton@gmail.com' } })
-        @user = User.find_by_name('hillaryclinton')
+        @owner = User.find_by_name('hillaryclinton')
+        @user = create(:user, email: 'user@example.com')
         @project = create(:project, title: "my title", description: "my desc")
         create(:project_owner, project_id: @project.id,
-                               user_id: @user.id)
+                               user_id: @owner.id)
+        create(:project_invite, project_id: @project.id,
+                                user_id: @user.id)
 
         visit "/"
         find_button("Sign in with Google").click
@@ -408,6 +426,7 @@ describe 'project' do
         expect(page).to have_content("my desc")
         expect(page).to have_button('Update project')
         expect(page).to have_content('This form supports markdown')
+        expect(page).to have_field('email', with: 'user@example.com')
       end
 
       it 'redirects to the project show page after a project is edited and shows a flash notice' do
@@ -450,6 +469,13 @@ describe 'project' do
         expect(page).to have_no_css('form')
         expect(page).to have_content('my title')
         expect(page).to have_content('my desc')
+      end
+
+      it 'adds an email field when the plus icon is clicked', :js => true do
+        visit '/projects/' + @project.id.to_s + '/edit'
+        find_by_id('add-invite-link').trigger('click')
+
+        expect(page).to have_field('input_1')
       end
 
       after(:each) do
