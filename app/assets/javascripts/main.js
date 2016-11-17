@@ -66,7 +66,17 @@ $(document).ready(function () {
                               active_content_id);
   });
 
+  assignIds('#invites .form-input', 'input_');
+
   $("#add-invite-link").on("click", function(event) {
-    addInviteField();
+    addField('#invites', '#new-invite-field');
+    assignIds('.remove-invite-link', 'remove_invite_');
+    assignIds('#invites .form-input', 'input_');
+
+    $(".remove-invite-link").on("click", function(event) {
+      var index = getIdIndex(this, 'remove_invite_');
+      removeElement('#input_', index);
+      removeElement('#remove_invite_', index);
+    });
   });
 });
