@@ -18,4 +18,8 @@ class User < ApplicationRecord
     user.save
     user
   end
+
+  def get_open_invites
+    invites.select{ |project| !project.get_reviewers.include? self }
+  end
 end

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       @review = Review.get_random_review(@user)
       @projects = @user.projects.order(updated_at: :desc).all
       @reviews = @user.reviews.order(updated_at: :desc).all
-      @invites = @user.invites.order(updated_at: :desc).all 
+      @invites = @user.get_open_invites.sort_by(&:updated_at).reverse
     end
   end
 end
