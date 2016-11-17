@@ -1,19 +1,19 @@
-<div class='alert-notice'>
+<div class="alert-notice">
   <% if flash[:notice] %>
     <%= flash[:notice] %>
   <% end %>
 </div>
 
 <h2>
-  <span id='page-title'><%= @project.title %></span>&nbsp;
+  <span id="page-title"><%= @project.title %></span>&nbsp;
   <% if @user == @project.owner %>
-    <%= link_to(edit_project_path(@project), class: 'edit-link', id: 'edit-project-link') do %>
+    <%= link_to(edit_project_path(@project), class: "edit-link", id: "edit-project-link") do %>
       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
     <% end %>
   <% end %>
 </h2>
 
-<div class='markdown-content'>
+<div class="markdown-content">
   <p><%= markdown(@project.description) %></p>
 </div>
 <br \>
@@ -30,7 +30,7 @@
 <br \>
 <% end %>
 
-<div id='new-review' class='load-form'></div>
+<div id="new-review" class="load-form"></div>
 
 <% if @user == @project.owner and @project.helpful_reviews_count > 0 %>
   <h3>Reviews</h3>
@@ -40,17 +40,17 @@
 <% end %>
 
 <% if @user != @project.owner %>
-  <%= link_to '+ review project', new_review_path(@project), class: 'new-form-link', remote: true, id: 'new-review-link' %>
+  <%= link_to "+ review project", new_review_path(@project), class: "new-form-link", remote: true, id: "new-review-link" %>
 <% end %>
 
 <% @reviews.each do |review| %>
   <% if (@user == @project.owner and review.visible?) or @user == review.user %>
     <div>
-      <div class='bracket-box'>
-        <div class='squarebrackets'>
-          <%= link_to(review, class: 'bracket-link single-content') do %>
-            <span class='carrot'>&gt;</span>
-            <span class='card-small-text'>
+      <div class="bracket-box">
+        <div class="squarebrackets">
+          <%= link_to(review, class: "bracket-link single-content") do %>
+            <span class="carrot">&gt;</span>
+            <span class="card-small-text">
               <%= truncate(review.content, length: 300) %>
             </span>
           <% end %>

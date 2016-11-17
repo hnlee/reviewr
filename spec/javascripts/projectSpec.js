@@ -11,7 +11,7 @@ describe("Projects", function() {
       affix("#new-invite-field div#content");
       addField("#invites", "#new-invite-field"); 
        
-      expect($("#invites").html()).toEqual('<div id="content"></div>');
+      expect($("#invites").html()).toEqual("<div id="content"></div>");
     });
   });
 
@@ -21,9 +21,9 @@ describe("Projects", function() {
       affix(".element");
       assignIds(".element", "my_prefix_");
        
-      expect($('.element#my_prefix_0').length).toEqual(1);
-      expect($('.element#my_prefix_1').length).toEqual(1);
-      expect($('.element#my_prefix_2').length).toEqual(0);
+      expect($(".element#my_prefix_0").length).toEqual(1);
+      expect($(".element#my_prefix_1").length).toEqual(1);
+      expect($(".element#my_prefix_2").length).toEqual(0);
 
     });
   });
@@ -34,7 +34,7 @@ describe("Projects", function() {
       affix(".element#my_prefix_1");
       removeElement("#my_prefix_", 1);
       
-      expect($('.element#my_prefix_1').length).toEqual(0); 
+      expect($(".element#my_prefix_1").length).toEqual(0); 
     });
   });
 
@@ -43,7 +43,7 @@ describe("Projects", function() {
       affix(".element#my_prefix_200");
       var index = getIdIndex(".element", "my_prefix_");
 
-      expect(index).toEqual('200');
+      expect(index).toEqual("200");
     });
   });
 

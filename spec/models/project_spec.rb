@@ -1,8 +1,8 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Project do
-  describe 'attributes' do
-    it 'has a title and description' do
+  describe "attributes" do
+    it "has a title and description" do
       project = Project.new(title: "My Title",
                             description: "My Description")
 
@@ -10,7 +10,7 @@ RSpec.describe Project do
       expect(project.description).to eq("My Description")
     end
 
-    it 'has many reviews' do
+    it "has many reviews" do
       project = Project.create(title: "My Title",
                                description: "My Description")
       review1 = create(:review, content: "Content1")
@@ -26,26 +26,26 @@ RSpec.describe Project do
       expect(project.reviews.length).to eq(3)
     end
 
-    it 'has an owner' do
+    it "has an owner" do
       project = Project.create(title: "My Title",
                                description: "My Description")
-      owner = create(:user, name: 'Sally',
-                            email: 'sally@email.com')
+      owner = create(:user, name: "Sally",
+                            email: "sally@email.com")
       create(:project_owner, project_id: project.id,
                              user_id: owner.id)
 
       expect(project.owner).to eq(owner)
     end
 
-    it 'has many users invited to review' do
+    it "has many users invited to review" do
       project = Project.create(title: "My Title",
                                description: "My Description")
       invite1 = create(:user, name: "Sally",
-                              email: 'sally@email.com')
+                              email: "sally@email.com")
       invite2 = create(:user, name: "Molly",
-                              email: 'molly@email.com')
+                              email: "molly@email.com")
       invite3 = create(:user, name: "Polly",
-                              email: 'polly@email.com')
+                              email: "polly@email.com")
       create(:project_invite, project_id: project.id,
                               user_id: invite1.id)
       create(:project_invite, project_id: project.id,
@@ -57,36 +57,36 @@ RSpec.describe Project do
     end
   end
 
-  describe '#get_error_message' do
-    it 'returns message requesting title if it is omitted' do
-      project = Project.create(description: 'A description for the ages')
+  describe "#get_error_message" do
+    it "returns message requesting title if it is omitted" do
+      project = Project.create(description: "A description for the ages")
 
       expect(project.get_error_message).to eq("Please provide a title")
     end
 
-    it 'returns message requesting description if it is omitted' do
-      project = Project.create(title: 'A title for the ages', description: '')
+    it "returns message requesting description if it is omitted" do
+      project = Project.create(title: "A title for the ages", description: "")
 
       expect(project.get_error_message).to eq("Please provide a description")
     end
 
-    it 'returns message requesting title and description if both are omitted' do
-      project = Project.create(title: '', description: '')
+    it "returns message requesting title and description if both are omitted" do
+      project = Project.create(title: "", description: "")
 
       expect(project.get_error_message).to eq("Please provide a title and description")
     end
   end
 
-  describe '#helpful_reviews_count' do
-    it 'returns the number of reviews that are helpful' do
+  describe "#helpful_reviews_count" do
+    it "returns the number of reviews that are helpful" do
       project = Project.create(title: "My Title",
                                description: "My Description")
-      review1 = create(:review, content: 'Looks good')
-      review2 = create(:review, content: 'Looks bad')
-      review3 = create(:review, content: 'Looks great')
+      review1 = create(:review, content: "Looks good")
+      review2 = create(:review, content: "Looks bad")
+      review3 = create(:review, content: "Looks great")
       rating_good = create(:rating, helpful: true)
       rating_bad = create(:rating, helpful: false,
-                                   explanation: 'bad')
+                                   explanation: "bad")
       create(:project_review, project_id: project.id,
                               review_id: review1.id)
       create(:project_review, project_id: project.id,
@@ -104,22 +104,22 @@ RSpec.describe Project do
     end
   end
 
-  describe '#get_reviewers' do
-    it 'returns the users who have reviewed the project' do
+  describe "#get_reviewers" do
+    it "returns the users who have reviewed the project" do
       project = Project.create(title: "My Title",
                                description: "My Description")
-      review1 = create(:review, content: 'Looks good')
-      review2 = create(:review, content: 'Looks bad')
-      review3 = create(:review, content: 'Looks great')
-      user1 = create(:user, name: 'name1',
-                            email: 'name1@email.com',
-                            uid: 'uidname1')
-      user2 = create(:user, name: 'name2',
-                            email: 'name2@email.com',
-                            uid: 'uidname2')
-      user3 = create(:user, name: 'name3',
-                            email: 'name3@email.com',
-                            uid: 'uidname3')
+      review1 = create(:review, content: "Looks good")
+      review2 = create(:review, content: "Looks bad")
+      review3 = create(:review, content: "Looks great")
+      user1 = create(:user, name: "name1",
+                            email: "name1@email.com",
+                            uid: "uidname1")
+      user2 = create(:user, name: "name2",
+                            email: "name2@email.com",
+                            uid: "uidname2")
+      user3 = create(:user, name: "name3",
+                            email: "name3@email.com",
+                            uid: "uidname3")
       create(:project_review, project_id: project.id,
                               review_id: review1.id)
       create(:project_review, project_id: project.id,

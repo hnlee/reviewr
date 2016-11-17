@@ -42,25 +42,14 @@ rails s
 
 ## Running the Tests
 
-Reviewr uses Rspec for unit testing and Capybara for acceptance testing. Capybara tests that interact with Javascript require [PhantomJS](http://phantomjs.org/) to be installed. To load and run the local tests, use this command
+Reviewr uses Rspec for unit testing, Jasmine for JavaScript testing, and Capybara for acceptance testing. Capybara tests that interact with Javascript require [PhantomJS](http://phantomjs.org/) to be installed. To load and run the local tests, use this command
 
 ```
 rake spec
-```
-
-Javascript is tested using Jasmine. Jasmine tests are run using the Jasmine server.
-
-```
-rake jasmine
-```
-
-With the server running, the test output can be seen in the browser.
-
-```
-http://localhost:8888/
 ```
 
 ### Collaborators
 
 * [Hana Lee](https://github.com/hnlee)
 * [Justin Holzmann](https://github.com/jphoenx)
+* [Nicole Carpenter](https://github.com/nicolecarpenter)

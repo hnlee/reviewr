@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe ReviewRating do
-  it 'belongs to a review and a rating' do
+  it "belongs to a review and a rating" do
     review = create(:review)
     rating = create(:rating, helpful: true)
     review_rating = ReviewRating.new(rating_id: rating.id,

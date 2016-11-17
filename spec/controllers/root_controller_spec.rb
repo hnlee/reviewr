@@ -1,10 +1,10 @@
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe RootController, :type => :controller do
   render_views
 
-  describe 'GET /' do
-    it 'renders the logout template when user is not logged in' do
+  describe "GET /" do
+    it "renders the logout template when user is not logged in" do
       session[:user_id] = nil
 
       get :root
@@ -13,7 +13,7 @@ RSpec.describe RootController, :type => :controller do
       expect(response.body).to include("Sign in with Google")
     end
     
-    it 'redirects you to user show page when user is logged in' do
+    it "redirects you to user show page when user is logged in" do
       session[:user_id] = create(:user).id
 
       get :root

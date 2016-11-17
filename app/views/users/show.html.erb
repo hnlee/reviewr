@@ -2,7 +2,7 @@
 
 <h2>Welcome, <%= @user.name %></h2>
 
-<%= link_to '+ create new project', new_project_path(user: @user.id), class: 'new-form-link' %>
+<%= link_to "+ create new project", new_project_path(user: @user.id), class: "new-form-link" %>
 
 <div class="tab-container">
   <ul class="tabs">
@@ -12,15 +12,15 @@
   </ul>
 
   <div class="tab-content margin" id="projects">
-    <h3>Projects You've Created</h3>
+    <h3>Projects You"ve Created</h3>
 
     <% @projects.each do |project| %>
-      <div class='bracket-box'>
-        <div class='squarebrackets'>
-          <%= link_to project.title, project, class: 'bracket-link project-card' %>
-          <p><%= project.created_at.strftime('%b %d, %Y') %>
+      <div class="bracket-box">
+        <div class="squarebrackets">
+          <%= link_to project.title, project, class: "bracket-link project-card" %>
+          <p><%= project.created_at.strftime("%b %d, %Y") %>
           <% if project.updated_at != project.created_at %>
-            | updated <%= project.updated_at.strftime('%b %d, %Y') %>
+            | updated <%= project.updated_at.strftime("%b %d, %Y") %>
           <% end %></p>
           <p><%= project.helpful_reviews_count %> Review<%if project.helpful_reviews_count != 1%>s<% end %></p>
         </div>
@@ -29,11 +29,11 @@
   </div>
 
   <div class="tab-content margin" id="reviews">
-    <h3>Reviews You've Written</h3>
+    <h3>Reviews You"ve Written</h3>
     <% @reviews.each do |review| %>
-      <div class='bracket-box'>
-        <div class='squarebrackets'>
-          <%= link_to truncate(review.content, length: 170), review_path(review), class: 'bracket-link review-card' %>
+      <div class="bracket-box">
+        <div class="squarebrackets">
+          <%= link_to truncate(review.content, length: 170), review_path(review), class: "bracket-link review-card" %>
               <p><%= review.get_project %> by <%= review.get_project_owner %></p><p></p>
         </div>
       </div>
@@ -41,14 +41,14 @@
   </div>
 
   <div class="tab-content margin" id="invites">
-    <h3>Projects You're Invited to Review</h3>
+    <h3>Projects You"re Invited to Review</h3>
     <% @invites.each do |invite| %>
-      <div class='bracket-box'>
-        <div class='squarebrackets'>
-          <%= link_to invite.title, invite, class: 'bracket-link project-card' %>
-          <p><%= invite.created_at.strftime('%b %d, %Y') %>
+      <div class="bracket-box">
+        <div class="squarebrackets">
+          <%= link_to invite.title, invite, class: "bracket-link project-card" %>
+          <p><%= invite.created_at.strftime("%b %d, %Y") %>
           <% if invite.updated_at != invite.created_at %>
-            | updated <%= invite.updated_at.strftime('%b %d, %Y') %>
+            | updated <%= invite.updated_at.strftime("%b %d, %Y") %>
           <% end %></p>
           <p><%= invite.helpful_reviews_count %> Review<%if invite.helpful_reviews_count != 1%>s<% end %></p>
         </div>

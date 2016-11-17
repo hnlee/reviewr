@@ -2,13 +2,13 @@ require "rails_helper"
 
 RSpec.describe InviteMailer, type: :mailer do
   it "sends out an invite email" do
-    project = create(:project, title: 'Best Project')
-    user = create(:user, name: 'name1',
-                         email: 'name1@email.com',
-                         uid: 'uidname1')
-    owner = create(:user, name: 'name2',
-                          email: 'name2@email.com',
-                          uid: 'uidname2')
+    project = create(:project, title: "Best Project")
+    user = create(:user, name: "name1",
+                         email: "name1@email.com",
+                         uid: "uidname1")
+    owner = create(:user, name: "name2",
+                          email: "name2@email.com",
+                          uid: "uidname2")
     project_invite = create(:project_owner, project_id: project.id,
                                             user_id: user.id)
     project_owner = create(:project_owner, project_id: project.id,

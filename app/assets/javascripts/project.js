@@ -7,7 +7,7 @@ addField = function(element, content) {
 
 assignIds = function(element, id_prefix) {
   $(element).each(function(i) {
-    $(this).attr('id', id_prefix + i)
+    $(this).attr("id", id_prefix + i)
   });
 };
 
@@ -16,6 +16,6 @@ removeElement = function(id_prefix, index) {
 };
 
 getIdIndex = function(element, id_prefix) {
-  var id = $(element).attr('id')
-  return id.replace(id_prefix, '');
+  var id = $(element).attr("id")
+  return id.replace(id_prefix, "");
 };

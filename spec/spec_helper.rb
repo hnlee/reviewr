@@ -1,16 +1,16 @@
 ########################### added ############################
 
-ENV["RAILS_ENV"] ||= 'test'
+ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
+require "rspec/rails"
 
 # Add this to load Capybara integration:
-require 'capybara/rspec'
-require 'capybara/rails'
-require 'capybara/poltergeist'
+require "capybara/rspec"
+require "capybara/rails"
+require "capybara/poltergeist"
 
 # Factory Girl
-require 'support/factory_girl'
+require "support/factory_girl"
 
 # OmniAuth
 OmniAuth.config.test_mode = true

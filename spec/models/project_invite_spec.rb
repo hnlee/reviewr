@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe ProjectInvite do
-  it 'belongs to a project and a user' do
+  it "belongs to a project and a user" do
     project = create(:project)
     user = create(:user)
     project_invite = ProjectInvite.new(project_id: project.id,

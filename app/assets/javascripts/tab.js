@@ -2,11 +2,11 @@ function Tab() {
 }
 
 Tab.prototype.activateTab = function(tab) {
-  $(tab).addClass('active');
+  $(tab).addClass("active");
 };
 
 Tab.prototype.deactivateTab = function(tab) {
-  $(tab).removeClass('active');
+  $(tab).removeClass("active");
 };
 
 Tab.prototype.showActiveTabContents = function(tab_content, content_id) {

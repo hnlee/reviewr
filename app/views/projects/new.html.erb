@@ -1,41 +1,41 @@
 <h2>Create new project</h2>
 
-<div class='alert-error'>
+<div class="alert-error">
   <% if flash[:error] %>
     <%= flash[:error] %><br />
   <% end %>
 </div>
 
 <%= form_tag("/projects", method: "post") do %>
-  <div class='big-box'>
+  <div class="big-box">
     <%= fields_for @project do |f| %>
       <%= f.label :title, "Title:" %>
-      <%= f.text_field :title, size: 60, class: 'form-input' %><br /><br />
+      <%= f.text_field :title, size: 60, class: "form-input" %><br /><br />
 
       <%= f.label :description, "Description:" %><br /><br />
-      <%= f.text_area(:description, cols: 90, rows: 16, class: 'form-input' ) %><br /><br />
+      <%= f.text_area(:description, cols: 90, rows: 16, class: "form-input" ) %><br /><br />
 
-      <div class='markdown-key'>
+      <div class="markdown-key">
         <p> This form supports markdown: **bold**, *italics*, _underline_  ~~strikethrough~~, ^(superscript), ==highlight== ```code``` (syntax highlighting supported)</p>
       </div><br />
 
       <%= label_tag "emails[]", "Enter email address to invite reviewer:" %><br /><br />
 
       <span id="invites">
-        <%= render 'invite' %>
+        <%= render "invite" %>
       </span>
 
-      <a href='#invites' id='add-invite-link'><i class="fa fa-plus fa-2x edit-link" aria-hidden="true"></i></a>
+      <a href="#invites" id="add-invite-link"><i class="fa fa-plus fa-2x edit-link" aria-hidden="true"></i></a>
       <br /><br />
 
       <%= f.hidden_field :user_id, value: @user.id %>
-      <%= f.submit "Create new project" , class: 'button' %>
-      <%= link_to 'cancel', user_path(@user), class: 'cancel-link' %>
+      <%= f.submit "Create new project" , class: "button" %>
+      <%= link_to "cancel", user_path(@user), class: "cancel-link" %>
     <% end %>
   </div>
 <% end %>
 
 <div style="display:none" id="new-invite-field">
-  <a href='#invites' class="remove-invite-link"><i class="fa fa-minus fa-2x edit-link" aria-hidden="true"></i></a>
-  <%= render 'invite', locals: {project: false} %>
+  <a href="#invites" class="remove-invite-link"><i class="fa fa-minus fa-2x edit-link" aria-hidden="true"></i></a>
+  <%= render "invite", locals: {project: false} %>
 </div>

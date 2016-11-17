@@ -1,16 +1,16 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.action_mailer.default_url_options = { host: 'reviewr-app.herokuapp.com' } 
+  config.action_mailer.default_url_options = { host: "reviewr-app.herokuapp.com" } 
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
-    address: 'smtp.gmail.com',
+    address: "smtp.gmail.com",
     port: 587,
-    domain: 'example.com',
-    user_name: 'reviewr.app',
-    password: '8thlight',
-    authentication: 'plain',
+    domain: "example.com",
+    user_name: "reviewr.app",
+    password: "8thlight",
+    authentication: "plain",
     enable_starttls_auto: true }
 
   # Code is not reloaded between requests.
@@ -28,7 +28,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier

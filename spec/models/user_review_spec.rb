@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe UserReview do
-  it 'belongs to a review and a user' do
+  it "belongs to a review and a user" do
     review = create(:review)
     user = create(:user)
     user_review = UserReview.new(review_id: review.id,

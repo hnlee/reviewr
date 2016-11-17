@@ -1,39 +1,39 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe 'project' do
-  describe 'show page' do
-    describe 'when logged out' do
-      it 'redirects to root' do
+describe "project" do
+  describe "show page" do
+    describe "when logged out" do
+      it "redirects to root" do
         project = create(:project, title: "my title", description: "my desc")
-        owner = create(:user, name: 'name',
-                              email: 'name@email.com',
-                              uid: 'uidname')
+        owner = create(:user, name: "name",
+                              email: "name@email.com",
+                              uid: "uidname")
         create(:project_owner, project_id: project.id,
                                user_id: owner.id)
 
         visit "/projects/" + project.id.to_s
 
-        expect(current_path).to eq('/')
+        expect(current_path).to eq("/")
       end
     end
 
-    describe 'when logged in as user who is not the owner and has not left review' do
-      it 'redirects to user show page' do
+    describe "when logged in as user who is not the owner and has not left review" do
+      it "redirects to user show page" do
         OmniAuth.config.add_mock(:google_oauth2,
-                                 { uid: 'uidhillaryclinton',
-                                   info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@gmail.com' } })
+                                 { uid: "uidhillaryclinton",
+                                   info: { name: "hillaryclinton",
+                                           email: "hillaryclinton@gmail.com" } })
 
         visit "/"
         find_button("Sign in with Google").click
 
         project = create(:project, title: "my title", description: "my desc")
-        owner = create(:user, name: 'name',
-                              email: 'name@email.com',
-                              uid: 'uidname')
+        owner = create(:user, name: "name",
+                              email: "name@email.com",
+                              uid: "uidname")
         create(:project_owner, project_id: project.id,
                                user_id: owner.id)
-        @user = User.find_by_name('hillaryclinton')
+        @user = User.find_by_name("hillaryclinton")
 
         visit "/projects/" + project.id.to_s
 
@@ -43,13 +43,13 @@ describe 'project' do
       end
     end
 
-    describe 'when logged in as a user who is invited to review' do
+    describe "when logged in as a user who is invited to review" do
       before(:each) do
         OmniAuth.config.add_mock(:google_oauth2,
-                                 { uid: 'uidhillaryclinton',
-                                   info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@gmail.com' } })
-        @user = User.find_by_name('hillaryclinton')
+                                 { uid: "uidhillaryclinton",
+                                   info: { name: "hillaryclinton",
+                                           email: "hillaryclinton@gmail.com" } })
+        @user = User.find_by_name("hillaryclinton")
         owner = create(:user)
         @project = create(:project, title: "my title", description: "my desc")
         create(:project_owner, project_id: @project.id,
@@ -61,21 +61,21 @@ describe 'project' do
         find_button("Sign in with Google").click
       end
 
-      it 'shows the project title and description' do
+      it "shows the project title and description" do
         visit "/projects/" + @project.id.to_s
 
         expect(page).to have_content(@project.title)
         expect(page).to have_content(@project.description)
       end
 
-      it 'shows link to leave review' do
+      it "shows link to leave review" do
         visit "/projects/" + @project.id.to_s
 
-        expect(page).to have_content('+ review project')
+        expect(page).to have_content("+ review project")
       end
 
-      it 'does not show review left by another user' do
-        review = create(:review, content: 'Written by someone else')
+      it "does not show review left by another user" do
+        review = create(:review, content: "Written by someone else")
         reviewer = create(:user) 
         create(:user_review, review_id: review.id,
                              user_id: reviewer.id)
@@ -87,16 +87,16 @@ describe 'project' do
         expect(page).not_to have_content(review.content)
       end
 
-      it 'does not show edit project link' do
+      it "does not show edit project link" do
         visit "/projects/" + @project.id.to_s
 
-        expect(page).not_to have_xpath('//i', :class => 'fa fa-pencil-square-o')
+        expect(page).not_to have_xpath("//i", :class => "fa fa-pencil-square-o")
       end
 
-      it 'does not show invited reviewers' do
-        invite = create(:user, name: 'name',
-                               email: 'name@email.com',
-                               uid: 'uidname')
+      it "does not show invited reviewers" do
+        invite = create(:user, name: "name",
+                               email: "name@email.com",
+                               uid: "uidname")
         create(:project_invite, project_id: @project.id,
                                 user_id: invite.id)
 
@@ -110,13 +110,13 @@ describe 'project' do
       end
     end
 
-    describe 'when logged in as a user who has left review' do
+    describe "when logged in as a user who has left review" do
       before(:each) do
         OmniAuth.config.add_mock(:google_oauth2,
-                                 { uid: 'uidhillaryclinton',
-                                   info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@gmail.com' } })
-        @user = User.find_by_name('hillaryclinton')
+                                 { uid: "uidhillaryclinton",
+                                   info: { name: "hillaryclinton",
+                                           email: "hillaryclinton@gmail.com" } })
+        @user = User.find_by_name("hillaryclinton")
         owner = create(:user)
         @project = create(:project, title: "my title", description: "my desc")
         create(:project_owner, project_id: @project.id,
@@ -131,22 +131,22 @@ describe 'project' do
         find_button("Sign in with Google").click
       end
 
-      it 'shows the project title and description' do
+      it "shows the project title and description" do
         visit "/projects/" + @project.id.to_s
 
         expect(page).to have_content(@project.title)
         expect(page).to have_content(@project.description)
       end
 
-      it 'shows the review left by the user' do
+      it "shows the review left by the user" do
         visit "/projects/" + @project.id.to_s
         
         expect(page).to have_content("Your review")
         expect(page).to have_content(@review.content)
       end
 
-      it 'does not show review left by another user' do
-        review = create(:review, content: 'Written by someone else')
+      it "does not show review left by another user" do
+        review = create(:review, content: "Written by someone else")
         reviewer = create(:user) 
         create(:user_review, review_id: review.id,
                              user_id: reviewer.id)
@@ -158,16 +158,16 @@ describe 'project' do
         expect(page).not_to have_content(review.content)
       end
 
-      it 'does not show edit project link' do
+      it "does not show edit project link" do
         visit "/projects/" + @project.id.to_s
 
-        expect(page).not_to have_xpath('//i', :class => 'fa fa-pencil-square-o')
+        expect(page).not_to have_xpath("//i", :class => "fa fa-pencil-square-o")
       end
 
-      it 'does not show invited reviewers' do
-        invite = create(:user, name: 'name',
-                               email: 'name@email.com',
-                               uid: 'uidname')
+      it "does not show invited reviewers" do
+        invite = create(:user, name: "name",
+                               email: "name@email.com",
+                               uid: "uidname")
         create(:project_invite, project_id: @project.id,
                                 user_id: invite.id)
 
@@ -181,13 +181,13 @@ describe 'project' do
       end
     end
 
-    describe 'when logged in as the owner' do
+    describe "when logged in as the owner" do
       before(:each) do
         OmniAuth.config.add_mock(:google_oauth2,
-                                 { uid: 'uidhillaryclinton',
-                                   info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@gmail.com' } })
-        @user = User.find_by_name('hillaryclinton')
+                                 { uid: "uidhillaryclinton",
+                                   info: { name: "hillaryclinton",
+                                           email: "hillaryclinton@gmail.com" } })
+        @user = User.find_by_name("hillaryclinton")
         @project = create(:project, title: "my title", description: "my desc")
         create(:project_owner, project_id: @project.id,
                                user_id: @user.id)
@@ -196,20 +196,20 @@ describe 'project' do
         find_button("Sign in with Google").click
       end
 
-      it 'shows the project title and description' do
+      it "shows the project title and description" do
         visit "/projects/" + @project.id.to_s
 
         expect(page).to have_content(@project.title)
         expect(page).to have_content(@project.description)
       end
 
-      it 'does not show the link to leave a new review' do
+      it "does not show the link to leave a new review" do
         visit "/projects/" + @project.id.to_s
 
-        expect(page).not_to have_content('+ review project')
+        expect(page).not_to have_content("+ review project")
       end
 
-      it 'does not show a review with no rating' do
+      it "does not show a review with no rating" do
         review = create(:review, content: "great")
         create(:project_review, project_id: @project.id,
                                 review_id: review.id)
@@ -219,7 +219,7 @@ describe 'project' do
         expect(page).not_to have_content(review.content)
       end
 
-      it 'shows a review with one positive rating' do
+      it "shows a review with one positive rating" do
         review = create(:review, content: "great")
         create(:project_review, project_id: @project.id,
                                 review_id: review.id)
@@ -233,7 +233,7 @@ describe 'project' do
         expect(page).to have_content(review.content)
       end
 
-      it 'does not show a review with any negative rating' do
+      it "does not show a review with any negative rating" do
         review = create(:review, content: "great")
         create(:project_review, project_id: @project.id,
                                 review_id: review.id)
@@ -249,14 +249,14 @@ describe 'project' do
         expect(page).not_to have_content(review.content)
       end
 
-      it 'navigates to edit project page when link is clicked' do
+      it "navigates to edit project page when link is clicked" do
         visit "/projects/" + @project.id.to_s
-        click_link('edit-project-link')
+        click_link("edit-project-link")
 
-        expect(page).to have_css('form')
+        expect(page).to have_css("form")
       end
 
-      it 'shows the reviews with positive ratings in reverse chronological order' do
+      it "shows the reviews with positive ratings in reverse chronological order" do
         review1 = create(:review, content: "great")
         review2 = create(:review, content: "terrible")
         create(:project_review, project_id: @project.id,
@@ -275,10 +275,10 @@ describe 'project' do
         expect(page.body.index(review1.content)).to be > page.body.index(review2.content)
       end
 
-      it 'shows invited reviewers' do
-        invite = create(:user, name: 'name',
-                               email: 'name@email.com',
-                               uid: 'uidname')
+      it "shows invited reviewers" do
+        invite = create(:user, name: "name",
+                               email: "name@email.com",
+                               uid: "uidname")
         create(:project_invite, project_id: @project.id,
                                 user_id: invite.id)
 
@@ -294,91 +294,91 @@ describe 'project' do
     end
   end
 
-  describe 'new page' do
-    describe 'when logged out' do
-      it 'redirects you to the root' do
-        visit '/projects/new'
+  describe "new page" do
+    describe "when logged out" do
+      it "redirects you to the root" do
+        visit "/projects/new"
 
-        expect(current_path).to eq('/')
+        expect(current_path).to eq("/")
       end
     end
 
-    describe 'when logged in' do
+    describe "when logged in" do
       before(:each) do
         OmniAuth.config.add_mock(:google_oauth2,
-                                 { uid: 'uidhillaryclinton',
-                                   info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@gmail.com' } })
-        @user = User.find_by_name('hillaryclinton')
+                                 { uid: "uidhillaryclinton",
+                                   info: { name: "hillaryclinton",
+                                           email: "hillaryclinton@gmail.com" } })
+        @user = User.find_by_name("hillaryclinton")
 
         visit "/"
         find_button("Sign in with Google").click
       end
 
-      it 'displays a form for a new project' do
-        visit '/projects/new'
+      it "displays a form for a new project" do
+        visit "/projects/new"
 
-        expect(page).to have_css('form')
-        expect(page).to have_content('Create new project')
-        expect(page).to have_field('Title')
-        expect(page).to have_field('Description')
-        expect(page).to have_field('Enter email address to invite reviewer')
-        expect(page).to have_button('Create new project')
-        expect(page).to have_content('This form supports markdown')
+        expect(page).to have_css("form")
+        expect(page).to have_content("Create new project")
+        expect(page).to have_field("Title")
+        expect(page).to have_field("Description")
+        expect(page).to have_field("Enter email address to invite reviewer")
+        expect(page).to have_button("Create new project")
+        expect(page).to have_content("This form supports markdown")
       end
 
-      it 'redirects to the user show page when a new project is submitted' do
-        visit '/projects/new'
-        fill_in('project[title]', with: 'my project')
-        fill_in('project[description]', with: 'a description')
-        fill_in('emails_', with: 'an@email.com')
-        click_button('Create new project')
+      it "redirects to the user show page when a new project is submitted" do
+        visit "/projects/new"
+        fill_in("project[title]", with: "my project")
+        fill_in("project[description]", with: "a description")
+        fill_in("emails_", with: "an@email.com")
+        click_button("Create new project")
 
-        expect(current_path).to eq('/users/' + @user.id.to_s)
-        expect(page).to have_content('my project')
+        expect(current_path).to eq("/users/" + @user.id.to_s)
+        expect(page).to have_content("my project")
       end
 
-      it 'displays a warning if title is left blank when creating a new project' do
-        visit '/projects/new'
-        fill_in('project[description]', with: 'a description')
-        click_button('Create new project')
+      it "displays a warning if title is left blank when creating a new project" do
+        visit "/projects/new"
+        fill_in("project[description]", with: "a description")
+        click_button("Create new project")
 
-        expect(current_path).to eq('/projects/new')
-        expect(page).to have_content('Create new project')
-        expect(page).to have_content('Please provide a title')
+        expect(current_path).to eq("/projects/new")
+        expect(page).to have_content("Create new project")
+        expect(page).to have_content("Please provide a title")
       end
 
-      it 'displays a warning if description is left blank when creating a new project' do
-        visit '/projects/new'
-        fill_in('project[title]', with: 'my project')
-        click_button('Create new project')
+      it "displays a warning if description is left blank when creating a new project" do
+        visit "/projects/new"
+        fill_in("project[title]", with: "my project")
+        click_button("Create new project")
 
-        expect(current_path).to eq('/projects/new')
-        expect(page).to have_content('Create new project')
-        expect(page).to have_content('Please provide a description')
+        expect(current_path).to eq("/projects/new")
+        expect(page).to have_content("Create new project")
+        expect(page).to have_content("Please provide a description")
       end
 
-      it 'redirects to user show page if cancel link is clicked' do
-        visit '/projects/new'
-        click_link('cancel')
+      it "redirects to user show page if cancel link is clicked" do
+        visit "/projects/new"
+        click_link("cancel")
 
-        expect(current_path).to eq('/users/' + @user.id.to_s)
-        expect(page).to have_no_css('form')
+        expect(current_path).to eq("/users/" + @user.id.to_s)
+        expect(page).to have_no_css("form")
       end
 
-      it 'adds an email field when the plus icon is clicked', :js => true do
-        visit '/projects/new'
-        find_by_id('add-invite-link').trigger('click')
+      it "adds an email field when the plus icon is clicked", :js => true do
+        visit "/projects/new"
+        find_by_id("add-invite-link").trigger("click")
 
-        expect(page).to have_field('input_1')
+        expect(page).to have_field("input_1")
       end
 
-      it 'removes an email field when the minus icon is clicked', :js => true do
-        visit '/projects/new'
-        find_by_id('add-invite-link').trigger('click')
-        find_by_id('remove_invite_0').trigger('click')
+      it "removes an email field when the minus icon is clicked", :js => true do
+        visit "/projects/new"
+        find_by_id("add-invite-link").trigger("click")
+        find_by_id("remove_invite_0").trigger("click")
 
-        expect(page).not_to have_field('input_0')
+        expect(page).not_to have_field("input_0")
       end
 
       after(:each) do
@@ -387,25 +387,25 @@ describe 'project' do
     end
   end
 
-  describe 'edit page' do
-    describe 'when not logged in' do
-      it 'redirects to the root' do
+  describe "edit page" do
+    describe "when not logged in" do
+      it "redirects to the root" do
         project = create(:project, title: "my title", description: "my desc")
 
-        visit '/projects/' + project.id.to_s + '/edit'
+        visit "/projects/" + project.id.to_s + "/edit"
 
-        expect(current_path).to eq('/')
+        expect(current_path).to eq("/")
       end
     end
 
-    describe 'when logged in as the project owner' do
+    describe "when logged in as the project owner" do
       before(:each) do
         OmniAuth.config.add_mock(:google_oauth2,
-                                 { uid: 'uidhillaryclinton',
-                                   info: { name: 'hillaryclinton',
-                                           email: 'hillaryclinton@gmail.com' } })
-        @owner = User.find_by_name('hillaryclinton')
-        @user = create(:user, email: 'user@example.com')
+                                 { uid: "uidhillaryclinton",
+                                   info: { name: "hillaryclinton",
+                                           email: "hillaryclinton@gmail.com" } })
+        @owner = User.find_by_name("hillaryclinton")
+        @user = create(:user, email: "user@example.com")
         @project = create(:project, title: "my title", description: "my desc")
         create(:project_owner, project_id: @project.id,
                                user_id: @owner.id)
@@ -416,66 +416,66 @@ describe 'project' do
         find_button("Sign in with Google").click
       end
 
-      it 'displays a form for editing a project' do
-        visit '/projects/' + @project.id.to_s + '/edit'
+      it "displays a form for editing a project" do
+        visit "/projects/" + @project.id.to_s + "/edit"
 
-        expect(page).to have_css('form')
-        expect(page).to have_content('Update project')
-        expect(page).to have_field('Title', with: "my title")
-        expect(page).to have_field('Description')
+        expect(page).to have_css("form")
+        expect(page).to have_content("Update project")
+        expect(page).to have_field("Title", with: "my title")
+        expect(page).to have_field("Description")
         expect(page).to have_content("my desc")
-        expect(page).to have_button('Update project')
-        expect(page).to have_content('This form supports markdown')
-        expect(page).to have_field('email', with: 'user@example.com')
+        expect(page).to have_button("Update project")
+        expect(page).to have_content("This form supports markdown")
+        expect(page).to have_field("email", with: "user@example.com")
       end
 
-      it 'redirects to the project show page after a project is edited and shows a flash notice' do
-        visit '/projects/' + @project.id.to_s + '/edit'
-        fill_in('project[title]', with: 'new title')
-        fill_in('project[description]', with: 'new description')
-        click_button('Update project')
+      it "redirects to the project show page after a project is edited and shows a flash notice" do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        fill_in("project[title]", with: "new title")
+        fill_in("project[description]", with: "new description")
+        click_button("Update project")
 
-        expect(current_path).to eq('/projects/' + @project.id.to_s)
-        expect(page).to have_content('new title')
-        expect(page).to have_content('new description')
-        expect(page).to have_content('Project has been updated')
+        expect(current_path).to eq("/projects/" + @project.id.to_s)
+        expect(page).to have_content("new title")
+        expect(page).to have_content("new description")
+        expect(page).to have_content("Project has been updated")
       end
 
-      it 'displays a warning if project title is left blank' do
-        visit '/projects/' + @project.id.to_s + '/edit'
-        fill_in('project[title]', with: '')
-        fill_in('project[description]', with: 'new description')
-        click_button('Update project')
+      it "displays a warning if project title is left blank" do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        fill_in("project[title]", with: "")
+        fill_in("project[description]", with: "new description")
+        click_button("Update project")
 
-        expect(current_path).to eq('/projects/' + @project.id.to_s + '/edit')
-        expect(page).to have_content('Please provide a title')
+        expect(current_path).to eq("/projects/" + @project.id.to_s + "/edit")
+        expect(page).to have_content("Please provide a title")
       end
 
-      it 'displays a warning if project description is left blank' do
-        visit '/projects/' + @project.id.to_s + '/edit'
-        fill_in('project[title]', with: 'new title')
-        fill_in('project[description]', with: '')
-        click_button('Update project')
+      it "displays a warning if project description is left blank" do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        fill_in("project[title]", with: "new title")
+        fill_in("project[description]", with: "")
+        click_button("Update project")
 
-        expect(current_path).to eq('/projects/' + @project.id.to_s + '/edit')
-        expect(page).to have_content('Please provide a description')
+        expect(current_path).to eq("/projects/" + @project.id.to_s + "/edit")
+        expect(page).to have_content("Please provide a description")
       end
 
-      it 'redirects to project show page if cancel link is clicked' do
-        visit '/projects/' + @project.id.to_s + '/edit'
-        click_link('cancel')
+      it "redirects to project show page if cancel link is clicked" do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        click_link("cancel")
 
-        expect(current_path).to eq('/projects/' + @project.id.to_s)
-        expect(page).to have_no_css('form')
-        expect(page).to have_content('my title')
-        expect(page).to have_content('my desc')
+        expect(current_path).to eq("/projects/" + @project.id.to_s)
+        expect(page).to have_no_css("form")
+        expect(page).to have_content("my title")
+        expect(page).to have_content("my desc")
       end
 
-      it 'adds an email field when the plus icon is clicked', :js => true do
-        visit '/projects/' + @project.id.to_s + '/edit'
-        find_by_id('add-invite-link').trigger('click')
+      it "adds an email field when the plus icon is clicked", :js => true do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        find_by_id("add-invite-link").trigger("click")
 
-        expect(page).to have_field('input_1')
+        expect(page).to have_field("input_1")
       end
 
       after(:each) do

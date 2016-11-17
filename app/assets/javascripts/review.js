@@ -12,8 +12,6 @@ showNewReviewForm = function(project_id) {
 };
 
 submitNewReviewForm = function(project_id, callback) {
-  //var callback = function(response) {
-  //};
   client.ajaxPost("/reviews/new/" + project_id,
                   callback);
 };
@@ -30,8 +28,6 @@ showEditReviewForm = function(review_id) {
 };
 
 submitEditReviewForm = function(review_id, callback) {
-  //var callback = function(response) {
-  //};
   client.ajaxPost("/reviews/" + review_id + "/edit",
                   callback);
 };

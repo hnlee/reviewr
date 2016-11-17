@@ -1,27 +1,27 @@
-<div class='alert-notice'>
+<div class="alert-notice">
   <% if flash[:notice] %>
     <%= flash[:notice] %>
   <% end %>
 </div>
 
 <h2>
-  <span id='page-title'>Review</span>&nbsp;
+  <span id="page-title">Review</span>&nbsp;
   <% if @user == @review.user %>
-    <%= link_to edit_review_path(@review), class: 'edit-link', id: 'edit-review-link', remote: true do %>
+    <%= link_to edit_review_path(@review), class: "edit-link", id: "edit-review-link", remote: true do %>
       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
     <% end %>
   <% end %>
-  <span class='back-link'><%= link_to '&#8592; back to project'.html_safe, project_path(id: @project.id), class: 'cancel-link' %></span>
+  <span class="back-link"><%= link_to "&#8592; back to project".html_safe, project_path(id: @project.id), class: "cancel-link" %></span>
 </h2>
 
-<div id='review-content' class='markdown-content'>
+<div id="review-content" class="markdown-content">
   <p> <%= @review.content %></p>
 </div>
 <br />
 
-<div id='edit-review' class='load-form'></div>
+<div id="edit-review" class="load-form"></div>
 
-<div id='new-rating' class='load-form'></div>
+<div id="new-rating" class="load-form"></div>
 
 <% if @user != @project.owner %>
   <% if @ratings.length > 0 %>
@@ -29,16 +29,16 @@
   <% end %>
 
   <% if @user != @review.user %>
-    <p id='rating-criteria'>Was this review kind, specific, and actionable?</p><br />
+    <p id="rating-criteria">Was this review kind, specific, and actionable?</p><br />
 
-    <div class='bracket-box thirds' id='new-rating-box'>
-      <div class='squarebrackets'>
+    <div class="bracket-box thirds" id="new-rating-box">
+      <div class="squarebrackets">
         <center>
-          <div class='bracket-link'>
-              <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-up'  do %>
+          <div class="bracket-link">
+              <%= link_to new_rating_path(@review), class: "new-form-link", remote: true, id: "new-rating-up"  do %>
                 <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
               <% end %>
-              <%= link_to new_rating_path(@review), class: 'new-form-link', remote: true, id: 'new-rating-down'  do %>
+              <%= link_to new_rating_path(@review), class: "new-form-link", remote: true, id: "new-rating-down"  do %>
                 <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
               <% end %>
               <br /><br />+ rate review
@@ -50,11 +50,11 @@
   <% end %>
 
   <% @ratings.each do |rating| %>
-    <div class='bracket-box thirds'>
-      <div class='squarebrackets'>
-        <span class='bracket-link single-content'>
+    <div class="bracket-box thirds">
+      <div class="squarebrackets">
+        <span class="bracket-link single-content">
           <center>
-            <div class='scroll'>
+            <div class="scroll">
               <% if rating.helpful %>
                 <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
               <% else %>
@@ -62,7 +62,7 @@
               <% end %>
               <% if !rating.explanation.blank? %>
                 <br /><br />
-                <span class='card-small-text'>
+                <span class="card-small-text">
                   <%= rating.explanation %>
                 </span>
               <% end %>
