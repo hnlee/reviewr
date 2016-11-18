@@ -11,7 +11,7 @@ describe("Projects", function() {
       affix("#new-invite-field div#content");
       addField("#invites", "#new-invite-field"); 
        
-      expect($("#invites").html()).toEqual("<div id="content"></div>");
+      expect($("#invites").html()).toEqual('<div id="content"></div>');
     });
   });
 
@@ -27,7 +27,6 @@ describe("Projects", function() {
 
     });
   });
-
 
   describe("removeElement()", function() {
     it("removes an element from the DOM", function() {
@@ -47,27 +46,20 @@ describe("Projects", function() {
     });
   });
 
-  describe("assignMinusIds()", function() {
-    it("creates a numbered element id", function() {
-      affix("#invites");
-      addInviteField();
-      addInviteField();
-      assignMinusIds();
-       
-      expect($("#invites .remove-invite-link:eq(0)").attr("id")).toEqual("remove_invite_0");
-      expect($("#invites .remove-invite-link:eq(1)").attr("id")).toEqual("remove_invite_1");
-    });
-  });
 
-    describe("assignInviteFieldIds()", function() {
-    it("creates a numbered element id", function() {
-      affix("#invites");
-      addInviteField();
-      addInviteField();
-      assignInviteFieldIds();
-       
-      expect($("#invites .form-input:eq(0)").attr("id")).toEqual("input_0");
-      expect($("#invites .form-input:eq(1)").attr("id")).toEqual("input_1");
+  describe("isLastFieldBlank()", function() {
+    it("returns true if last field is blank", function() {
+      affix("input[value='something'].element")
+      affix("input[value=null].element")
+      
+      expect(isLastFieldBlank(".element")).toEqual(true);
     });
+
+   it("returns false if last field is not blank", function() {
+      affix("input[value='something'].element")
+      affix("input[value='else'].element")
+      
+      expect(isLastFieldBlank(".element")).toEqual(true);
+    });  
   });
 });

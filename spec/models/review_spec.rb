@@ -82,7 +82,7 @@ RSpec.describe Review do
 
   describe ".get_random_review" do
     it "returns a random review" do
-      user = create(:user)
+      user = create(:user, email: "random@email.com")
       review1 = create(:review)
       review2 = create(:review)
       review3 = create(:review)
@@ -94,7 +94,7 @@ RSpec.describe Review do
     end
 
     it "does not return a random review if it belongs to the user" do
-      user = User.create(name: "Bob")
+      user = User.create(name: "Bob", email: "bob@email.com")
       review1 = Review.create(content: "1")
       review2 = Review.create(content: "2")
       UserReview.create(user_id: user.id, review_id: review1.id)
@@ -111,7 +111,7 @@ RSpec.describe Review do
       project = create(:project)
       create(:project_review, review_id: review.id,
                               project_id: project.id)
-      user = create(:user)
+      user = create(:user, email: "user@email.com")
       create(:user_review, user_id: user.id,
                            review_id: review.id)
 
@@ -123,8 +123,8 @@ RSpec.describe Review do
       project = create(:project)
       create(:project_review, review_id: review.id,
                               project_id: project.id)
-      user1 = create(:user)
-      user2 = create(:user)
+      user1 = create(:user, email: "user1@email.com")
+      user2 = create(:user, email: "user2@email.com")
       create(:user_review, user_id: user2.id,
                            review_id: review.id)
 
@@ -137,7 +137,7 @@ RSpec.describe Review do
       project2 = create(:project)
       create(:project_review, review_id: review.id,
                               project_id: project2.id)
-      user = create(:user)
+      user = create(:user, email: "user@email.com")
       create(:user_review, user_id: user.id,
                            review_id: review.id)
 

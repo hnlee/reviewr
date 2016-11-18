@@ -12,3 +12,7 @@ Dom.prototype.hideElement = function(element) {
 Dom.prototype.replaceContent = function(element, content) {
   $(element).empty().append(content);
 };
+
+Dom.prototype.unhideElement = function(element) {
+  $(element).css('display', 'inline');
+};

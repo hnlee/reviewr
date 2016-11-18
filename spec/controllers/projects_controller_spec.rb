@@ -31,20 +31,20 @@ RSpec.describe ProjectsController, :type => :controller do
   end
 
   describe "POST /projects/new" do
-    it "creates a new project and redirects to the project index page" do
-      user = create(:user)
-      session[:user_id] = user.id
+    before(:each) do
+      @user = create(:user)
+      session[:user_id] = @user.id
+    end
 
-      post :create, params: { project: { title: "my project", description: "a description", email: "an@email.com" } }
+    it "creates a new project and redirects to the project index page" do
+      post :create, params: { project: { title: "my project", description: "a description" },
+                              emails: ["an@email.com"] }
 
       expect(response).to redirect_to(user_path(session[:user_id]))
       expect(response).to have_http_status(:redirect)
     end
 
-    it "displays flash message if title is blank" do
-      user = create(:user)
-      session[:user_id] = user.id
-
+   it "displays flash message if title is blank" do
       post :create, params: { project: { title: "", description: "a description" } }
 
       expect(response).to redirect_to(new_project_path)
@@ -52,9 +52,6 @@ RSpec.describe ProjectsController, :type => :controller do
     end
 
     it "displays flash message if description is blank" do
-      user = create(:user)
-      session[:user_id] = user.id
-
       post :create, params: { project: { title: "my project", description: "" } }
 
       expect(response).to redirect_to(new_project_path)
@@ -260,7 +257,9 @@ RSpec.describe ProjectsController, :type => :controller do
                              user_id: owner.id)
       user = create(:user, name: "name2", email: "invitedreviewer@example.com")
 
-      post :update, params: { id: project.id, project: { title: "best title", description: "best description" }, emails: [user.email] }
+      post :update, params: { id: project.id, 
+                              project: { title: "best title", description: "best description" }, 
+                              emails: [user.email] }
 
       updated_project = Project.find_by_id(project.id)
       expect(response).to redirect_to(project_path(project.id))

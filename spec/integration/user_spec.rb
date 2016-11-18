@@ -2,15 +2,15 @@ require "spec_helper"
 
 describe "user", :type => :feature do
   
-  before(:all) {
+  before(:all) do 
     DatabaseCleaner.strategy = :truncation
-  }
+  end
 
-  after(:all) {
+  after(:all) do 
     DatabaseCleaner.clean
     Capybara.reset_sessions!
     Capybara.use_default_driver
-  }
+  end 
 
   describe "logged out index page" do
     it "has a link to Google authentication" do 

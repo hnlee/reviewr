@@ -33,4 +33,13 @@ describe("Dom", function() {
       expect($("#element").html()).toEqual("new content");
     });
   });
+
+  describe("unhideElement()", function() {
+    it("can make a hidden element visible", function() {
+      affix("#element[style='display:none']")
+      dom.unhideElement("#element")
+
+      expect($('#element').css('display')).toEqual('inline');
+    });
+  });
 });
