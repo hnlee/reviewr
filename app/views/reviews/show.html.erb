@@ -34,14 +34,14 @@
     <div class="bracket-box thirds" id="new-rating-box">
       <div class="squarebrackets">
         <center>
-          <div class="bracket-link">
-              <%= link_to new_rating_path(@review), class: "cancel-link", remote: true, id: "new-rating-up"  do %>
-                <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
-              <% end %>
-              <%= link_to new_rating_path(@review), class: "cancel-link", remote: true, id: "new-rating-down"  do %>
-                <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
-              <% end %>
-              <br /><br />+ rate review
+          <div class="bracket-link single-content">
+            <%= link_to new_rating_path(@review), class: "cancel-link", remote: true, id: "new-rating-up"  do %>
+              <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+            <% end %>
+            <%= link_to new_rating_path(@review), class: "cancel-link", remote: true, id: "new-rating-down"  do %>
+              <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+            <% end %>
+            <br /><br />+ rate review
           </div>
         </center>
       </div>
@@ -52,23 +52,21 @@
   <% @ratings.each do |rating| %>
     <div class="bracket-box thirds">
       <div class="squarebrackets">
-        <span class="bracket-link single-content">
+        <div class="bracket-link single-content scroll">
           <center>
-            <div class="scroll">
-              <% if rating.helpful %>
-                <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
-              <% else %>
-                <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
-              <% end %>
-              <% if !rating.explanation.blank? %>
-                <br /><br />
-                <span class="card-small-text">
-                  <%= rating.explanation %>
-                </span>
-              <% end %>
-            </div>
+            <% if rating.helpful %>
+              <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+            <% else %>
+              <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
+            <% end %>
+            <% if !rating.explanation.blank? %>
+              <br /><br />
+              <span class="card-small-text">
+                <%= rating.explanation %>
+              </span>
+            <% end %>
           </center>
-        </span>
+        </div>
       </div>
     </div>
   <% end %>
