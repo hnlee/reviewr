@@ -41,8 +41,8 @@ class ProjectsController < ApplicationController
         ProjectInvite.create(project_id: project.id,
                              user_id: user.id)
         InviteMailer.invite_email(project, user).deliver_now
-        redirect_to user_path(current_user.id), { flash: { notice: "Project has been created" } } 
       end
+      redirect_to user_path(current_user.id), { flash: { notice: "Project has been created" } } 
     else
       redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: project.get_error_message } }
     end
