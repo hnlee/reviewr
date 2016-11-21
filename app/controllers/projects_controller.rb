@@ -60,13 +60,15 @@ class ProjectsController < ApplicationController
     @invited_reviewers = @project.get_invited_reviewers
     emails = params[:emails]
     if @project.update_attributes(project_params)
-      emails.each do |email|
-        if !@invited_reviewers.find_by(email: email)
-          user = User.find_or_create_by(email: email)
-          ProjectInvite.create(project_id: @project.id,
-                               user_id: user.id)
-          InviteMailer.invite_email(@project, user).deliver_now
-        else
+      if emails
+        emails.each do |email|
+          if !@invited_reviewers.find_by(email: email)
+            user = User.find_or_create_by(email: email)
+            ProjectInvite.create(project_id: @project.id,
+                                 user_id: user.id)
+            InviteMailer.invite_email(@project, user).deliver_now
+          else
+          end
         end
       end
       redirect_to project_path(params[:id]), { flash: { notice: "Project has been updated" } }

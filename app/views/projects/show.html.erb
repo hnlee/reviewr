@@ -40,7 +40,7 @@
 <% end %>
 
 <% if @user != @project.owner %>
-  <%= link_to "+ review project", new_review_path(@project), class: "new-form-link", remote: true, id: "new-review-link" %>
+  <%= link_to "+ review project", new_review_path(@project), class: "cancel-link", remote: true, id: "new-review-link" %>
 <% end %>
 
 <% @reviews.each do |review| %>

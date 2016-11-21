@@ -20,10 +20,12 @@ getIdIndex = function(element, id_prefix) {
   return id.replace(id_prefix, "");
 };
 
-isLastFieldBlank = function(element) {
-  if($(element).last().val()) {
-    return true;
-  } else {
-    return false;
-  }
+isFieldBlank = function(element) {
+  var blank = false;
+  $(element).each(function() {
+    if($(this).val().trim().length == 0) {
+      blank = true;
+    }
+  });
+  return blank;
 }

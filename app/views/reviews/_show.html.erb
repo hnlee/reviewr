@@ -21,10 +21,10 @@
   <div id="rating-criteria">
     <div id="new-rating-box" data-id="<%= @review.id %>">
       <span>Was this review kind, specific, and actionable?</span>
-      <%= link_to new_rating_path(@review), class: "new-form-link indent", remote: true, id: "random-rating-up"  do %>
+      <%= link_to new_rating_path(@review), class: "cancel-link indent", remote: true, id: "random-rating-up"  do %>
         <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
       <% end %>
-      <%= link_to new_rating_path(@review), class: "new-form-link indent", remote: true, id: "random-rating-down"  do %>
+      <%= link_to new_rating_path(@review), class: "cancel-link indent", remote: true, id: "random-rating-down"  do %>
         <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
       <% end %>
     </div>

@@ -35,10 +35,10 @@
       <div class="squarebrackets">
         <center>
           <div class="bracket-link">
-              <%= link_to new_rating_path(@review), class: "new-form-link", remote: true, id: "new-rating-up"  do %>
+              <%= link_to new_rating_path(@review), class: "cancel-link", remote: true, id: "new-rating-up"  do %>
                 <i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
               <% end %>
-              <%= link_to new_rating_path(@review), class: "new-form-link", remote: true, id: "new-rating-down"  do %>
+              <%= link_to new_rating_path(@review), class: "cancel-link", remote: true, id: "new-rating-down"  do %>
                 <i class="fa fa-thumbs-down fa-2x" aria-hidden="true"></i>
               <% end %>
               <br /><br />+ rate review

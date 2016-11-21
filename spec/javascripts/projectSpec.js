@@ -47,19 +47,21 @@ describe("Projects", function() {
   });
 
 
-  describe("isLastFieldBlank()", function() {
-    it("returns true if last field is blank", function() {
+  describe("isFieldBlank()", function() {
+    it("returns true if any field is blank", function() {
       affix("input[value='something'].element")
-      affix("input[value=null].element")
-      
-      expect(isLastFieldBlank(".element")).toEqual(true);
+      affix("input[value=' '].element")
+      affix("input[value='something'].element")
+
+      expect(isFieldBlank(".element")).toEqual(true);
     });
 
-   it("returns false if last field is not blank", function() {
+   it("returns false if fields are not blank", function() {
+      affix("input[value='or'].element")
       affix("input[value='something'].element")
       affix("input[value='else'].element")
-      
-      expect(isLastFieldBlank(".element")).toEqual(true);
-    });  
+
+      expect(isFieldBlank(".element")).toEqual(false);
+    });
   });
 });

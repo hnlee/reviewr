@@ -23,7 +23,7 @@
 
       <span id="invites">
         <%= render "invite" %>
-        <a href="#invites" class="remove-invite-link" style="display:none"><i class="fa fa-minus fa-2x edit-link" aria-hidden="true"></i></a>
+        <a href="#invites" style="display:none" class="remove-invite-link"><i class="fa fa-minus fa-2x edit-link" aria-hidden="true"></i></a>
       </span>
 
       <a href="#invites" id="add-invite-link"><i class="fa fa-plus fa-2x edit-link" aria-hidden="true"></i></a>
@@ -37,7 +37,6 @@
 <% end %>
 
 <div style="display:none" id="new-invite-field">
-  <a href="#invites" class="remove-invite-link"><i class="fa fa-minus fa-2x edit-link" aria-hidden="true"></i></a>
   <%= render "invite", locals: {project: false} %>
   <a href="#invites" class="remove-invite-link"><i class="fa fa-minus fa-2x edit-link" aria-hidden="true"></i></a>
 </div>

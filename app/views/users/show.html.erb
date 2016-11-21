@@ -2,7 +2,7 @@
 
 <h2>Welcome, <%= @user.name %></h2>
 
-<%= link_to "+ create new project", new_project_path(user: @user.id), class: "new-form-link" %>
+<%= link_to "+ create new project", new_project_path(user: @user.id), class: "cancel-link" %>
 
 <div class="tab-container">
   <ul class="tabs">
@@ -12,7 +12,7 @@
   </ul>
 
   <div class="tab-content margin" id="projects">
-    <h3>Projects You"ve Created</h3>
+    <h3>Projects You've Created</h3>
 
     <% @projects.each do |project| %>
       <div class="bracket-box">
@@ -29,7 +29,7 @@
   </div>
 
   <div class="tab-content margin" id="reviews">
-    <h3>Reviews You"ve Written</h3>
+    <h3>Reviews You've Written</h3>
     <% @reviews.each do |review| %>
       <div class="bracket-box">
         <div class="squarebrackets">
@@ -41,7 +41,7 @@
   </div>
 
   <div class="tab-content margin" id="invites">
-    <h3>Projects You"re Invited to Review</h3>
+    <h3>Projects You're Invited to Review</h3>
     <% @invites.each do |invite| %>
       <div class="bracket-box">
         <div class="squarebrackets">
@@ -49,8 +49,7 @@
           <p><%= invite.created_at.strftime("%b %d, %Y") %>
           <% if invite.updated_at != invite.created_at %>
             | updated <%= invite.updated_at.strftime("%b %d, %Y") %>
-          <% end %></p>
-          <p><%= invite.helpful_reviews_count %> Review<%if invite.helpful_reviews_count != 1%>s<% end %></p>
+          <% end %></p><p></p>
         </div>
       </div>
     <% end %>
