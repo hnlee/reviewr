@@ -70,33 +70,28 @@ $(document).ready(function () {
 
   $("#add-invite-link").on("click", function(event) {
     event.preventDefault();
-    if(isLastFieldBlank("#invites .form-input")) {
-      if(path_id != "edit") {
-        dom.unhideElement(".remove-invite-link");
-      }
-      addField("#invites", "#new-invite-field");
-      assignIds(".remove-invite-link", "remove_invite_");
-      assignIds("#invites .form-input", "input_");
+    dom.unhideElement(".remove-invite-link");
+    $(this).html("<i class='fa fa-plus fa-2x edit-link' aria-hidden='true'></i>")
+    addField("#invites", "#new-invite-field");
+    assignIds(".remove-invite-link", "remove_invite_");
+    assignIds("#invites .form-input", "input_");
 
-      $(".remove-invite-link").on("click", function(event) {
-        var index = getIdIndex(this, "remove_invite_");
-        removeElement("#input_", index);
-        removeElement("#remove_invite_", index);
-      });
-    } else {
-      dom.replaceContent(".alert-error", "<p>Please input an email address</p><br />");
-    }
+    $(".remove-invite-link").on("click", function(event) {
+      var index = getIdIndex(this, "remove_invite_");
+      removeElement("#input_", index);
+      removeElement("#remove_invite_", index);
+    });
   });
 
   $("#submit-project-button").on("click", function(event) {
-    if(!isLastFieldBlank("#invites .form-input")) {
+    if(isFieldBlank("#invites .form-input")) {
       event.preventDefault();
       dom.replaceContent(".alert-error", "<p>Please input an email address</p><br />");
     } 
   });
 
   $("#edit-project-button").on("click", function(event) {
-    if(!isLastFieldBlank("#invites .form-input")) {
+    if(isFieldBlank("#invites .form-input")) {
       event.preventDefault();
       dom.replaceContent(".alert-error", "<p>Please input an email address</p><br />");
     }

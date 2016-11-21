@@ -358,15 +358,6 @@ describe "project" do
         expect(page).to have_content("Please provide a description")
       end
 
-      it "displays a warning if email field is blank before clicking on plus icon", :js => true do
-        visit "/projects/new"
-        fill_in("project[title]", with: "my project")
-        fill_in("project[description]", with: "a description")
-        find_by_id("add-invite-link").trigger("click") 
-        
-        expect(page).to have_content("Please input an email address") 
-      end
-
       it "displays a warning if email field is blank before submitting", :js => true do
         visit "/projects/new"
         fill_in("project[title]", with: "my project")
@@ -446,7 +437,7 @@ describe "project" do
         expect(page).to have_content("my desc")
         expect(page).to have_button("Update project")
         expect(page).to have_content("This form supports markdown")
-        expect(page).to have_field("emails[]", with: "user@example.com")
+        expect(page).to have_link("add-invite-link")
       end
 
       it "redirects to the project show page after a project is edited and shows a flash notice" do
@@ -481,14 +472,6 @@ describe "project" do
         expect(page).to have_content("Please provide a description")
       end
 
-      it "displays a warning if email field is blank before clicking on plus icon", :js => true do
-        visit "/projects/" + @project.id.to_s + "/edit"
-        find_by_id("add-invite-link").trigger("click") 
-        find_by_id("add-invite-link").trigger("click") 
-        
-        expect(page).to have_content("Please input an email address") 
-      end
-
       it "displays a warning if email field is blank before submitting", :js => true do
         visit "/projects/" + @project.id.to_s + "/edit"
         find_by_id("add-invite-link").trigger("click") 
@@ -511,7 +494,7 @@ describe "project" do
         visit "/projects/" + @project.id.to_s + "/edit"
         find_by_id("add-invite-link").trigger("click")
 
-        expect(page).to have_field("input_1")
+        expect(page).to have_field("input_0")
       end
 
       after(:each) do

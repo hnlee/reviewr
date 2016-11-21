@@ -62,8 +62,8 @@ user_names.each do |name|
   User.create(name: name, email: name + "@gmail.com", uid: "uid" + name)
 end
 
-User.create(name: "Nicole Carpenter", email: "ncarpenter@8thlight.com", uid: "101379786221150376018")
-User.create(name: "Hana Lee", email: "hana@8thlight.com", uid: "106812979936097644716")
+nicole = User.create(name: "Nicole Carpenter", email: "ncarpenter@8thlight.com", uid: "101379786221150376018")
+hana = User.create(name: "Hana Lee", email: "hana@8thlight.com", uid: "106812979936097644716")
 
 user_names += ["Nicole Carpenter", "Hana Lee"]
 
@@ -78,6 +78,9 @@ end
 100.times do
   project = rand(Project.count) + 1
   user = ((1..User.count).to_a - [Project.find(project).owner]).sample
+  while !ProjectOwner.where(project_id: project, user_id: user).empty?
+    project = rand(Project.count) + 1
+  end
   ProjectInvite.find_or_create_by(project_id: project, user_id: user)
 end
 
@@ -97,3 +100,10 @@ end
   UserRating.create(user_id: rand(User.count) + 1, rating_id: rating.id)
   ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: rating.id)
 end
+
+demo_project = Project.create(name: "Demo project title", descrtiption: "Demo project description")
+obama = User.first
+ProjectOwner.create(project_id: demo_project.id, user_id: obama.id)
+ProjectInvite.create(project_id: demo_project.id, user_id: nicole.id)
+ProjectInvite.create(project_id: demo_project.id, user_id: hana.id)
+
