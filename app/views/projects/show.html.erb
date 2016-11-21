@@ -45,7 +45,7 @@
 
 <% @reviews.each do |review| %>
   <% if (@user == @project.owner and review.visible?) or @user == review.user %>
-    <div>
+    <div class="margin">
       <div class="bracket-box">
         <div class="squarebrackets">
           <%= link_to(review, class: "bracket-link single-content") do %>
