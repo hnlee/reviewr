@@ -101,7 +101,7 @@ end
   ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: rating.id)
 end
 
-demo_project = Project.create(name: "Demo project title", descrtiption: "Demo project description")
+demo_project = Project.create(title: "Demo project title", description: "Demo project description")
 obama = User.first
 ProjectOwner.create(project_id: demo_project.id, user_id: obama.id)
 ProjectInvite.create(project_id: demo_project.id, user_id: nicole.id)
