@@ -7,8 +7,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: "smtp.gmail.com",
     port: 587,
-    domain: "example.com",
-    user_name: "reviewr.app",
+    domain: "reviewr.app@gmail.com",
+    user_name: "reviewr.app@gmail.com",
     password: "8thlight",
     authentication: "plain",
     enable_starttls_auto: true }
