@@ -324,7 +324,14 @@ describe "project" do
         expect(page).to have_field("Description")
         expect(page).to have_field("Enter email address to invite reviewer")
         expect(page).to have_button("Create new project")
-        expect(page).to have_content("This form supports markdown")
+      end
+
+      it "shows Markdown key when hovering over Description", :js => true do
+        visit "/projects/new"
+        find("div.markdown-key").hover
+
+        
+        expect(page).to have_content("This form supports Markdown:")
       end
 
       it "redirects to the user show page when a new project is submitted", :js => true do
@@ -437,8 +444,14 @@ describe "project" do
         expect(page).to have_field("Description")
         expect(page).to have_content("my desc")
         expect(page).to have_button("Update project")
-        expect(page).to have_content("This form supports markdown")
         expect(page).to have_link("add-invite-link")
+      end
+
+      it "shows Markdown key when hovering over Description", :js => true do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        find("div.markdown-key").hover
+        
+        expect(page).to have_content("This form supports Markdown:")
       end
 
       it "redirects to the project show page after a project is edited and shows a flash notice" do

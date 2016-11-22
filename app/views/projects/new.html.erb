@@ -12,12 +12,14 @@
       <%= f.label :title, "Title:" %>
       <%= f.text_field :title, size: 60, class: "form-input" %><br /><br />
 
-      <%= f.label :description, "Description:" %><br /><br />
-      <%= f.text_area(:description, cols: 90, rows: 16, class: "form-input" ) %><br /><br />
-
       <div class="markdown-key">
-        <p> This form supports markdown: **bold**, *italics*, _underline_  ~~strikethrough~~, ^(superscript), ==highlight== ```code``` (syntax highlighting supported)</p>
-      </div><br />
+        <%= f.label :description, "Description:" %>
+        <span class="markdown-key-text">
+          <p> This form supports Markdown: **bold**, *italics*, _underline_  ~~strikethrough~~, ^(superscript), ==highlight==, ```code``` (syntax highlighting supported)</p>
+        </span>
+      </div>
+      <br /><br />
+      <%= f.text_area(:description, cols: 90, rows: 16, class: "form-input" ) %><br /><br />
 
       <%= label_tag "emails[]", "Enter email address to invite reviewer:" %><br /><br />
 
