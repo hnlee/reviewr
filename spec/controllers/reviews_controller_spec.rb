@@ -27,6 +27,7 @@ RSpec.describe ReviewsController, :type => :controller do
       post :create, params: { review: { content: "This looks good", project_id: project.id }, project_id: project.id }
 
       expect(response).to have_http_status(:redirect)
+      expect(flash[:notice]).to match("Review has been created")
     end
 
     it "reloads form with a flash warning when the content is left blank" do

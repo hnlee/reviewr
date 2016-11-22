@@ -336,6 +336,7 @@ describe "project" do
 
         expect(current_path).to eq("/users/" + @user.id.to_s)
         expect(page).to have_content("my project")
+        expect(page).to have_content("Project has been created")
       end
 
       it "displays a warning if title is left blank when creating a new project" do

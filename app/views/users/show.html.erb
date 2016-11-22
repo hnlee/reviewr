@@ -1,5 +1,11 @@
 <%= render partial: "reviews/show", locals: { review: @review, user: @user } %>
 
+<div class="alert-notice">
+  <% if flash[:notice] %>
+    <%= flash[:notice] %>
+  <% end %>
+</div>
+
 <h2>Welcome, <%= @user.name %></h2>
 
 <%= link_to "+ create new project", new_project_path(user: @user.id), class: "cancel-link" %>

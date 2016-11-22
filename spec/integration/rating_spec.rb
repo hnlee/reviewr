@@ -34,6 +34,7 @@ describe "rating", :type => :feature do
 
       expect(page).to have_xpath("//i", :class => "fa fa-thumbs-up")
       expect(current_path).to eq("/reviews/" + @review.id.to_s)
+      expect(page).to have_content("Rating has been created")
     end
 
     it "displays error message on page if rated not helpful without any explanation", :js => true do
@@ -83,7 +84,7 @@ describe "rating", :type => :feature do
       find_button("Sign in with Google").click
     end
 
-    it "redirects to the index from the rating form is cancel is hit", :js => true do
+    it "redirects to the index from the rating form if cancel is hit", :js => true do
       Capybara.ignore_hidden_elements = false
 
       visit user_path(id: @user.id)
@@ -102,6 +103,7 @@ describe "rating", :type => :feature do
       find_by_id("submit-rating-button").trigger("click")
 
       expect(current_path).to eq("/users/" + @user.id.to_s)
+      expect(page).to have_content("Rating has been created")
     end
 
     it "displays error message from the rating form if rated not helpful without any explanation", :js => true do

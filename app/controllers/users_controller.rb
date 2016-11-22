@@ -12,6 +12,10 @@ class UsersController < ApplicationController
       @projects = @user.projects.order(updated_at: :desc).all
       @reviews = @user.reviews.order(updated_at: :desc).all
       @invites = @user.get_open_invites.sort_by(&:updated_at).reverse
+      @create = params[:create]
+      if @create == "success"
+        flash.now[:notice] = "Rating has been created"
+      end
     end
   end
 end

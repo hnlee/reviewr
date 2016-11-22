@@ -26,12 +26,12 @@ class RatingsController < ApplicationController
                         rating_id: rating.id)
       if request.xhr?
         render :js => "if (window.location.pathname == '#{user_path(@user)}') {
-                         url.redirectToURI('#{user_path(@user)}');
+                         url.redirectToURI('#{user_path(@user, create: "success")}');
                        } else {
-                         url.redirectToURI('#{review_path(rating_params[:review_id])}');
+                         url.redirectToURI('#{review_path(rating_params[:review_id], create: "success")}');
                        };"
       else
-        redirect_to review_path(rating_params[:review_id])
+        redirect_to review_path(rating_params[:review_id]), { flash: { notice: "Rating has been created" } }
       end
     else
       if rating.unhelpful? and rating.explanation.blank?
