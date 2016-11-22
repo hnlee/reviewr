@@ -26,6 +26,7 @@ RSpec.describe RatingsController, :type => :controller do
 
       expect(response).to redirect_to(review)
       expect(response).to have_http_status(:redirect)
+      expect(flash[:notice]).to match("Rating has been created")
     end
 
     it "displays flash message if radio button not selected" do
