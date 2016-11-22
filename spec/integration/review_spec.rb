@@ -279,6 +279,7 @@ describe "review", :type => :feature do
 
         expect(current_path).to eq("/projects/" + @project.id.to_s)
         expect(page).to have_content("my review")
+        expect(page).to have_content("Review has been created")
       end
 
       it "displays a warning if content is left blank when creating a new review", :js => true do

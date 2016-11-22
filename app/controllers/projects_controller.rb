@@ -11,6 +11,10 @@ class ProjectsController < ApplicationController
       @user = current_user
       @reviews = Review.get_user_owned_reviews(@user,
                                                @project)
+      @create = params[:create]
+      if @create == "success"
+        flash.now[:notice] = "Review has been created"
+      end
     else
       redirect_to user_path(current_user.id)
     end
@@ -37,7 +41,7 @@ class ProjectsController < ApplicationController
         ProjectInvite.create(project_id: project.id,
                              user_id: user.id)
         InviteMailer.invite_email(project, user).deliver_now
-        redirect_to user_path(current_user.id)
+        redirect_to user_path(current_user.id), { flash: { notice: "Project has been created" } } 
       end
     else
       redirect_to new_project_path(user: project_params[:user_id]), { flash: { error: project.get_error_message } }

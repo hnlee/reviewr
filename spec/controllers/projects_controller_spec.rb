@@ -36,12 +36,13 @@ RSpec.describe ProjectsController, :type => :controller do
       session[:user_id] = @user.id
     end
 
-    it "creates a new project and redirects to the project index page" do
+    it "creates a new project and redirects to the user show page" do
       post :create, params: { project: { title: "my project", description: "a description" },
                               emails: ["an@email.com"] }
 
       expect(response).to redirect_to(user_path(session[:user_id]))
       expect(response).to have_http_status(:redirect)
+      expect(flash[:notice]).to match("Project has been created")
     end
 
    it "displays flash message if title is blank" do

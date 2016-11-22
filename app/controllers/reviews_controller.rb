@@ -22,9 +22,9 @@ class ReviewsController < ApplicationController
                                             review_id: review.id)
       UserReview.create(review_id: review.id, user_id: current_user.id)
       if request.xhr?
-        render :js => "url.redirectToURI('#{project_path(review_params[:project_id])}')"
+        render :js => "url.redirectToURI('#{project_path(review_params[:project_id], create: "success")}')"
       else
-        redirect_to project_path(review_params[:project_id])
+        redirect_to project_path(review_params[:project_id]), {:flash => { :notice => "Review has been created" } } 
       end
     else
       if request.xhr?
@@ -79,8 +79,12 @@ class ReviewsController < ApplicationController
       end
       @project = @review.project
       @update = params[:update]
+      @create = params[:create]
       if @update == "success"
         flash.now[:notice] = "Review has been updated"
+      end
+      if @create == "success"
+        flash.now[:notice] = "Rating has been created"
       end
     end
   end
