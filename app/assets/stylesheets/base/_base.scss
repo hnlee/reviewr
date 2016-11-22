@@ -136,12 +136,28 @@ p {
 }
 
 .markdown-key {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.markdown-key-text {
+  visibility: hidden;
+  position: absolute;
+  left: 110%;
+  top: -0.25em;
+  z-index: 1;
+  width: 300px;
   background-color: $platinum;
   border: 2px solid $grey-white;
   padding: 10px;
   color: $light-grey;
   font-style: italic;
   font-size: .75em;
+}
+
+.markdown-key:hover .markdown-key-text {
+  visibility: visible;
 }
 
 #new-rating-up {
