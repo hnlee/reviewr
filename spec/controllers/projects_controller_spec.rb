@@ -271,6 +271,20 @@ RSpec.describe ProjectsController, :type => :controller do
       expect(flash[:notice]).to match("Project has been updated")
     end
 
+    it "removes an invited reviewer if deleted" do
+      project = create(:project)
+      user = create(:user, name: "name", email: "invitedreviewer@example.com")
+      create(:project_invite, project_id: project.id,
+                              user_id: user.id)
+
+      post :update, params: { id: project.id, 
+                              project: { title: "best title", description: "best description" }, 
+                              emails: [] }
+
+      updated_project = Project.find_by_id(project.id)
+      expect(updated_project.get_invited_reviewers).not_to include(user)
+    end
+
     it "displays flash error message if description is blank" do
       project = create(:project)
 

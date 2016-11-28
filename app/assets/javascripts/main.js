@@ -67,20 +67,26 @@ $(document).ready(function () {
   });
 
   assignIds("#invites .form-input", "input_");
+  assignIds(".remove-invite-link", "remove_invite_");
 
   $("#add-invite-link").on("click", function(event) {
     event.preventDefault();
     dom.unhideElement(".remove-invite-link");
-    $(this).html("<i class='fa fa-plus fa-2x edit-link' aria-hidden='true'></i>")
     addField("#invites", "#new-invite-field");
     assignIds(".remove-invite-link", "remove_invite_");
     assignIds("#invites .form-input", "input_");
-
+    
     $(".remove-invite-link").on("click", function(event) {
       var index = getIdIndex(this, "remove_invite_");
       removeElement("#input_", index);
       removeElement("#remove_invite_", index);
     });
+  });
+
+  $(".remove-invite-link").on("click", function(event) {
+    var index = getIdIndex(this, "remove_invite_");
+    removeElement("#input_", index);
+    removeElement("#remove_invite_", index);
   });
 
   $("#submit-project-button").on("click", function(event) {

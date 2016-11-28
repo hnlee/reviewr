@@ -71,8 +71,13 @@ class ProjectsController < ApplicationController
             ProjectInvite.create(project_id: @project.id,
                                  user_id: user.id)
             InviteMailer.invite_email(@project, user).deliver_now
-          else
           end
+        end
+      end
+      @invited_reviewers.each do |invited_reviewer|
+        if !emails or !emails.include?(invited_reviewer.email)
+          invite = ProjectInvite.find_by(user_id: invited_reviewer.id)
+          ProjectInvite.destroy(invite.id)
         end
       end
       redirect_to project_path(params[:id]), { flash: { notice: "Project has been updated" } }
