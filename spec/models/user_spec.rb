@@ -120,4 +120,28 @@ RSpec.describe User do
       expect(user.get_open_invites).not_to include(project)
     end
   end
+
+  describe "#get_scores" do
+    it "returns a hash with number of helpful ratings and number of unhelpful ratings on reviews written by the user" do 
+      user = User.create(name: "Jenny",
+                         email: "jenny@email.com")
+      review = create(:review)
+      create(:user_review, user_id: user.id,
+                           review_id: review.id)
+      3.times do |i|
+        rating = create(:rating, helpful: true)
+        create(:review_rating, review_id: review.id,
+                               rating_id: rating.id)
+      end
+      2.times do |i|
+        rating = create(:rating, helpful: false,
+                                 explanation: "Not helpful")
+        create(:review_rating, review_id: review.id,
+                               rating_id: rating.id)
+      end
+
+      expect(user.get_scores[:helpful]).to eq(3)
+      expect(user.get_scores[:unhelpful]).to eq(2)
+    end
+  end
 end

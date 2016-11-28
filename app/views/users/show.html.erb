@@ -1,14 +1,37 @@
-<%= render partial: "reviews/show", locals: { review: @review, user: @user } %>
-
 <div class="alert-notice">
   <% if flash[:notice] %>
     <%= flash[:notice] %>
   <% end %>
 </div>
 
-<h2>Welcome, <%= @user.name %></h2>
+<div class="title-container">
+  <h2>Welcome, <%= @user.name %></h2>
 
-<%= link_to "+ create new project", new_project_path(user: @user.id), class: "cancel-link" %>
+  <%= link_to "+ create new project", new_project_path(user: @user.id), class: "cancel-link" %>
+</div>
+
+<div class="scores-container">
+  <h3>Ratings You've Received</h3>
+
+  <div class="markdown-content">
+    <% if @user.ratings.count > 2 %>
+      <center>
+        <span class="score-up">
+          <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+          <%= @user.get_scores[:helpful] %>
+        </span>
+        <span class="score-down">
+          <i class="fa fa-thumbs-down" aria-hidden=true"></i>
+          <%= @user.get_scores[:unhelpful] %>
+        </span>
+      </center>
+    <% else %>
+      <p>Rate <%= 3 - @user.ratings.count %> reviews to see your scores!</p> 
+    <% end %>
+  </div>
+</div>
+
+<%= render partial: "reviews/show", locals: { review: @review, user: @user } %>
 
 <div class="tab-container">
   <ul class="tabs">
