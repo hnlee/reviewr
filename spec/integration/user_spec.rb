@@ -199,7 +199,7 @@ describe "user", :type => :feature do
 
         visit user_path(id: @user)
 
-        expect(page).not_to have_content(review.content)
+        expect(find_by_id('reviews')).not_to have_content(review.content)
       end
 
       it "shows all reviews as links" do

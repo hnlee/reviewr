@@ -511,6 +511,23 @@ describe "project" do
         expect(page).to have_field("input_0")
       end
 
+      it "removes an email field when the minus icon is clicked", :js => true do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        find_by_id("add-invite-link").trigger("click")
+        fill_in("input_1", with: "an@email.com")
+        find_by_id("remove_invite_1").trigger("click")
+        
+        expect(page).not_to have_field("input_1")
+      end
+
+      it "removes an invited reviewer when the minus icon is clicked and edits are submitted", :js => true do
+        visit "/projects/" + @project.id.to_s + "/edit"
+        find_by_id("remove_invite_0").trigger("click")
+        click_button("Update project") 
+
+        expect(page).not_to have_content(@user.email)
+      end
+
       after(:each) do
         visit "/logout"
       end

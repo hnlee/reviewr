@@ -18,23 +18,17 @@
       </span>
     </div>
     <br /><br />
-    <%= f.text_area(:description, value: @project.description, cols: 90, rows: 16, class: "form-input" ) %><br />
+    <%= f.text_area(:description, value: @project.description, cols: 90, rows: 16, class: "form-input" ) %><br /><br />
 
-
-    <% label_tag "emails[]", "Edit invited reviewers:" %><br /><br />
-
-    <%= f.label "Invited reviewers:" %><br /><br />
+    <%= label_tag "emails[]", "Invited reviewers:" %><br /><br />
     <span id="invites">
-      <ul>
       <% @invited_reviewers.each do |invited_reviewer| %>
-        <li>
-          <%= invited_reviewer.email %>
-        </li>
+          <%= email_field_tag "emails[]", invited_reviewer.email, size: 60, class: "form-input single-field" %>
+          <a href="#invites" class="remove-invite-link"><i class="fa fa-minus fa-2x edit-link" aria-hidden="true"></i></a>
       <% end %>
-      </ul>
     </span>
 
-    <a href="#invites" id="add-invite-link" class="cancel-link">+ add additional reviewers</a>
+    <a href="#invites" id="add-invite-link"><i class="fa fa-plus fa-2x edit-link" aria-hidden="true"></i></a>
     <br /><br />
 
     <%= f.submit "Update project" , class: "button", id: "edit-project-button" %>
