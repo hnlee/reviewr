@@ -24,4 +24,17 @@ class User < ApplicationRecord
   def get_open_invites
     invites.select{ |project| !project.get_reviewers.include? self }
   end
+
+  def get_scores
+    review_ratings = ReviewRating.where(review_id: reviews)
+                                 .select("rating_id")
+    helpful = Rating.where(id: review_ratings)
+                    .where(helpful: true)
+                    .count
+    unhelpful = Rating.where(id: review_ratings)
+                      .where(helpful: false)
+                      .count
+    return { helpful: helpful, unhelpful: unhelpful }
+  end
+
 end

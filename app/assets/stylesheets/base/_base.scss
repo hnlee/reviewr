@@ -117,10 +117,11 @@ p {
 }
 
 .random-review {
+  @include span-columns(12);
   background-color: $light-navy;
   border: 2px solid $grey-white;
-  padding: 10px 15px 25px 15px;
-  margin: 0 60px 40px 10px;
+  padding: 20px;
+  margin: 40px 0px 40px 0px;
   border-radius: 10px;
 }
 
@@ -172,3 +173,26 @@ p {
   margin: 5px 0; 
 }
 
+.scores-container {
+  @include span-columns(4);
+  float: right;
+  background-color: $light-navy;
+  border: 2px solid $grey-white;
+  padding: 20px 20px 30px 20px;
+  margin: 0px;
+  border-radius: 10px;
+}
+
+.title-container {
+  @include span-columns(8);
+}
+
+.score-up {
+  padding-right: 10%;
+  font-size: 1.5em;
+}
+
+.score-down {
+  padding-left: 10%;
+  font-size: 1.5em;
+}

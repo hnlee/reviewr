@@ -46,6 +46,61 @@ describe "user", :type => :feature do
       find_button("Sign in with Google").click
     end
 
+    describe "scores" do
+      it "shows the scores if user has left at least three ratings" do
+        3.times do |i|
+          rating = create(:rating, helpful: true)  
+          create(:user_rating, rating_id: rating.id,
+                               user_id: @user.id)
+        end
+        review = create(:review)
+        create(:user_review, user_id: @user.id,
+                           review_id: review.id)
+        3.times do |i|
+          rating = create(:rating, helpful: true)
+          create(:review_rating, review_id: review.id,
+                                 rating_id: rating.id)
+        end
+        2.times do |i|
+          rating = create(:rating, helpful: false,
+                                   explanation: "Not helpful")
+          create(:review_rating, review_id: review.id,
+                                 rating_id: rating.id)
+        end
+
+        visit user_path(id: @user)
+
+        expect(page).to have_content(@user.get_scores[:helpful])
+        expect(page).to have_content(@user.get_scores[:unhelpful])
+      end
+
+      it "does not show scores if user has not left three ratings" do
+        @user.ratings.each do |rating|
+          ReviewRating.destroy(ReviewRating.where(rating_id: rating).ids)
+          UserRating.destroy(UserRating.where(rating_id: rating).ids)
+          Rating.destroy(rating.id)
+        end
+        review = create(:review)
+        create(:user_review, user_id: @user.id,
+                           review_id: review.id)
+        3.times do |i|
+          rating = create(:rating, helpful: true)
+          create(:review_rating, review_id: review.id,
+                                 rating_id: rating.id)
+        end
+        2.times do |i|
+          rating = create(:rating, helpful: false,
+                                   explanation: "Not helpful")
+          create(:review_rating, review_id: review.id,
+                                 rating_id: rating.id)
+        end         
+
+        visit user_path(id: @user)
+
+        expect(page).to have_content("Rate 3 reviews to see your scores")
+      end
+    end
+
     describe "projects tab" do
       it "shows projects that belong to the user" do
         project1 = create(:project, title: "Rust Http Server")
