@@ -1,0 +1,5 @@
+<p>Hi <%= @user.name %>!</p>
+
+<p>You have been removed as an invited reviewer for <%= link_to @project.title, project_url(@project) %> on <%= link_to "Reviewr", root_url %>.</p>
+
+<p>You no longer will be able to access this project to create a review when logged in.</p>

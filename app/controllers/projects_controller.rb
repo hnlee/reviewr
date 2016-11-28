@@ -76,8 +76,10 @@ class ProjectsController < ApplicationController
       end
       @invited_reviewers.each do |invited_reviewer|
         if !emails or !emails.include?(invited_reviewer.email)
-          invite = ProjectInvite.find_by(user_id: invited_reviewer.id)
+          invite = ProjectInvite.find_by(user_id: invited_reviewer.id, 
+                                         project_id: @project.id)
           ProjectInvite.destroy(invite.id)
+          InviteMailer.uninvite_email(@project, invited_reviewer).deliver_now
         end
       end
       redirect_to project_path(params[:id]), { flash: { notice: "Project has been updated" } }

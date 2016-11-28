@@ -5,4 +5,10 @@ class InviteMailerPreview < ActionMailer::Preview
     InviteMailer.invite_email(Project.find(project_invite.project_id),
                               User.find(project_invite.user_id)) 
   end
+
+  def uninvite_email
+    project_invite = ProjectInvite.first
+    InviteMailer.uninvite_email(Project.find(project_invite.project_id),
+                                User.find(project_invite.user_id)) 
+  end
 end
