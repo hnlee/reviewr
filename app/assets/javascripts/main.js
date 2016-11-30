@@ -5,6 +5,7 @@ $(document).ready(function () {
   tab = new Tab();
 
   var path_id = url.getIdFromURI(window.location.pathname);
+  var unsavedForm;
 
   $("#new-review-link").on("click", function(event) {
     event.preventDefault();
@@ -14,43 +15,51 @@ $(document).ready(function () {
   $("#submit-review-button").on("click", function(event) {
     event.preventDefault();
     submitNewReviewForm(path_id);
+    unsavedForm = false;
   });
 
   $("#random-rating-up").on("click", function(event) {
     event.preventDefault();
     var review_id = $(this).parent().attr('data-id');
     showRandomRatingForm(review_id, path_id, true);
+    unsavedForm = true;
   });
 
   $("#random-rating-down").on("click", function(event) {
     event.preventDefault();
     var review_id = $(this).parent().attr('data-id');
     showRandomRatingForm(review_id, path_id, false);
+    unsavedForm = true;
   });
 
   $("#new-rating-up").on("click", function(event) {
     event.preventDefault();
     showNewRatingForm(path_id, true);
+    unsavedForm = true;
   });
 
   $("#new-rating-down").on("click", function(event) {
     event.preventDefault();
     showNewRatingForm(path_id, false);
+    unsavedForm = true;
   });
 
-   $("#submit-rating-button").on("click", function(event) {
+  $("#submit-rating-button").on("click", function(event) {
      event.preventDefault();
      submitNewRatingForm(path_id);
+     unsavedForm = false;
   });
 
   $("#edit-review-link").on("click", function(event) {
     event.preventDefault();
     showEditReviewForm(path_id);
+    unsavedForm = true;
   });
 
   $("#edit-review-button").on("click", function(event) {
     event.preventDefault();
     submitEditReviewForm(path_id);
+    unsavedForm = false;
   });
 
   tab.showActiveTabContents(".tab-content", "#projects");
@@ -93,7 +102,8 @@ $(document).ready(function () {
     if(isFieldBlank("#invites .form-input")) {
       event.preventDefault();
       dom.replaceContent(".alert-error", "<p>Please input an email address</p><br />");
-    } 
+    }
+    unsavedForm = false;
   });
 
   $("#edit-project-button").on("click", function(event) {
@@ -101,5 +111,16 @@ $(document).ready(function () {
       event.preventDefault();
       dom.replaceContent(".alert-error", "<p>Please input an email address</p><br />");
     }
+    unsavedForm = false;
   });
+
+  $("body").on("change", "input,textarea", function(event) {
+    unsavedForm = true;
+  });
+
+  window.addEventListener("beforeunload", function(event) {
+    if(unsavedForm) {
+      event.returnValue = "Do you want to leave this page? Changes you have made may not be saved."
+    }
+  }); 
 });
