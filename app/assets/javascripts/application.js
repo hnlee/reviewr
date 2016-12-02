@@ -20,4 +20,5 @@
 //= require review.js
 //= require project.js
 //= require tab.js
+//= require alert.js
 //= require_tree .

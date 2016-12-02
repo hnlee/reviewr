@@ -161,4 +161,21 @@ RSpec.describe ReviewsController, :type => :controller do
       expect(flash[:error]).to match("Review cannot be blank")
     end
   end
+
+  describe "DELETE /reviews/:id" do 
+    it "deletes the review" do
+      project = create(:project)
+      user = create(:user)
+      review = create(:review)
+      create(:user_review, user_id: user.id,
+                           review_id: review.id)
+      create(:project_review, project_id: project.id,
+                              review_id: review.id)
+
+      post :destroy, params: { id: review.id }
+
+      expect(response).to redirect_to(root_path)
+      expect(Review.ids).not_to include(review.id)
+    end
+  end
 end

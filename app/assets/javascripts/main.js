@@ -1,67 +1,29 @@
-$(document).ready(function () {
+var unsavedForm;
+
+onReady = function () {
   url = new Url();
-  client = new Client();
   dom = new Dom();
+  client = new Client();
+  review = new Review();
+  rating = new Rating();
+  project = new Project();
   tab = new Tab();
+  alerts = new Alert();
 
   var path_id = url.getIdFromURI(window.location.pathname);
-  var unsavedForm;
 
-  $("#new-review-link").on("click", function(event) {
-    event.preventDefault();
-    showNewReviewForm(path_id);
-  });
+  tabHandler(tab); 
+  
+  projectFormHandler(project);
 
-  $("#submit-review-button").on("click", function(event) {
-    event.preventDefault();
-    submitNewReviewForm(path_id);
-    unsavedForm = false;
-  });
+  ratingFormHandler(path_id, rating);
 
-  $("#random-rating-up").on("click", function(event) {
-    event.preventDefault();
-    var review_id = $(this).parent().attr('data-id');
-    showRandomRatingForm(review_id, path_id, true);
-    unsavedForm = true;
-  });
+  reviewFormHandler(path_id, review);
 
-  $("#random-rating-down").on("click", function(event) {
-    event.preventDefault();
-    var review_id = $(this).parent().attr('data-id');
-    showRandomRatingForm(review_id, path_id, false);
-    unsavedForm = true;
-  });
+  unsavedFormHandler(alerts);
+};
 
-  $("#new-rating-up").on("click", function(event) {
-    event.preventDefault();
-    showNewRatingForm(path_id, true);
-    unsavedForm = true;
-  });
-
-  $("#new-rating-down").on("click", function(event) {
-    event.preventDefault();
-    showNewRatingForm(path_id, false);
-    unsavedForm = true;
-  });
-
-  $("#submit-rating-button").on("click", function(event) {
-     event.preventDefault();
-     submitNewRatingForm(path_id);
-     unsavedForm = false;
-  });
-
-  $("#edit-review-link").on("click", function(event) {
-    event.preventDefault();
-    showEditReviewForm(path_id);
-    unsavedForm = true;
-  });
-
-  $("#edit-review-button").on("click", function(event) {
-    event.preventDefault();
-    submitEditReviewForm(path_id);
-    unsavedForm = false;
-  });
-
+tabHandler = function(tab) {
   tab.showActiveTabContents(".tab-content", "#projects");
 
   $(".tab-container").on("click", "li", function(event) {
@@ -74,53 +36,102 @@ $(document).ready(function () {
     tab.showActiveTabContents(".tab-content",
                               active_content_id);
   });
+};
 
-  assignIds("#invites .form-input", "input_");
-  assignIds(".remove-invite-link", "remove_invite_");
+projectFormHandler = function(project) {
+  project.assignInviteIds();
 
   $("#add-invite-link").on("click", function(event) {
     event.preventDefault();
-    dom.unhideElement(".remove-invite-link");
-    addField("#invites", "#new-invite-field");
-    assignIds(".remove-invite-link", "remove_invite_");
-    assignIds("#invites .form-input", "input_");
+    project.addInviteField();
     
     $(".remove-invite-link").on("click", function(event) {
-      var index = getIdIndex(this, "remove_invite_");
-      removeElement("#input_", index);
-      removeElement("#remove_invite_", index);
+      project.removeInviteField(this);
     });
   });
 
   $(".remove-invite-link").on("click", function(event) {
-    var index = getIdIndex(this, "remove_invite_");
-    removeElement("#input_", index);
-    removeElement("#remove_invite_", index);
+    project.removeInviteField(this);
   });
 
+  var inviteErrorMessage = "<p>Please input an email address</p><br />" 
+
   $("#submit-project-button").on("click", function(event) {
-    if(isFieldBlank("#invites .form-input")) {
-      event.preventDefault();
-      dom.replaceContent(".alert-error", "<p>Please input an email address</p><br />");
-    }
-    unsavedForm = false;
+    project.validateFields(event, "#invites .form-input", inviteErrorMessage)
   });
 
   $("#edit-project-button").on("click", function(event) {
-    if(isFieldBlank("#invites .form-input")) {
-      event.preventDefault();
-      dom.replaceContent(".alert-error", "<p>Please input an email address</p><br />");
-    }
-    unsavedForm = false;
+    project.validateFields(event, "#invites .form-input", inviteErrorMessage)
   });
+};
 
-  $("body").on("change", "input,textarea", function(event) {
+ratingFormHandler = function(path_id, rating) {
+  $("#random-rating-up").on("click", function(event) {
+    event.preventDefault();
+    var review_id = $(this).parent().attr('data-id');
+    rating.showRandomRatingForm(review_id, path_id, true);
     unsavedForm = true;
   });
 
-  window.addEventListener("beforeunload", function(event) {
-    if(unsavedForm) {
-      event.returnValue = "Do you want to leave this page? Changes you have made may not be saved."
-    }
-  }); 
-});
+  $("#random-rating-down").on("click", function(event) {
+    event.preventDefault();
+    var review_id = $(this).parent().attr('data-id');
+    rating.showRandomRatingForm(review_id, path_id, false);
+    unsavedForm = true;
+  });
+
+  $("#new-rating-up").on("click", function(event) {
+    event.preventDefault();
+    rating.showNewRatingForm(path_id, true);
+    unsavedForm = true;
+  });
+
+  $("#new-rating-down").on("click", function(event) {
+    event.preventDefault();
+    rating.showNewRatingForm(path_id, false);
+    unsavedForm = true;
+  });
+
+  $("#submit-rating-button").on("click", function(event) {
+     event.preventDefault();
+     rating.submitNewRatingForm(path_id);
+  });
+};
+
+reviewFormHandler = function(path_id, review) {
+  $("#new-review-link").on("click", function(event) {
+    event.preventDefault();
+    review.showNewReviewForm(path_id);
+  });
+
+  $("#submit-review-button").on("click", function(event) {
+    event.preventDefault();
+    review.submitNewReviewForm(path_id);
+  });
+
+  $("#edit-review-link").on("click", function(event) {
+    event.preventDefault();
+    review.showEditReviewForm(path_id);
+  });
+
+  $("#edit-review-button").on("click", function(event) {
+    event.preventDefault();
+    review.submitEditReviewForm(path_id);
+  });
+};
+
+unsavedFormHandler = function(alerts) {
+  $("body").on("change", "input:not(:submit),textarea", function(event) {
+    unsavedForm = true;
+  });
+
+  $("body").on("click", "input:submit", function(event) {
+    unsavedForm = false;
+  });
+
+  $(window).on("beforeunload", function(event) {
+    return alerts.alertController(unsavedForm);
+  });
+};
+
+$(document).ready(onReady);

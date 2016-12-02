@@ -1,31 +1,28 @@
-var client = new Client();
-var dom = new Dom();
-
-addField = function(element, content) {
-  $(element).append($(content).html());
+function Project() {
+  var client = new Client();
+  var dom = new Dom();
 };
 
-assignIds = function(element, id_prefix) {
-  $(element).each(function(i) {
-    $(this).attr("id", id_prefix + i)
-  });
+Project.prototype.validateFields = function(anEvent, element, message) {
+  if(dom.isFieldBlank(element)) {
+    anEvent.preventDefault();
+    dom.replaceContent(".alert-error", message);
+  };
 };
 
-removeElement = function(id_prefix, index) {
-  $(id_prefix + index).remove();
+Project.prototype.assignInviteIds = function() {
+  dom.assignIds(".remove-invite-link", "remove_invite_");
+  dom.assignIds("#invites .form-input", "input_");
 };
 
-getIdIndex = function(element, id_prefix) {
-  var id = $(element).attr("id")
-  return id.replace(id_prefix, "");
+Project.prototype.removeInviteField = function(element) {
+  var index = dom.getIdIndex(element, "remove_invite_");
+  dom.removeElement("#input_", index);
+  dom.removeElement("#remove_invite_", index);
 };
 
-isFieldBlank = function(element) {
-  var blank = false;
-  $(element).each(function() {
-    if($(this).val().trim().length == 0) {
-      blank = true;
-    }
-  });
-  return blank;
-}
+Project.prototype.addInviteField = function() {
+  dom.unhideElement(".remove-invite-link");
+  dom.addContent("#invites", "#new-invite-field");
+  this.assignInviteIds();
+};

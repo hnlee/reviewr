@@ -1,6 +1,7 @@
 require "spec_helper"
 
 describe "review", :type => :feature do
+
   describe "show page" do
     describe "when logged out" do
       it "redirects to root" do
@@ -21,7 +22,7 @@ describe "review", :type => :feature do
                                  { uid: "uidhillaryclinton",
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
-        @user = User.find_by_name("hillaryclinton")
+        @user = User.find_by(name: "hillaryclinton")
         reviewer = create(:user, name: "name1",
                                  email: "name1@email.com",
                                  uid: "uidname1")
@@ -79,7 +80,7 @@ describe "review", :type => :feature do
                                  { uid: "uidhillaryclinton",
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
-        @user = User.find_by_name("hillaryclinton")
+        @user = User.find_by(name: "hillaryclinton")
         @review = create(:review, content: "Looks good!")
         project = create(:project, title: "Foo", description: "Bar")
         reviewer = create(:user, name: "name1",
@@ -177,7 +178,7 @@ describe "review", :type => :feature do
                                  { uid: "uidhillaryclinton",
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
-        reviewer = User.find_by_name("hillaryclinton")
+        reviewer = User.find_by(name: "hillaryclinton")
         @review = create(:review, content: "Looks good!")
         @project = create(:project, title: "Foo", description: "Bar")
         create(:project_review, project_id: @project.id,
@@ -262,7 +263,7 @@ describe "review", :type => :feature do
                                  { uid: "uidhillaryclinton",
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
-        @invite = User.find_by_name("hillaryclinton")
+        @invite = User.find_by(name: "hillaryclinton")
         @project = create(:project, title: "Foo", description: "Bar")
         create(:project_invite, project_id: @project.id,
                                 user_id: @invite.id)
@@ -312,7 +313,7 @@ describe "review", :type => :feature do
                                  { uid: "uidhillaryclinton",
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
-        @user = User.find_by_name("hillaryclinton")
+        @user = User.find_by(name: "hillaryclinton")
         @project = create(:project, title: "Foo", description: "Bar")
 
         visit "/"
@@ -351,7 +352,7 @@ describe "review", :type => :feature do
                                  { uid: "uidhillaryclinton",
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
-        @user = User.find_by_name("hillaryclinton")
+        @user = User.find_by(name: "hillaryclinton")
         reviewer = create(:user, name: "name1",
                                  email: "name1@email.com",
                                  uid: "uidname1")
@@ -383,8 +384,8 @@ describe "review", :type => :feature do
                                  { uid: "uidhillaryclinton",
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
-        @reviewer = User.find_by_name("hillaryclinton")
-        @review = create(:review, content: "Looks good!")
+        @reviewer = User.find_by(name: "hillaryclinton")
+        @review = create(:review, content: "Stupendous!")
         project = create(:project, title: "Foo", description: "Bar")
         create(:project_review, project_id: project.id,
                                 review_id: @review.id)
@@ -404,7 +405,7 @@ describe "review", :type => :feature do
         expect(current_path).to eq("/reviews/" + @review.id.to_s)
         expect(page).to have_content("Review has been updated")
         expect(page).to have_content("FUBAR")
-        expect(page).not_to have_content("Looks good!")
+        expect(page).not_to have_content("Stupendous!")
       end
 
      it "displays a warning if content is left blank when editing a new review", :js => true do
@@ -424,7 +425,26 @@ describe "review", :type => :feature do
 
         expect(current_path).to eq("/reviews/" + @review.id.to_s)
         expect(page).to have_no_css("form")
-        expect(page).to have_content("Looks good!")
+        expect(page).to have_content("Stupendous!")
+      end
+
+      it "allows deletion of review when review has not yet been rated", :js => true do
+        visit "/reviews/" + @review.id.to_s
+        find_by_id("edit-review-link").trigger("click")
+        click_link("Delete review")
+
+        expect(current_path).to eq("/users/" + @reviewer.id.to_s)
+      end
+      
+      it "does not show the link to delete when review has been rated", :js => true do 
+        rating = create(:rating, helpful: true)
+        create(:review_rating, review_id: @review.id,
+                               rating_id: rating.id)
+
+        visit "/reviews/" + @review.id.to_s
+        find_by_id("edit-review-link").trigger("click")
+
+        expect(page).not_to have_content("Delete review")
       end
 
       after(:each) do

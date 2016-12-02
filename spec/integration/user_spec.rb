@@ -9,7 +9,6 @@ describe "user", :type => :feature do
   after(:all) do 
     DatabaseCleaner.clean
     Capybara.reset_sessions!
-    Capybara.use_default_driver
   end 
 
   describe "logged out index page" do

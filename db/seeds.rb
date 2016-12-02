@@ -77,17 +77,15 @@ end
 
 100.times do
   project = rand(Project.count) + 1
-  user = ((1..User.count).to_a - [Project.find(project).owner]).sample
-  while !ProjectOwner.where(project_id: project, user_id: user).empty?
-    project = rand(Project.count) + 1
-  end
+  user = ((1..User.count).to_a - [Project.find(project).owner.id]).sample
   ProjectInvite.find_or_create_by(project_id: project, user_id: user)
 end
 
-100.times do 
+50.times do 
   review = Review.create(content: review_content.sample)
-  UserReview.create(user_id: rand(User.count) + 1, review_id: review.id)
-  ProjectReview.create(project_id: rand(Project.count) + 1, review_id: review.id)
+  invite = ProjectInvite.find(rand(ProjectInvite.count) + 1)
+  UserReview.create(user_id: invite.user_id, review_id: review.id)
+  ProjectReview.create(project_id: invite.project_id, review_id: review.id)
 end
 
 100.times do
@@ -97,13 +95,9 @@ end
   else
     rating = Rating.create(helpful: false, explanation: thumbs_down.sample) 
   end
-  UserRating.create(user_id: rand(User.count) + 1, rating_id: rating.id)
-  ReviewRating.create(review_id: rand(Review.count) + 1, rating_id: rating.id)
+  review = Review.find(rand(Review.count) + 1)
+  user = ((1..User.count).to_a - [Project.find(review.project.id).owner.id]).sample 
+  ReviewRating.create(review_id: review.id, rating_id: rating.id)
+  UserRating.create(user_id: user, rating_id: rating.id)
 end
-
-demo_project = Project.create(title: "Demo project title", description: "Demo project description")
-obama = User.first
-ProjectOwner.create(project_id: demo_project.id, user_id: obama.id)
-ProjectInvite.create(project_id: demo_project.id, user_id: nicole.id)
-ProjectInvite.create(project_id: demo_project.id, user_id: hana.id)
 

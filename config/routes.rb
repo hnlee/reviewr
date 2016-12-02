@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root 'root#root'
 
   resources :projects, only: [:show, :new, :create, :edit, :update]
-  resources :reviews, only: [:show, :create, :edit, :update]
+  resources :reviews, only: [:show, :create, :edit, :update, :destroy]
   resources :ratings, only: [:create]
   resources :sessions, only: [:create, :destroy]
   resources :users, only: [:show]
