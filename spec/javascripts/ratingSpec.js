@@ -3,6 +3,7 @@
 describe("Ratings", function() {
   beforeEach(function() {
     server = sinon.fakeServer.create();
+    rating = new Rating();
   });
 
   describe("showRatingForm()", function() {
@@ -13,7 +14,7 @@ describe("Ratings", function() {
       server.respondWith("GET",
                          "/ratings/new/1",
                          "form html");
-      showRatingForm(1, "");
+      rating.showRatingForm(1, "");
       server.respond();
 
       expect($("#new-rating").html()).toEqual("form html");
@@ -24,17 +25,17 @@ describe("Ratings", function() {
 
   describe("addThumbParam()", function() {
     it("returns empty string if no thumb boolean", function() {
-      expect(addThumbParam()).toEqual("");
+      expect(rating.addThumbParam()).toEqual("");
     });
     it("takes a thumb=true boolean and creates URL parameter", function() {
       var thumb = true;
 
-      expect(addThumbParam(thumb)).toEqual("?thumb=up");
+      expect(rating.addThumbParam(thumb)).toEqual("?thumb=up");
     });
     it("takes a thumb=false boolean and creates URL parameter", function() {
       var thumb = false;
 
-      expect(addThumbParam(thumb)).toEqual("?thumb=down");
+      expect(rating.addThumbParam(thumb)).toEqual("?thumb=down");
     });
   });
 
@@ -46,7 +47,7 @@ describe("Ratings", function() {
       server.respondWith("GET",
                          "/ratings/new/1?thumb=up",
                          "thumb up form");
-      showNewRatingForm(1, true);
+      rating.showNewRatingForm(1, true);
       server.respond();
 
       expect($("#new-rating").html()).toEqual("thumb up form");
@@ -59,7 +60,7 @@ describe("Ratings", function() {
       server.respondWith("POST",
                          "/ratings/new/1",
                          "new rating");
-      submitNewRatingForm(1, callback);
+      rating.submitNewRatingForm(1, callback);
       server.respond();
 
       expect(callback.called).toEqual(true);
@@ -74,7 +75,7 @@ describe("Ratings", function() {
       server.respondWith("GET",
                          "/ratings/new/1?thumb=up&random=true&user=1",
                          "form html");
-      showRandomRatingForm(1, 1, true);
+      rating.showRandomRatingForm(1, 1, true);
       server.respond();
 
       expect($("#new-rating").html()).toEqual("form html");

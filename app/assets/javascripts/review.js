@@ -1,7 +1,9 @@
-var client = new Client();
-var dom = new Dom(); 
+function Review() {
+  var client = new Client();
+  var dom = new Dom(); 
+}
 
-showNewReviewForm = function(project_id) {
+Review.prototype.showNewReviewForm = function(project_id) {
   var callback = function(response) {
     dom.displayPartial("#new-review",
                        response);
@@ -11,12 +13,12 @@ showNewReviewForm = function(project_id) {
                  callback); 
 };
 
-submitNewReviewForm = function(project_id, callback) {
+Review.prototype.submitNewReviewForm = function(project_id, callback) {
   client.ajaxPost("/reviews/new/" + project_id,
                   callback);
 };
 
-showEditReviewForm = function(review_id) {
+Review.prototype.showEditReviewForm = function(review_id) {
   var callback = function(response) {
     dom.displayPartial("#edit-review", response);
     dom.hideElement("#edit-review-link");
@@ -27,7 +29,7 @@ showEditReviewForm = function(review_id) {
                  callback);
 };
 
-submitEditReviewForm = function(review_id, callback) {
+Review.prototype.submitEditReviewForm = function(review_id, callback) {
   client.ajaxPost("/reviews/" + review_id + "/edit",
                   callback);
 };

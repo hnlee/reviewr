@@ -2,66 +2,58 @@
 
 describe("Projects", function() {
   beforeEach(function() {
+    project = new Project();
     server = sinon.fakeServer.create();
   });
 
-  describe("addField()", function() {
-    it("loads a new email field to invite a reviewer", function() {
-      affix("#invites");
-      affix("#new-invite-field div#content");
-      addField("#invites", "#new-invite-field"); 
-       
-      expect($("#invites").html()).toEqual('<div id="content"></div>');
+  describe("addInviteField()", function() {
+    it("adds an invite field", function() {
+      affix("a.remove-invite-link[style='display:none']#remove_invite_0");
+      affix("#invites .form-input#input_0");
+      newField = affix("#new-invite-field[style='display:none']");
+      newField.affix(".form-input");
+      newField.affix("a.remove-invite-link");
+      addSpy = sinon.spy(dom, "addContent");
+      assignSpy = sinon.spy(project, "assignInviteIds");
+      project.addInviteField();
+
+      expect(addSpy.called).toBe(true); 
+      expect(assignSpy.called).toBe(true); 
+      expect($("#remove_invite_0").is(":visible")).toBe(true);
     });
   });
 
-  describe("assignIds()", function() {
-    it("creates a numbered element id", function() {
-      affix(".element");
-      affix(".element");
-      assignIds(".element", "my_prefix_");
-       
-      expect($(".element#my_prefix_0").length).toEqual(1);
-      expect($(".element#my_prefix_1").length).toEqual(1);
-      expect($(".element#my_prefix_2").length).toEqual(0);
+  describe("removeInviteField()", function() {
+    it("removes the invite field with the given index", function() {
+      affix("#input_0");
+      affix(".element#remove_invite_0");
+      var spy = sinon.spy(dom, "removeElement");
+      project.removeInviteField(".element");
 
+      expect(spy.calledTwice).toEqual(true);
     });
   });
 
-  describe("removeElement()", function() {
-    it("removes an element from the DOM", function() {
-      affix(".element#my_prefix_1");
-      removeElement("#my_prefix_", 1);
-      
-      expect($(".element#my_prefix_1").length).toEqual(0); 
+  describe("assignInviteIds()", function() {
+    it("assigns ids to .form-input and .remove-invite-link", function() {
+      affix("#invites .form-input");
+      affix(".remove-invite-link")
+      project.assignInviteIds();
+
+      expect($("#input_0").length).toBe(1);
+      expect($("#remove_invite_0").length).toBe(1); 
     });
   });
 
-  describe("getIdIndex()", function() {
-    it("gets the index from an element's id", function() {
-      affix(".element#my_prefix_200");
-      var index = getIdIndex(".element", "my_prefix_");
-
-      expect(index).toEqual("200");
-    });
-  });
-
-
-  describe("isFieldBlank()", function() {
-    it("returns true if any field is blank", function() {
-      affix("input[value='something'].element")
+  describe("validateFields()", function() {
+    it("shows error message if a input field is blank", function() {
+      affix(".alert-error")
       affix("input[value=' '].element")
-      affix("input[value='something'].element")
-
-      expect(isFieldBlank(".element")).toEqual(true);
-    });
-
-   it("returns false if fields are not blank", function() {
-      affix("input[value='or'].element")
-      affix("input[value='something'].element")
-      affix("input[value='else'].element")
-
-      expect(isFieldBlank(".element")).toEqual(false);
+      anEvent = new Event("click");
+      project.validateFields(anEvent, ".element", "message");
+    
+      expect($(".alert-error").html()).toEqual("message")
     });
   });
+
 });

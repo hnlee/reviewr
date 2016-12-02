@@ -1,27 +1,29 @@
-var client = new Client();
-var dom = new Dom();
+function Rating() {
+  var client = new Client();
+  var dom = new Dom();
+}
 
-showNewRatingForm = function(review_id, thumb) {
-  var param = addThumbParam(thumb);
-  showRatingForm(review_id, param);
+Rating.prototype.showNewRatingForm = function(review_id, thumb) {
+  var param = this.addThumbParam(thumb);
+  this.showRatingForm(review_id, param);
 };
 
-submitNewRatingForm = function(review_id, callback) {
+Rating.prototype.submitNewRatingForm = function(review_id, callback) {
   client.ajaxPost("/ratings/new/" + review_id,
                   callback);
 };
 
-showRandomRatingForm = function(review_id, user_id, thumb) {
-  var param = addThumbParam(thumb);
+Rating.prototype.showRandomRatingForm = function(review_id, user_id, thumb) {
+  var param = this.addThumbParam(thumb);
   if (param == "") {
     param = "?random=true&user=" + user_id;
   } else {
     param = param + "&random=true&user=" + user_id;
   }
-  showRatingForm(review_id, param)
+  this.showRatingForm(review_id, param)
 };
 
-addThumbParam = function(thumb) {
+Rating.prototype.addThumbParam = function(thumb) {
   if (thumb == true) {
     param = "?thumb=up";
   } else if (thumb == false) {
@@ -32,7 +34,7 @@ addThumbParam = function(thumb) {
   return param;
 };
 
-showRatingForm = function(review_id, param) {
+Rating.prototype.showRatingForm = function(review_id, param) {
   var callback = function(response) {
     dom.displayPartial("#new-rating", response);
     dom.hideElement("#new-rating-box");

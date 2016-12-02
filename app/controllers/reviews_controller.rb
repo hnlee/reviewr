@@ -66,6 +66,14 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def destroy
+    @review = Review.find(params[:id]) 
+    UserReview.destroy(UserReview.find_by(review_id: @review.id).id)
+    ProjectReview.destroy(ProjectReview.find_by(review_id: @review.id).id)
+    Review.destroy(@review.id) 
+    redirect_to root_path
+  end
+
   def show
     @review = Review.find(params[:id])
     if logged_out?

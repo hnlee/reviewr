@@ -3,6 +3,7 @@
 describe("Reviews", function() {
   beforeEach(function() { 
     server = sinon.fakeServer.create();
+    review = new Review();
   });
 
   describe("showNewReviewForm()", function() {
@@ -12,7 +13,7 @@ describe("Reviews", function() {
       server.respondWith("GET",
                          "/reviews/new/1",
                          "form html");
-      showNewReviewForm(1);
+      review.showNewReviewForm(1);
       server.respond();
 
       expect($("#new-review").html()).toEqual("form html");
@@ -26,7 +27,7 @@ describe("Reviews", function() {
       server.respondWith("POST",
                          "/reviews/new/1",
                          "new review");
-      submitNewReviewForm(1, callback);
+      review.submitNewReviewForm(1, callback);
       server.respond();
 
       expect(callback.called).toEqual(true);
@@ -42,7 +43,7 @@ describe("Reviews", function() {
       server.respondWith("GET",
                          "/reviews/1/edit",
                          "form html");
-      showEditReviewForm(1);
+      review.showEditReviewForm(1);
       server.respond();
       
       expect($("#edit-review").html()).toEqual("form html");
@@ -58,7 +59,7 @@ describe("Reviews", function() {
       server.respondWith("POST",
                          "/reviews/1/edit",
                          "edited review");
-      submitEditReviewForm(1, callback);
+      review.submitEditReviewForm(1, callback);
       server.respond();
 
       expect(callback.called).toEqual(true);
