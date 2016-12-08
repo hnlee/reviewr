@@ -4,14 +4,17 @@ RSpec.describe Project do
   describe "attributes" do
     it "has a title and description" do
       project = Project.new(title: "My Title",
+                            link: "http://link.link",
                             description: "My Description")
 
       expect(project.title).to eq("My Title")
+      expect(project.link).to eq("http://link.link")
       expect(project.description).to eq("My Description")
     end
 
     it "has many reviews" do
       project = Project.create(title: "My Title",
+                               link: "http://link.link",
                                description: "My Description")
       review1 = create(:review, content: "Content1")
       review2 = create(:review, content: "Content2")
@@ -28,6 +31,7 @@ RSpec.describe Project do
 
     it "has an owner" do
       project = Project.create(title: "My Title",
+                               link: "http://link.link",
                                description: "My Description")
       owner = create(:user, name: "Sally",
                             email: "sally@email.com")
@@ -39,6 +43,7 @@ RSpec.describe Project do
 
     it "has many users invited to review" do
       project = Project.create(title: "My Title",
+                               link: "http://link.link",
                                description: "My Description")
       invite1 = create(:user, name: "Sally",
                               email: "sally@email.com")
@@ -59,27 +64,56 @@ RSpec.describe Project do
 
   describe "#get_error_message" do
     it "returns message requesting title if it is omitted" do
-      project = Project.create(description: "A description for the ages")
+      project = Project.create(link: "http://link.link",
+                               description: "A description for the ages")
 
       expect(project.get_error_message).to eq("Please provide a title")
     end
 
     it "returns message requesting description if it is omitted" do
-      project = Project.create(title: "A title for the ages", description: "")
+      project = Project.create(title: "A title for the ages",
+                               link: "http://link.link")
 
       expect(project.get_error_message).to eq("Please provide a description")
     end
 
     it "returns message requesting title and description if both are omitted" do
-      project = Project.create(title: "", description: "")
+      project = Project.create(title: "", 
+                               link: "http://link.link",
+                               description: "")
 
       expect(project.get_error_message).to eq("Please provide a title and description")
+    end
+
+    it "returns message requesting title and link if both are omitted" do
+      project = Project.create(title: "", 
+                               link: "",
+                               description: "My Description")
+
+      expect(project.get_error_message).to eq("Please provide a title and link")
+    end
+
+    it "returns message requesting link and description if both are omitted" do
+      project = Project.create(title: "My Title", 
+                               link: "",
+                               description: "")
+
+      expect(project.get_error_message).to eq("Please provide a link and description")
+    end
+
+    it "returns message requesting title, link and description if all are omitted" do
+      project = Project.create(title: "", 
+                               link: "",
+                               description: "")
+
+      expect(project.get_error_message).to eq("Please provide a title, link and description")
     end
   end
 
   describe "#helpful_reviews_count" do
     it "returns the number of reviews that are helpful" do
       project = Project.create(title: "My Title",
+                               link: "http://link.link",
                                description: "My Description")
       review1 = create(:review, content: "Looks good")
       review2 = create(:review, content: "Looks bad")
@@ -107,6 +141,7 @@ RSpec.describe Project do
   describe "#get_reviewers" do
     it "returns the users who have reviewed the project" do
       project = Project.create(title: "My Title",
+                               link: "http://link.link",
                                description: "My Description")
       review1 = create(:review, content: "Looks good")
       review2 = create(:review, content: "Looks bad")

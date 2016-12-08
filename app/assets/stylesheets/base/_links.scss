@@ -54,3 +54,20 @@ a.cancel-link:hover {
 a.new-form-link:hover {
   color: $med-grey;
 }
+
+.project-link {
+  font-size: 0.8em;
+  color: $dark-grey;
+}
+
+a.project-link:hover {
+  color: $med-grey;
+}
+
+a.project-title {
+  color: $med-black;
+}
+
+a.project-title:hover {
+  color: $med-grey;
+}

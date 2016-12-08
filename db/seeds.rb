@@ -70,8 +70,10 @@ user_names += ["Nicole Carpenter", "Hana Lee"]
 project_count.times do |i|
   title = languages.sample + " " + coding_projects.sample
   user = user_names.sample
-  description = (greetings.sample + "I want to invite you to check out my " + title + ". " + schmooze.sample  + ". You can check out my repo here: www.github.com/" + user.downcase.gsub(/\s+/, "") + "/" + title.gsub(/\s+/, "-") + ". Thanks in advance for your feedback!")
-  Project.create(title: title, description: description)
+  description = (greetings.sample + "I want to invite you to check out my " + title + ". " + schmooze.sample  + ".  Thanks in advance for your feedback!")
+  Project.create(title: title, 
+                 link: "http://www.github.com/" + user.downcase.gsub(/\s+/, "") + "/" + title.gsub(/\s+/, "-"),
+                 description: description)
   ProjectOwner.create(project_id: i + 1, user_id: User.find_by(name: user).id)
 end
 

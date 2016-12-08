@@ -11,7 +11,7 @@ RSpec.describe ProjectsController, :type => :controller do
     DatabaseCleaner.clean
   }
 
-  describe "GET /projects/new" do
+  describe "GET projects/new" do
     it "redirects to root if not logged in" do
       get :new
 
@@ -25,6 +25,7 @@ RSpec.describe ProjectsController, :type => :controller do
       get :new
 
       expect(response.body).to include("Title")
+      expect(response.body).to include("Link")
       expect(response.body).to include("Description")
       expect(response.body).to include("Enter email address to invite reviewer")
     end
@@ -37,7 +38,9 @@ RSpec.describe ProjectsController, :type => :controller do
     end
 
     it "creates a new project and redirects to the user show page" do
-      post :create, params: { project: { title: "my project", description: "a description" },
+      post :create, params: { project: { title: "my project", 
+                                         link: "http://link.link",
+                                         description: "a description" },
                               emails: ["an@email.com"] }
 
       expect(response).to redirect_to(user_path(session[:user_id]))
@@ -46,14 +49,27 @@ RSpec.describe ProjectsController, :type => :controller do
     end
 
    it "displays flash message if title is blank" do
-      post :create, params: { project: { title: "", description: "a description" } }
+      post :create, params: { project: { title: "",
+                                         link: "http://link.link", 
+                                         description: "a description" } }
 
       expect(response).to redirect_to(new_project_path)
       expect(flash[:error]).to match("Please provide a title")
     end
 
+    it "displays flash message if link is blank" do
+      post :create, params: { project: { title: "my project", 
+                                         link: "",
+                                         description: "a description" } }
+
+      expect(response).to redirect_to(new_project_path)
+      expect(flash[:error]).to match("Please provide a link")
+    end
+
     it "displays flash message if description is blank" do
-      post :create, params: { project: { title: "my project", description: "" } }
+      post :create, params: { project: { title: "my project", 
+                                         link: "http://link.link",
+                                         description: "" } }
 
       expect(response).to redirect_to(new_project_path)
       expect(flash[:error]).to match("Please provide a description")
@@ -107,6 +123,7 @@ RSpec.describe ProjectsController, :type => :controller do
 
       expect(response.status).to eq(200)
       expect(response.body).to include(project.title)
+      expect(response.body).to include(project.link)
       expect(response.body).to include(project.description)
       expect(response.body).not_to include(review.content)
       expect(response.body).not_to include(invite.email)
@@ -133,6 +150,7 @@ RSpec.describe ProjectsController, :type => :controller do
 
       expect(response.status).to eq(200)
       expect(response.body).to include(project.title)
+      expect(response.body).to include(project.link)
       expect(response.body).to include(project.description)
       expect(response.body).to include(review.content)
       expect(response.body).not_to include(invite.email)
@@ -156,6 +174,7 @@ RSpec.describe ProjectsController, :type => :controller do
 
       expect(response.status).to eq(200)
       expect(response.body).to include(project.title)
+      expect(response.body).to include(project.link)
       expect(response.body).to include(project.description)
       expect(response.body).to include(invite.email)
     end

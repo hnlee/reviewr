@@ -31,6 +31,7 @@ class ProjectsController < ApplicationController
 
   def create
     project = Project.new(title: project_params[:title],
+                          link: project_params[:link],
                           description: project_params[:description])
     emails = params[:emails]
     if project.save
@@ -91,7 +92,7 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:title, :description, :user_id)
+    params.require(:project).permit(:title, :link, :description, :user_id)
   end
 
 end
