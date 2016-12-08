@@ -10,6 +10,11 @@
     <%= link_to edit_review_path(@review), class: "edit-link", id: "edit-review-link", remote: true do %>
       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
     <% end %>
+    <% if @review.ratings.count == 0 %>
+      <%= link_to review_path, action: :destroy, method: :delete, class: "edit-link", id: "delete-review-link" do %>
+        <i class="fa fa-times" aria-hidden="true"></i>
+      <% end %>
+    <% end %>
   <% end %>
   <span class="back-link"><%= link_to "&#8592; back to project".html_safe, project_path(id: @project.id), class: "cancel-link" %></span>
 </h2>
