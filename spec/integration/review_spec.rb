@@ -178,12 +178,12 @@ describe "review", :type => :feature do
                                  { uid: "uidhillaryclinton",
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
-        reviewer = User.find_by(name: "hillaryclinton")
+        @reviewer = User.find_by(name: "hillaryclinton")
         @review = create(:review, content: "Looks good!")
         @project = create(:project, title: "Foo", description: "Bar")
         create(:project_review, project_id: @project.id,
                                 review_id: @review.id)
-        create(:user_review, user_id: reviewer.id,
+        create(:user_review, user_id: @reviewer.id,
                              review_id: @review.id)
 
         visit "/"
@@ -238,6 +238,29 @@ describe "review", :type => :feature do
 
         expect(page).to have_content(@project.title)
         expect(current_path).to eq("/projects/" + @project.id.to_s)
+      end
+
+      it "allows deletion of review when review has not yet been rated" do
+        review = create(:review, content: "Looks good!")
+        create(:project_review, project_id: @project.id,
+                                review_id: review.id)
+        create(:user_review, user_id: @reviewer.id,
+                             review_id: review.id)
+
+        visit "/reviews/" + review.id.to_s
+        click_link("delete-review-link")
+
+        expect(current_path).to eq("/users/" + @reviewer.id.to_s)
+      end
+      
+      it "does not show the link to delete when review has been rated" do 
+        rating = create(:rating, helpful: true)
+        create(:review_rating, review_id: @review.id,
+                               rating_id: rating.id)
+
+        visit "/reviews/" + @review.id.to_s
+
+        expect(page).not_to have_xpath("//i", :class => "fa fa-times")
       end
 
       after(:each) do
@@ -428,24 +451,6 @@ describe "review", :type => :feature do
         expect(page).to have_content("Stupendous!")
       end
 
-      it "allows deletion of review when review has not yet been rated", :js => true do
-        visit "/reviews/" + @review.id.to_s
-        find_by_id("edit-review-link").trigger("click")
-        click_link("Delete review")
-
-        expect(current_path).to eq("/users/" + @reviewer.id.to_s)
-      end
-      
-      it "does not show the link to delete when review has been rated", :js => true do 
-        rating = create(:rating, helpful: true)
-        create(:review_rating, review_id: @review.id,
-                               rating_id: rating.id)
-
-        visit "/reviews/" + @review.id.to_s
-        find_by_id("edit-review-link").trigger("click")
-
-        expect(page).not_to have_content("Delete review")
-      end
 
       after(:each) do
         visit "/logout"
