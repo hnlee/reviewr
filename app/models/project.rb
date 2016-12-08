@@ -1,5 +1,5 @@
 class Project < ApplicationRecord
-  validates :title, :description, presence: true
+  validates :title, :link, :description, presence: true
 
   has_many :project_reviews
   has_many :reviews, through: :project_reviews
@@ -11,13 +11,23 @@ class Project < ApplicationRecord
   has_many :invites, through: :project_invites, source: :user
 
   def get_error_message
-    if title.blank? and description.blank?
-      return "Please provide a title and description"
-    elsif description.blank?
-      return "Please provide a description"
-    else
-      return "Please provide a title"
+    missing = []
+    if title.blank? 
+      missing.push("title")
     end
+    if link.blank?
+      missing.push("link")
+    end
+    if description.blank?
+      missing.push("description")
+    end
+    if missing.count > 1
+      missing.insert(-2, "and")
+    end
+    if missing.count > 3
+      missing[0] += ","
+    end
+    return "Please provide a " + missing.join(" ")
   end
 
   def helpful_reviews_count

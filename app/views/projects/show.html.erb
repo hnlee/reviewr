@@ -5,13 +5,18 @@
 </div>
 
 <h2>
-  <span id="page-title"><%= @project.title %></span>&nbsp;
+  <span id="page-title"><%= link_to @project.title, @project.link, class: "project-title" %></span>&nbsp;
   <% if @user == @project.owner %>
     <%= link_to(edit_project_path(@project), class: "edit-link", id: "edit-project-link") do %>
       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
     <% end %>
   <% end %>
 </h2>
+
+<div>
+  <p><%= link_to @project.link, @project.link, class: "project-link" %></p>
+</div>
+<br />
 
 <div class="markdown-content">
   <p><%= markdown(@project.description) %></p>

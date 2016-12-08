@@ -4,7 +4,9 @@ describe "project" do
   describe "show page" do
     describe "when logged out" do
       it "redirects to root" do
-        project = create(:project, title: "my title", description: "my desc")
+        project = create(:project, title: "my title", 
+                                   link: "http://link.link",
+                                   description: "my desc")
         owner = create(:user, name: "name",
                               email: "name@email.com",
                               uid: "uidname")
@@ -27,7 +29,9 @@ describe "project" do
         visit "/"
         find_button("Sign in with Google").click
 
-        project = create(:project, title: "my title", description: "my desc")
+        project = create(:project, title: "my title", 
+                                   link: "http://link.link",
+                                   description: "my desc")
         owner = create(:user, name: "name",
                               email: "name@email.com",
                               uid: "uidname")
@@ -51,7 +55,9 @@ describe "project" do
                                            email: "hillaryclinton@gmail.com" } })
         @user = User.find_by_name("hillaryclinton")
         owner = create(:user)
-        @project = create(:project, title: "my title", description: "my desc")
+        @project = create(:project, title: "my title", 
+                                    link: "http://link.link",
+                                    description: "my desc")
         create(:project_owner, project_id: @project.id,
                                user_id: owner.id)
         create(:project_invite, project_id: @project.id,
@@ -65,6 +71,7 @@ describe "project" do
         visit "/projects/" + @project.id.to_s
 
         expect(page).to have_content(@project.title)
+        expect(page).to have_content(@project.link)
         expect(page).to have_content(@project.description)
       end
 
@@ -118,7 +125,9 @@ describe "project" do
                                            email: "hillaryclinton@gmail.com" } })
         @user = User.find_by_name("hillaryclinton")
         owner = create(:user)
-        @project = create(:project, title: "my title", description: "my desc")
+        @project = create(:project, title: "my title", 
+                                    link: "http://link.link",
+                                    description: "my desc")
         create(:project_owner, project_id: @project.id,
                                user_id: owner.id)
         @review = create(:review, content: "Insert a very thorough and detailed review")
@@ -135,6 +144,7 @@ describe "project" do
         visit "/projects/" + @project.id.to_s
 
         expect(page).to have_content(@project.title)
+        expect(page).to have_content(@project.link)
         expect(page).to have_content(@project.description)
       end
 
@@ -188,7 +198,9 @@ describe "project" do
                                    info: { name: "hillaryclinton",
                                            email: "hillaryclinton@gmail.com" } })
         @user = User.find_by_name("hillaryclinton")
-        @project = create(:project, title: "my title", description: "my desc")
+        @project = create(:project, title: "my title", 
+                                    link: "http://link.link",
+                                    description: "my desc")
         create(:project_owner, project_id: @project.id,
                                user_id: @user.id)
 
@@ -200,6 +212,7 @@ describe "project" do
         visit "/projects/" + @project.id.to_s
 
         expect(page).to have_content(@project.title)
+        expect(page).to have_content(@project.link)
         expect(page).to have_content(@project.description)
       end
 
@@ -321,6 +334,7 @@ describe "project" do
         expect(page).to have_css("form")
         expect(page).to have_content("Create new project")
         expect(page).to have_field("Title")
+        expect(page).to have_field("Link")
         expect(page).to have_field("Description")
         expect(page).to have_field("Enter email address to invite reviewer")
         expect(page).to have_button("Create new project")
@@ -337,6 +351,7 @@ describe "project" do
       it "redirects to the user show page when a new project is submitted", :js => true do
         visit "/projects/new"
         fill_in("project[title]", with: "my project")
+        fill_in("project[link]", with: "http://link.link")
         fill_in("project[description]", with: "a description")
         fill_in("input_0", with: "an@email.com")
         click_button("Create new project")
@@ -346,9 +361,11 @@ describe "project" do
         expect(page).to have_content("Project has been created")
       end
 
-      it "displays a warning if title is left blank when creating a new project" do
+      it "displays a warning if title is left blank when creating a new project", :js => true do
         visit "/projects/new"
+        fill_in("project[link]", with: "http://link.link")
         fill_in("project[description]", with: "a description")
+        fill_in("input_0", with: "an@email.com")
         click_button("Create new project")
 
         expect(current_path).to eq("/projects/new")
@@ -356,9 +373,23 @@ describe "project" do
         expect(page).to have_content("Please provide a title")
       end
 
-      it "displays a warning if description is left blank when creating a new project" do
+      it "displays a warning if link is left blank when creating a new project", :js => true do
         visit "/projects/new"
         fill_in("project[title]", with: "my project")
+        fill_in("project[description]", with: "a description")
+        fill_in("input_0", with: "an@email.com")
+        click_button("Create new project")
+
+        expect(current_path).to eq("/projects/new")
+        expect(page).to have_content("Create new project")
+        expect(page).to have_content("Please provide a link")
+      end
+
+      it "displays a warning if description is left blank when creating a new project", :js => true do
+        visit "/projects/new"
+        fill_in("project[title]", with: "my project")
+        fill_in("project[link]", with: "http://link.link")
+        fill_in("input_0", with: "an@email.com")
         click_button("Create new project")
 
         expect(current_path).to eq("/projects/new")
@@ -369,6 +400,7 @@ describe "project" do
       it "displays a warning if email field is blank before submitting", :js => true do
         visit "/projects/new"
         fill_in("project[title]", with: "my project")
+        fill_in("project[link]", with: "http://link.link")
         fill_in("project[description]", with: "a description")
         click_button("Create new project")
         
@@ -409,7 +441,9 @@ describe "project" do
   describe "edit page" do
     describe "when not logged in" do
       it "redirects to the root" do
-        project = create(:project, title: "my title", description: "my desc")
+        project = create(:project, title: "my title", 
+                                   link: "http://link.link",
+                                   description: "my desc")
 
         visit "/projects/" + project.id.to_s + "/edit"
 
@@ -425,7 +459,9 @@ describe "project" do
                                            email: "hillaryclinton@gmail.com" } })
         @owner = User.find_by_name("hillaryclinton")
         @user = create(:user, email: "user@example.com")
-        @project = create(:project, title: "my title", description: "my desc")
+        @project = create(:project, title: "my title", 
+                                    link: "http://link.link",
+                                    description: "my desc")
         create(:project_owner, project_id: @project.id,
                                user_id: @owner.id)
         create(:project_invite, project_id: @project.id,
@@ -441,7 +477,8 @@ describe "project" do
         expect(page).to have_css("form")
         expect(page).to have_content("Update project")
         expect(page).to have_field("Title", with: "my title")
-        expect(page).to have_field("Description")
+        expect(page).to have_field("Link", with: "http://link.link")
+        expect(page).to have_field("Description", with: "my desc")
         expect(page).to have_content("my desc")
         expect(page).to have_button("Update project")
         expect(page).to have_link("add-invite-link")
